@@ -1,0 +1,173 @@
+=== Generated schedule for mktop_bsv ===
+
+Rule schedule
+-------------
+Rule: bram_serverAdapterA_outData_setFirstCore
+Predicate: bram_serverAdapterA_outDataCore.i_notEmpty &&
+	   bram_serverAdapterA_outDataCore.notEmpty
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterA_outData_setFirstEnq
+Predicate: (! bram_serverAdapterA_outDataCore.notEmpty) &&
+	   bram_serverAdapterA_outData_enqData.whas
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterA_outData_enqOnly
+Predicate: bram_serverAdapterA_outDataCore.i_notFull &&
+	   (! bram_serverAdapterA_outData_deqCalled.whas) &&
+	   bram_serverAdapterA_outData_enqData.whas
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterA_outData_deqOnly
+Predicate: bram_serverAdapterA_outDataCore.i_notEmpty &&
+	   bram_serverAdapterA_outData_deqCalled.whas &&
+	   (! bram_serverAdapterA_outData_enqData.whas)
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterA_outData_enqAndDeq
+Predicate: bram_serverAdapterA_outDataCore.i_notEmpty &&
+	   bram_serverAdapterA_outDataCore.i_notFull &&
+	   bram_serverAdapterA_outData_deqCalled.whas &&
+	   bram_serverAdapterA_outData_enqData.whas
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterA_cnt_finalAdd
+Predicate: bram_serverAdapterA_cnt_1.whas || bram_serverAdapterA_cnt_2.whas ||
+	   bram_serverAdapterA_cnt_3.whas
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterA_s1__dreg_update
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterA_stageReadResponseAlways
+Predicate: bram_serverAdapterA_writeWithResp.whas
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterA_moveToOutFIFO
+Predicate: ((! bram_serverAdapterA_s1[0]) ||
+	    bram_serverAdapterA_outDataCore.notFull) &&
+	   bram_serverAdapterA_s1[1]
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterA_overRun
+Predicate: bram_serverAdapterA_s1[1] &&
+	   (! bram_serverAdapterA_outDataCore.notFull)
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterB_outData_setFirstCore
+Predicate: bram_serverAdapterB_outDataCore.i_notEmpty &&
+	   bram_serverAdapterB_outDataCore.notEmpty
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterB_outData_setFirstEnq
+Predicate: (! bram_serverAdapterB_outDataCore.notEmpty) &&
+	   bram_serverAdapterB_outData_enqData.whas
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterB_outData_enqOnly
+Predicate: bram_serverAdapterB_outDataCore.i_notFull &&
+	   (! bram_serverAdapterB_outData_deqCalled.whas) &&
+	   bram_serverAdapterB_outData_enqData.whas
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterB_outData_deqOnly
+Predicate: bram_serverAdapterB_outDataCore.i_notEmpty &&
+	   bram_serverAdapterB_outData_deqCalled.whas &&
+	   (! bram_serverAdapterB_outData_enqData.whas)
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterB_outData_enqAndDeq
+Predicate: bram_serverAdapterB_outDataCore.i_notEmpty &&
+	   bram_serverAdapterB_outDataCore.i_notFull &&
+	   bram_serverAdapterB_outData_deqCalled.whas &&
+	   bram_serverAdapterB_outData_enqData.whas
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterB_cnt_finalAdd
+Predicate: bram_serverAdapterB_cnt_1.whas || bram_serverAdapterB_cnt_2.whas ||
+	   bram_serverAdapterB_cnt_3.whas
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterB_s1__dreg_update
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterB_stageReadResponseAlways
+Predicate: bram_serverAdapterB_writeWithResp.whas
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterB_moveToOutFIFO
+Predicate: ((! bram_serverAdapterB_s1[0]) ||
+	    bram_serverAdapterB_outDataCore.notFull) &&
+	   bram_serverAdapterB_s1[1]
+Blocking rules: (none)
+ 
+Rule: bram_serverAdapterB_overRun
+Predicate: bram_serverAdapterB_s1[1] &&
+	   (! bram_serverAdapterB_outDataCore.notFull)
+Blocking rules: (none)
+ 
+Rule: tic
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: requestI
+Predicate: rv_core.RDY_getIReq && (bram_serverAdapterB_cnt .< 3'd3)
+Blocking rules: (none)
+ 
+Rule: responseI
+Predicate: rv_core.RDY_getIResp &&
+	   (bram_serverAdapterB_outDataCore.notEmpty ||
+	    bram_serverAdapterB_outData_enqData.whas) &&
+	   bram_serverAdapterB_outData_outData.whas
+Blocking rules: (none)
+ 
+Rule: requestD
+Predicate: rv_core.RDY_getDReq && (bram_serverAdapterA_cnt .< 3'd3)
+Blocking rules: (none)
+ 
+Rule: responseD
+Predicate: rv_core.RDY_getDResp &&
+	   (bram_serverAdapterA_outDataCore.notEmpty ||
+	    bram_serverAdapterA_outData_enqData.whas) &&
+	   bram_serverAdapterA_outData_outData.whas
+Blocking rules: (none)
+ 
+Rule: requestMMIO
+Predicate: rv_core.RDY_getMMIOReq && mmioreq.i_notFull
+Blocking rules: (none)
+ 
+Rule: responseMMIO
+Predicate: rv_core.RDY_getMMIOResp && mmioreq.i_notEmpty
+Blocking rules: (none)
+ 
+Logical execution order: tic,
+			 requestMMIO,
+			 responseMMIO,
+			 bram_serverAdapterA_moveToOutFIFO,
+			 bram_serverAdapterA_overRun,
+			 bram_serverAdapterA_outData_setFirstCore,
+			 bram_serverAdapterA_outData_setFirstEnq,
+			 responseD,
+			 requestD,
+			 bram_serverAdapterA_stageReadResponseAlways,
+			 bram_serverAdapterA_outData_enqOnly,
+			 bram_serverAdapterA_outData_deqOnly,
+			 bram_serverAdapterA_outData_enqAndDeq,
+			 bram_serverAdapterA_cnt_finalAdd,
+			 bram_serverAdapterA_s1__dreg_update,
+			 bram_serverAdapterB_moveToOutFIFO,
+			 bram_serverAdapterB_overRun,
+			 bram_serverAdapterB_outData_setFirstCore,
+			 bram_serverAdapterB_outData_setFirstEnq,
+			 responseI,
+			 requestI,
+			 bram_serverAdapterB_stageReadResponseAlways,
+			 bram_serverAdapterB_outData_enqOnly,
+			 bram_serverAdapterB_outData_deqOnly,
+			 bram_serverAdapterB_outData_enqAndDeq,
+			 bram_serverAdapterB_cnt_finalAdd,
+			 bram_serverAdapterB_s1__dreg_update
+
+=========================================

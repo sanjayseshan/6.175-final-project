@@ -1,0 +1,340 @@
+=== Generated schedule for mkBeveren ===
+
+Rule schedule
+-------------
+Rule: randomMem_every
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: randomMem_every_1
+Predicate: ! randomMem_initialized
+Blocking rules: (none)
+ 
+Rule: mainRef_bram_serverAdapter_outData_setFirstCore
+Predicate: mainRef_bram_serverAdapter_outDataCore.i_notEmpty &&
+	   mainRef_bram_serverAdapter_outDataCore.notEmpty
+Blocking rules: (none)
+ 
+Rule: mainRef_bram_serverAdapter_outData_setFirstEnq
+Predicate: (! mainRef_bram_serverAdapter_outDataCore.notEmpty) &&
+	   mainRef_bram_serverAdapter_outData_enqData.whas
+Blocking rules: (none)
+ 
+Rule: mainRef_bram_serverAdapter_outData_enqOnly
+Predicate: mainRef_bram_serverAdapter_outDataCore.i_notFull &&
+	   (! mainRef_bram_serverAdapter_outData_deqCalled.whas) &&
+	   mainRef_bram_serverAdapter_outData_enqData.whas
+Blocking rules: (none)
+ 
+Rule: mainRef_bram_serverAdapter_outData_deqOnly
+Predicate: mainRef_bram_serverAdapter_outDataCore.i_notEmpty &&
+	   mainRef_bram_serverAdapter_outData_deqCalled.whas &&
+	   (! mainRef_bram_serverAdapter_outData_enqData.whas)
+Blocking rules: (none)
+ 
+Rule: mainRef_bram_serverAdapter_outData_enqAndDeq
+Predicate: mainRef_bram_serverAdapter_outDataCore.i_notEmpty &&
+	   mainRef_bram_serverAdapter_outDataCore.i_notFull &&
+	   mainRef_bram_serverAdapter_outData_deqCalled.whas &&
+	   mainRef_bram_serverAdapter_outData_enqData.whas
+Blocking rules: (none)
+ 
+Rule: mainRef_bram_serverAdapter_cnt_finalAdd
+Predicate: mainRef_bram_serverAdapter_cnt_1.whas ||
+	   mainRef_bram_serverAdapter_cnt_2.whas ||
+	   mainRef_bram_serverAdapter_cnt_3.whas
+Blocking rules: (none)
+ 
+Rule: mainRef_bram_serverAdapter_s1__dreg_update
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_bram_serverAdapter_stageReadResponseAlways
+Predicate: mainRef_bram_serverAdapter_writeWithResp.whas
+Blocking rules: (none)
+ 
+Rule: mainRef_bram_serverAdapter_moveToOutFIFO
+Predicate: ((! mainRef_bram_serverAdapter_s1[0]) ||
+	    mainRef_bram_serverAdapter_outDataCore.notFull) &&
+	   mainRef_bram_serverAdapter_s1[1]
+Blocking rules: (none)
+ 
+Rule: mainRef_bram_serverAdapter_overRun
+Predicate: mainRef_bram_serverAdapter_s1[1] &&
+	   (! mainRef_bram_serverAdapter_outDataCore.notFull)
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_1
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_2
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_3
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_4
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_5
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_6
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_7
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_8
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_9
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_10
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_11
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_12
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_13
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_14
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_15
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_16
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_17
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_dl_try_move_18
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: mainRef_deq
+Predicate: (mainRef_bram_serverAdapter_outDataCore.notEmpty ||
+	    mainRef_bram_serverAdapter_outData_enqData.whas) &&
+	   mainRef_bram_serverAdapter_outData_outData.whas &&
+	   (! mainRef_dl_d_0_rv.port1__read[512])
+Blocking rules: (none)
+ 
+Rule: cache_bram_serverAdapter_outData_setFirstCore
+Predicate: cache_bram_serverAdapter_outDataCore.i_notEmpty &&
+	   cache_bram_serverAdapter_outDataCore.notEmpty
+Blocking rules: (none)
+ 
+Rule: cache_bram_serverAdapter_outData_setFirstEnq
+Predicate: (! cache_bram_serverAdapter_outDataCore.notEmpty) &&
+	   cache_bram_serverAdapter_outData_enqData.whas
+Blocking rules: (none)
+ 
+Rule: cache_bram_serverAdapter_outData_enqOnly
+Predicate: cache_bram_serverAdapter_outDataCore.i_notFull &&
+	   (! cache_bram_serverAdapter_outData_deqCalled.whas) &&
+	   cache_bram_serverAdapter_outData_enqData.whas
+Blocking rules: (none)
+ 
+Rule: cache_bram_serverAdapter_outData_deqOnly
+Predicate: cache_bram_serverAdapter_outDataCore.i_notEmpty &&
+	   cache_bram_serverAdapter_outData_deqCalled.whas &&
+	   (! cache_bram_serverAdapter_outData_enqData.whas)
+Blocking rules: (none)
+ 
+Rule: cache_bram_serverAdapter_outData_enqAndDeq
+Predicate: cache_bram_serverAdapter_outDataCore.i_notEmpty &&
+	   cache_bram_serverAdapter_outDataCore.i_notFull &&
+	   cache_bram_serverAdapter_outData_deqCalled.whas &&
+	   cache_bram_serverAdapter_outData_enqData.whas
+Blocking rules: (none)
+ 
+Rule: cache_bram_serverAdapter_cnt_finalAdd
+Predicate: cache_bram_serverAdapter_cnt_1.whas ||
+	   cache_bram_serverAdapter_cnt_2.whas ||
+	   cache_bram_serverAdapter_cnt_3.whas
+Blocking rules: (none)
+ 
+Rule: cache_bram_serverAdapter_s1__dreg_update
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: cache_bram_serverAdapter_stageReadResponseAlways
+Predicate: cache_bram_serverAdapter_writeWithResp.whas
+Blocking rules: (none)
+ 
+Rule: cache_bram_serverAdapter_moveToOutFIFO
+Predicate: ((! cache_bram_serverAdapter_s1[0]) ||
+	    cache_bram_serverAdapter_outDataCore.notFull) &&
+	   cache_bram_serverAdapter_s1[1]
+Blocking rules: (none)
+ 
+Rule: cache_bram_serverAdapter_overRun
+Predicate: cache_bram_serverAdapter_s1[1] &&
+	   (! cache_bram_serverAdapter_outDataCore.notFull)
+Blocking rules: (none)
+ 
+Rule: cache_count
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: cache_req_process
+Predicate: (cache_bram_serverAdapter_outDataCore.notEmpty ||
+	    cache_bram_serverAdapter_outData_enqData.whas) &&
+	   cache_bram_serverAdapter_outData_outData.whas &&
+	   (cache_working[538]
+	    ? cache_stb.i_notFull
+	    : (((! cache_stb.notEmpty) || cache_stb.i_notEmpty) &&
+	       ((cache_stb.notEmpty &&
+		 (cache_stb.first[537:512] == cache_working[537:512]))
+		? cache_stb.i_notEmpty && cache_hitQ.i_notFull
+		: ((! (cache_bram_serverAdapter_outData_outData.wget[530:512] ==
+		       cache_working[564:546])) ||
+		   (cache_bram_serverAdapter_outData_outData.wget[532:531] ==
+		    2'd0) ||
+		   cache_hitQ.i_notFull)))) &&
+	   cache_working_v && (cache_mshr == 2'd0) && cache_lockL1
+Blocking rules: (none)
+ 
+Rule: cache_mvStbToL1
+Predicate: cache_stb.i_notEmpty &&
+	   ((! (cache_stb.first[537:519] == cache_working_line[530:512])) ||
+	    (cache_bram_serverAdapter_cnt .< 3'd3)) &&
+	   (cache_mshr == 2'd0) && (! cache_lockL1)
+Blocking rules: reqs
+ 
+Rule: cache_startMiss
+Predicate: ((! (cache_working_line[532:531] == 2'd2)) ||
+	    cache_memReqQ.i_notFull) &&
+	   (cache_mshr == 2'd1)
+Blocking rules: (none)
+ 
+Rule: cache_sendFillReq
+Predicate: cache_memReqQ.i_notFull && (cache_mshr == 2'd2)
+Blocking rules: (none)
+ 
+Rule: cache_waitFillResp_Ld
+Predicate: ((! cache_memRespQ.notEmpty) ||
+	    (cache_hitQ.i_notFull &&
+	     (cache_bram_serverAdapter_cnt .< 3'd3) &&
+	     cache_memRespQ.i_notEmpty)) &&
+	   (cache_mshr == 2'd3) && cache_start_fill && (! cache_working[538])
+Blocking rules: (none)
+ 
+Rule: cache_waitFillResp_St
+Predicate: (cache_bram_serverAdapter_cnt .< 3'd3) &&
+	   (cache_mshr == 2'd3) && cache_working[538]
+Blocking rules: (none)
+ 
+Rule: connectCacheDram
+Predicate: mainMem.RDY_put && cache_memReqQ.i_notEmpty
+Blocking rules: (none)
+ 
+Rule: connectDramCache
+Predicate: (! cache_start_fill) && mainMem.RDY_get && cache_memRespQ.i_notFull
+Blocking rules: (none)
+ 
+Rule: start
+Predicate: doinit
+Blocking rules: (none)
+ 
+Rule: reqs
+Predicate: (! cache_working_v) && (cache_mshr == 2'd0) &&
+	   randomMem_initialized &&
+	   (cache_bram_serverAdapter_cnt .< 3'd3) &&
+	   (mainRef_bram_serverAdapter_cnt .< 3'd3) &&
+	   (counterIn <= 32'd50000)
+Blocking rules: (none)
+ 
+Rule: resps
+Predicate: mainRef_dl_d_19_rv.port0__read[512] && cache_hitQ.i_notEmpty
+Blocking rules: (none)
+ 
+Rule: deadlockerC
+Predicate: True
+Blocking rules: (none)
+ 
+Logical execution order: connectCacheDram,
+			 connectDramCache,
+			 resps,
+			 deadlockerC,
+			 randomMem_every,
+			 randomMem_every_1,
+			 mainRef_bram_serverAdapter_moveToOutFIFO,
+			 mainRef_bram_serverAdapter_overRun,
+			 mainRef_bram_serverAdapter_outData_setFirstCore,
+			 mainRef_bram_serverAdapter_outData_setFirstEnq,
+			 mainRef_dl_try_move,
+			 mainRef_dl_try_move_1,
+			 mainRef_dl_try_move_2,
+			 mainRef_dl_try_move_3,
+			 mainRef_dl_try_move_4,
+			 mainRef_dl_try_move_5,
+			 mainRef_dl_try_move_6,
+			 mainRef_dl_try_move_7,
+			 mainRef_dl_try_move_8,
+			 mainRef_dl_try_move_9,
+			 mainRef_dl_try_move_10,
+			 mainRef_dl_try_move_11,
+			 mainRef_dl_try_move_12,
+			 mainRef_dl_try_move_13,
+			 mainRef_dl_try_move_14,
+			 mainRef_dl_try_move_15,
+			 mainRef_dl_try_move_16,
+			 mainRef_dl_try_move_17,
+			 mainRef_dl_try_move_18,
+			 mainRef_deq,
+			 mainRef_bram_serverAdapter_outData_enqOnly,
+			 mainRef_bram_serverAdapter_outData_deqOnly,
+			 mainRef_bram_serverAdapter_outData_enqAndDeq,
+			 cache_count,
+			 reqs,
+			 start,
+			 mainRef_bram_serverAdapter_stageReadResponseAlways,
+			 mainRef_bram_serverAdapter_cnt_finalAdd,
+			 mainRef_bram_serverAdapter_s1__dreg_update,
+			 cache_mvStbToL1,
+			 cache_startMiss,
+			 cache_sendFillReq,
+			 cache_waitFillResp_Ld,
+			 cache_waitFillResp_St,
+			 cache_bram_serverAdapter_stageReadResponseAlways,
+			 cache_bram_serverAdapter_moveToOutFIFO,
+			 cache_bram_serverAdapter_overRun,
+			 cache_bram_serverAdapter_outData_setFirstCore,
+			 cache_bram_serverAdapter_outData_setFirstEnq,
+			 cache_req_process,
+			 cache_bram_serverAdapter_outData_enqOnly,
+			 cache_bram_serverAdapter_outData_deqOnly,
+			 cache_bram_serverAdapter_outData_enqAndDeq,
+			 cache_bram_serverAdapter_cnt_finalAdd,
+			 cache_bram_serverAdapter_s1__dreg_update
+
+=========================================

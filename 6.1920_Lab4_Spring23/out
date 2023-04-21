@@ -1,0 +1,464 @@
+Warning: file 'mem.vmh' for memory 'bram_memory' has a gap at addresses 1065 to 2047.
+Warning: file 'mem.vmh' for memory 'bram_memory' has a gap at addresses 2051 to 1073741823.
+[Fetch] 00000000
+[Fetch] 00000004
+[Decode] pc 'h00000000'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000093 }
+REG 'h00000000'h00'h00000000'h00'h00000000
+SB_INS'h01
+[Fetch] 00000008
+[Execute]  pc 'h00000000'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000093 }
+[Decode] pc 'h00000004'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000113 }
+REG 'h00000004'h00'h00000000'h00'h00000000
+SB_INS'h02
+[Fetch] 0000000c
+[Writeback]'h00000000DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000093 }
+WR REG__'h01'h00000000'h00000000
+WR REG'h01'h00000000
+SB_REM'h01
+[Execute]  pc 'h00000004'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000113 }
+[Decode] pc 'h00000008'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000193 }
+REG 'h00000008'h00'h00000000'h00'h00000000
+SB_INS'h03
+[Fetch] 00000010
+[Writeback]'h00000004DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000113 }
+WR REG__'h02'h00000000'h00000004
+WR REG'h02'h00000000
+SB_REM'h02
+[Execute]  pc 'h00000008'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000193 }
+[Decode] pc 'h0000000c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000213 }
+REG 'h0000000c'h00'h00000000'h00'h00000000
+SB_INS'h04
+[Fetch] 00000014
+[Writeback]'h00000008DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000193 }
+WR REG__'h03'h00000000'h00000008
+WR REG'h03'h00000000
+SB_REM'h03
+[Execute]  pc 'h0000000c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000213 }
+[Decode] pc 'h00000010'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000293 }
+REG 'h00000010'h00'h00000000'h00'h00000000
+SB_INS'h05
+[Fetch] 00000018
+[Writeback]'h0000000cDecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000213 }
+WR REG__'h04'h00000000'h0000000c
+WR REG'h04'h00000000
+SB_REM'h04
+[Execute]  pc 'h00000010'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000293 }
+[Decode] pc 'h00000014'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000313 }
+REG 'h00000014'h00'h00000000'h00'h00000000
+SB_INS'h06
+[Fetch] 0000001c
+[Writeback]'h00000010DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000293 }
+WR REG__'h05'h00000000'h00000010
+WR REG'h05'h00000000
+SB_REM'h05
+[Execute]  pc 'h00000014'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000313 }
+[Decode] pc 'h00000018'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000393 }
+REG 'h00000018'h00'h00000000'h00'h00000000
+SB_INS'h07
+[Fetch] 00000020
+[Writeback]'h00000014DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000313 }
+WR REG__'h06'h00000000'h00000014
+WR REG'h06'h00000000
+SB_REM'h06
+[Execute]  pc 'h00000018'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000393 }
+[Decode] pc 'h0000001c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000413 }
+REG 'h0000001c'h00'h00000000'h00'h00000000
+SB_INS'h08
+[Fetch] 00000024
+[Writeback]'h00000018DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000393 }
+WR REG__'h07'h00000000'h00000018
+WR REG'h07'h00000000
+SB_REM'h07
+[Execute]  pc 'h0000001c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000413 }
+[Decode] pc 'h00000020'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000493 }
+REG 'h00000020'h00'h00000000'h00'h00000000
+SB_INS'h09
+[Fetch] 00000028
+[Writeback]'h0000001cDecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000413 }
+WR REG__'h08'h00000000'h0000001c
+WR REG'h08'h00000000
+SB_REM'h08
+[Execute]  pc 'h00000020'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000493 }
+[Decode] pc 'h00000024'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000513 }
+REG 'h00000024'h00'h00000000'h00'h00000000
+SB_INS'h0a
+[Fetch] 0000002c
+[Writeback]'h00000020DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000493 }
+WR REG__'h09'h00000000'h00000020
+WR REG'h09'h00000000
+SB_REM'h09
+[Execute]  pc 'h00000024'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000513 }
+[Decode] pc 'h00000028'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000593 }
+REG 'h00000028'h00'h00000000'h00'h00000000
+SB_INS'h0b
+[Fetch] 00000030
+[Writeback]'h00000024DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000513 }
+WR REG__'h0a'h00000000'h00000024
+WR REG'h0a'h00000000
+SB_REM'h0a
+[Execute]  pc 'h00000028'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000593 }
+[Decode] pc 'h0000002c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000613 }
+REG 'h0000002c'h00'h00000000'h00'h00000000
+SB_INS'h0c
+[Fetch] 00000034
+[Writeback]'h00000028DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000593 }
+WR REG__'h0b'h00000000'h00000028
+WR REG'h0b'h00000000
+SB_REM'h0b
+[Execute]  pc 'h0000002c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000613 }
+[Decode] pc 'h00000030'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000693 }
+REG 'h00000030'h00'h00000000'h00'h00000000
+SB_INS'h0d
+[Fetch] 00000038
+[Writeback]'h0000002cDecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000613 }
+WR REG__'h0c'h00000000'h0000002c
+WR REG'h0c'h00000000
+SB_REM'h0c
+[Execute]  pc 'h00000030'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000693 }
+[Decode] pc 'h00000034'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000713 }
+REG 'h00000034'h00'h00000000'h00'h00000000
+SB_INS'h0e
+[Fetch] 0000003c
+[Writeback]'h00000030DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000693 }
+WR REG__'h0d'h00000000'h00000030
+WR REG'h0d'h00000000
+SB_REM'h0d
+[Execute]  pc 'h00000034'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000713 }
+[Decode] pc 'h00000038'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000793 }
+REG 'h00000038'h00'h00000000'h00'h00000000
+SB_INS'h0f
+[Fetch] 00000040
+[Writeback]'h00000034DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000713 }
+WR REG__'h0e'h00000000'h00000034
+WR REG'h0e'h00000000
+SB_REM'h0e
+[Execute]  pc 'h00000038'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000793 }
+[Decode] pc 'h0000003c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000813 }
+REG 'h0000003c'h00'h00000000'h00'h00000000
+SB_INS'h10
+[Fetch] 00000044
+[Writeback]'h00000038DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000793 }
+WR REG__'h0f'h00000000'h00000038
+WR REG'h0f'h00000000
+SB_REM'h0f
+[Execute]  pc 'h0000003c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000813 }
+[Decode] pc 'h00000040'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000893 }
+REG 'h00000040'h00'h00000000'h00'h00000000
+SB_INS'h11
+[Fetch] 00000048
+[Writeback]'h0000003cDecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000813 }
+WR REG__'h10'h00000000'h0000003c
+WR REG'h10'h00000000
+SB_REM'h10
+[Execute]  pc 'h00000040'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000893 }
+[Decode] pc 'h00000044'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000913 }
+REG 'h00000044'h00'h00000000'h00'h00000000
+SB_INS'h12
+[Fetch] 0000004c
+[Writeback]'h00000040DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000893 }
+WR REG__'h11'h00000000'h00000040
+WR REG'h11'h00000000
+SB_REM'h11
+[Execute]  pc 'h00000044'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000913 }
+[Decode] pc 'h00000048'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000993 }
+REG 'h00000048'h00'h00000000'h00'h00000000
+SB_INS'h13
+[Fetch] 00000050
+[Writeback]'h00000044DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000913 }
+WR REG__'h12'h00000000'h00000044
+WR REG'h12'h00000000
+SB_REM'h12
+[Execute]  pc 'h00000048'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000993 }
+[Decode] pc 'h0000004c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000a13 }
+REG 'h0000004c'h00'h00000000'h00'h00000000
+SB_INS'h14
+[Fetch] 00000054
+[Writeback]'h00000048DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000993 }
+WR REG__'h13'h00000000'h00000048
+WR REG'h13'h00000000
+SB_REM'h13
+[Execute]  pc 'h0000004c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000a13 }
+[Decode] pc 'h00000050'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000a93 }
+REG 'h00000050'h00'h00000000'h00'h00000000
+SB_INS'h15
+[Fetch] 00000058
+[Writeback]'h0000004cDecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000a13 }
+WR REG__'h14'h00000000'h0000004c
+WR REG'h14'h00000000
+SB_REM'h14
+[Execute]  pc 'h00000050'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000a93 }
+[Decode] pc 'h00000054'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000b13 }
+REG 'h00000054'h00'h00000000'h00'h00000000
+SB_INS'h16
+[Fetch] 0000005c
+[Writeback]'h00000050DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000a93 }
+WR REG__'h15'h00000000'h00000050
+WR REG'h15'h00000000
+SB_REM'h15
+[Execute]  pc 'h00000054'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000b13 }
+[Decode] pc 'h00000058'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000b93 }
+REG 'h00000058'h00'h00000000'h00'h00000000
+SB_INS'h17
+[Fetch] 00000060
+[Writeback]'h00000054DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000b13 }
+WR REG__'h16'h00000000'h00000054
+WR REG'h16'h00000000
+SB_REM'h16
+[Execute]  pc 'h00000058'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000b93 }
+[Decode] pc 'h0000005c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000c13 }
+REG 'h0000005c'h00'h00000000'h00'h00000000
+SB_INS'h18
+[Fetch] 00000064
+[Writeback]'h00000058DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000b93 }
+WR REG__'h17'h00000000'h00000058
+WR REG'h17'h00000000
+SB_REM'h17
+[Execute]  pc 'h0000005c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000c13 }
+[Decode] pc 'h00000060'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000c93 }
+REG 'h00000060'h00'h00000000'h00'h00000000
+SB_INS'h19
+[Fetch] 00000068
+[Writeback]'h0000005cDecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000c13 }
+WR REG__'h18'h00000000'h0000005c
+WR REG'h18'h00000000
+SB_REM'h18
+[Execute]  pc 'h00000060'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000c93 }
+[Decode] pc 'h00000064'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000d13 }
+REG 'h00000064'h00'h00000000'h00'h00000000
+SB_INS'h1a
+[Fetch] 0000006c
+[Writeback]'h00000060DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000c93 }
+WR REG__'h19'h00000000'h00000060
+WR REG'h19'h00000000
+SB_REM'h19
+[Execute]  pc 'h00000064'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000d13 }
+[Decode] pc 'h00000068'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000d93 }
+REG 'h00000068'h00'h00000000'h00'h00000000
+SB_INS'h1b
+[Fetch] 00000070
+[Writeback]'h00000064DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000d13 }
+WR REG__'h1a'h00000000'h00000064
+WR REG'h1a'h00000000
+SB_REM'h1a
+[Execute]  pc 'h00000068'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000d93 }
+[Decode] pc 'h0000006c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000e13 }
+REG 'h0000006c'h00'h00000000'h00'h00000000
+SB_INS'h1c
+[Fetch] 00000074
+[Writeback]'h00000068DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000d93 }
+WR REG__'h1b'h00000000'h00000068
+WR REG'h1b'h00000000
+SB_REM'h1b
+[Execute]  pc 'h0000006c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000e13 }
+[Decode] pc 'h00000070'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000e93 }
+REG 'h00000070'h00'h00000000'h00'h00000000
+SB_INS'h1d
+[Fetch] 00000078
+[Writeback]'h0000006cDecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000e13 }
+WR REG__'h1c'h00000000'h0000006c
+WR REG'h1c'h00000000
+SB_REM'h1c
+[Execute]  pc 'h00000070'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000e93 }
+[Decode] pc 'h00000074'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000f13 }
+REG 'h00000074'h00'h00000000'h00'h00000000
+SB_INS'h1e
+[Fetch] 0000007c
+[Writeback]'h00000070DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000e93 }
+WR REG__'h1d'h00000000'h00000070
+WR REG'h1d'h00000000
+SB_REM'h1d
+[Execute]  pc 'h00000074'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000f13 }
+[Decode] pc 'h00000078'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000f93 }
+REG 'h00000078'h00'h00000000'h00'h00000000
+SB_INS'h1f
+[Fetch] 00000080
+[Writeback]'h00000074DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000f13 }
+WR REG__'h1e'h00000000'h00000074
+WR REG'h1e'h00000000
+SB_REM'h1e
+[Execute]  pc 'h00000078'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000f93 }
+[Decode] pc 'h0000007c'h0'h0 DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmU, inst: 'h10000137 }
+REG 'h0000007c'h00'h00000000'h00'h00000000
+SB_INS'h02
+[Fetch] 00000084
+[Writeback]'h00000078DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000f93 }
+WR REG__'h1f'h00000000'h00000078
+WR REG'h1f'h00000000
+SB_REM'h1f
+[Execute]  pc 'h0000007c'h0'h0 DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmU, inst: 'h10000137 }
+[Decode] pc 'h00000080'h1'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hff010113 }
+STALL  2         0         0S1 1 S2 0
+[Writeback]'h0000007cDecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmU, inst: 'h10000137 }
+WR REG__'h02'h10000000'h0000007c
+WR REG'h02'h10000000
+SB_REM'h02
+[Decode] pc 'h00000080'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hff010113 }
+REG 'h00000080'h02'h10000000'h10'h00000000
+SB_INS'h02
+[Fetch] 00000088
+[Execute]  pc 'h00000080'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hff010113 }
+[Decode] pc 'h00000084'h0'h0 DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmJ, inst: 'h018010ef }
+REG 'h00000084'h00'h00000000'h18'h00000000
+SB_INS'h01
+[Fetch] 0000008c
+[Writeback]'h00000080DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hff010113 }
+WR REG__'h02'h0ffffff0'h00000080
+WR REG'h02'h0ffffff0
+SB_REM'h02
+[Execute]  pc 'h00000084'h0'h0 DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmJ, inst: 'h018010ef }
+REDIRECT 'h0000109c'h00000084
+[Decode] pc 'h00000088'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000513 }
+REG 'h00000088'h00'h00000000'h00'h00000000
+SB_INS'h0a
+[Fetch] 0000109c
+[Writeback]'h00000084DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmJ, inst: 'h018010ef }
+WR REG__'h01'h00000088'h00000084
+WR REG'h01'h00000088
+SB_REM'h01
+[Execute]  pc 'h00000088'h1'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000513 }
+ANNUL 'h00000088
+SB_REM'h0a
+[Decode] pc 'h0000008c'h0'h0 DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmJ, inst: 'h7d9000ef }
+REG 'h0000008c'h00'h00000000'h19'h00000000
+SB_INS'h01
+[Fetch] 000010a0
+[Execute]  pc 'h0000008c'h1'h0 DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmJ, inst: 'h7d9000ef }
+ANNUL 'h0000008c
+SB_REM'h01
+[Decode] pc 'h0000109c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00b00513 }
+REG 'h0000109c'h00'h00000000'h0b'h00000000
+SB_INS'h0a
+[Fetch] 000010a4
+[Execute]  pc 'h0000109c'h1'h1 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00b00513 }
+[Decode] pc 'h000010a0'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00008067 }
+REG 'h000010a0'h01'h00000088'h00'h00000000
+[Fetch] 000010a8
+[Writeback]'h0000109cDecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00b00513 }
+WR REG__'h0a'h0000000b'h0000109c
+WR REG'h0a'h0000000b
+SB_REM'h0a
+[Execute]  pc 'h000010a0'h1'h1 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00008067 }
+REDIRECT 'h00000088'h000010a0
+[Decode] pc 'h000010a4'h0'h0 DecodedInst { legal: False, valid_rs1: False, valid_rs2: False, valid_rd: False, immediateType: tagged Invalid , inst: 'haaaaaaaa }
+REG 'h000010a4'h15'h00000000'h0a'h0000000b
+[Fetch] 00000088
+[Writeback]'h000010a0DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00008067 }
+WR REG__'h00'h000010a4'h000010a0
+SB_REM'h00
+[Execute]  pc 'h000010a4'h0'h1 DecodedInst { legal: False, valid_rs1: False, valid_rs2: False, valid_rd: False, immediateType: tagged Invalid , inst: 'haaaaaaaa }
+ANNUL 'h000010a4
+[Decode] pc 'h000010a8'h0'h0 DecodedInst { legal: False, valid_rs1: False, valid_rs2: False, valid_rd: False, immediateType: tagged Invalid , inst: 'haaaaaaaa }
+REG 'h000010a8'h15'h00000000'h0a'h0000000b
+[Fetch] 0000008c
+[Execute]  pc 'h000010a8'h0'h1 DecodedInst { legal: False, valid_rs1: False, valid_rs2: False, valid_rd: False, immediateType: tagged Invalid , inst: 'haaaaaaaa }
+ANNUL 'h000010a8
+[Decode] pc 'h00000088'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000513 }
+REG 'h00000088'h00'h00000000'h00'h00000000
+SB_INS'h0a
+[Fetch] 00000090
+[Execute]  pc 'h00000088'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000513 }
+[Decode] pc 'h0000008c'h0'h0 DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmJ, inst: 'h7d9000ef }
+REG 'h0000008c'h00'h00000000'h19'h00000000
+SB_INS'h01
+[Fetch] 00000094
+[Writeback]'h00000088DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000513 }
+WR REG__'h0a'h00000000'h00000088
+WR REG'h0a'h00000000
+SB_REM'h0a
+[Execute]  pc 'h0000008c'h0'h0 DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmJ, inst: 'h7d9000ef }
+REDIRECT 'h00001064'h0000008c
+[Decode] pc 'h00000090'h0'h0 DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmJ, inst: 'h0000006f }
+REG 'h00000090'h00'h00000000'h00'h00000000
+[Fetch] 00001064
+[Writeback]'h0000008cDecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmJ, inst: 'h7d9000ef }
+WR REG__'h01'h00000090'h0000008c
+WR REG'h01'h00000090
+SB_REM'h01
+[Execute]  pc 'h00000090'h1'h0 DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmJ, inst: 'h0000006f }
+ANNUL 'h00000090
+SB_REM'h00
+[Decode] pc 'h00000094'h0'h0 DecodedInst { legal: False, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000000 }
+REG 'h00000094'h00'h00000000'h00'h00000000
+[Fetch] 00001068
+[Execute]  pc 'h00000094'h1'h0 DecodedInst { legal: False, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h00000000 }
+ANNUL 'h00000094
+SB_REM'h00
+[Decode] pc 'h00001064'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hfe010113 }
+REG 'h00001064'h02'h0ffffff0'h00'h00000000
+SB_INS'h02
+[Fetch] 0000106c
+[Execute]  pc 'h00001064'h1'h1 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hfe010113 }
+[Decode] pc 'h00001068'h1'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: True, valid_rd: False, immediateType: tagged Valid ImmS, inst: 'h00812e23 }
+STALL 28 268435440         0S1 1 S2 0
+[Writeback]'h00001064DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hfe010113 }
+WR REG__'h02'h0fffffd0'h00001064
+WR REG'h02'h0fffffd0
+SB_REM'h02
+[Decode] pc 'h00001068'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: True, valid_rd: False, immediateType: tagged Valid ImmS, inst: 'h00812e23 }
+REG 'h00001068'h02'h0fffffd0'h08'h00000000
+[Fetch] 00001070
+[Execute]  pc 'h00001068'h1'h1 DecodedInst { legal: True, valid_rs1: True, valid_rs2: True, valid_rd: False, immediateType: tagged Valid ImmS, inst: 'h00812e23 }
+[Decode] pc 'h0000106c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h02010413 }
+REG 'h0000106c'h02'h0fffffd0'h00'h00000000
+SB_INS'h08
+[Fetch] 00001074
+[Writeback]'h00001068DecodedInst { legal: True, valid_rs1: True, valid_rs2: True, valid_rd: False, immediateType: tagged Valid ImmS, inst: 'h00812e23 }
+[Execute]  pc 'h0000106c'h1'h1 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h02010413 }
+[Decode] pc 'h00001070'h1'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: True, valid_rd: False, immediateType: tagged Valid ImmS, inst: 'hfea42623 }
+STALL 12         0         0S1 1 S2 0
+[Writeback]'h0000106cDecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h02010413 }
+WR REG__'h08'h0ffffff0'h0000106c
+WR REG'h08'h0ffffff0
+SB_REM'h08
+[Decode] pc 'h00001070'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: True, valid_rd: False, immediateType: tagged Valid ImmS, inst: 'hfea42623 }
+REG 'h00001070'h08'h0ffffff0'h0a'h00000000
+[Fetch] 00001078
+[Execute]  pc 'h00001070'h1'h1 DecodedInst { legal: True, valid_rs1: True, valid_rs2: True, valid_rd: False, immediateType: tagged Valid ImmS, inst: 'hfea42623 }
+[Decode] pc 'h00001074'h0'h0 DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmU, inst: 'h00001797 }
+REG 'h00001074'h00'h00000000'h00'h00000000
+SB_INS'h0f
+[Fetch] 0000107c
+[Writeback]'h00001070DecodedInst { legal: True, valid_rs1: True, valid_rs2: True, valid_rd: False, immediateType: tagged Valid ImmS, inst: 'hfea42623 }
+[Execute]  pc 'h00001074'h1'h1 DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmU, inst: 'h00001797 }
+[Decode] pc 'h00001078'h1'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hf9478793 }
+STALL 15         0         0S1 1 S2 0
+[Writeback]'h00001074DecodedInst { legal: True, valid_rs1: False, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmU, inst: 'h00001797 }
+WR REG__'h0f'h00002074'h00001074
+WR REG'h0f'h00002074
+SB_REM'h0f
+[Decode] pc 'h00001078'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hf9478793 }
+REG 'h00001078'h0f'h00002074'h14'h00000000
+SB_INS'h0f
+[Fetch] 00001080
+[Execute]  pc 'h00001078'h1'h1 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hf9478793 }
+[Decode] pc 'h0000107c'h1'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h0007a783 }
+STALL 15      8308         0S1 1 S2 0
+[Writeback]'h00001078DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hf9478793 }
+WR REG__'h0f'h00002008'h00001078
+WR REG'h0f'h00002008
+SB_REM'h0f
+[Decode] pc 'h0000107c'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h0007a783 }
+REG 'h0000107c'h0f'h00002008'h00'h00000000
+SB_INS'h0f
+[Fetch] 00001084
+[Execute]  pc 'h0000107c'h1'h1 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h0007a783 }
+[Decode] pc 'h00001080'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hfec42703 }
+REG 'h00001080'h08'h0ffffff0'h0c'h00000000
+SB_INS'h0e
+[Fetch] 00001088
+[Writeback]'h0000107cDecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'h0007a783 }
+WR REG__'h0f'hf000fff8'h0000107c
+WR REG'h0f'hf000fff8
+SB_REM'h0f
+[Execute]  pc 'h00001080'h1'h1 DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hfec42703 }
+[Decode] pc 'h00001084'h0'h1 DecodedInst { legal: True, valid_rs1: True, valid_rs2: True, valid_rd: False, immediateType: tagged Valid ImmS, inst: 'h00e7a023 }
+STALL  04026597368         0S1 0 S2 1
+[Writeback]'h00001080DecodedInst { legal: True, valid_rs1: True, valid_rs2: False, valid_rd: True, immediateType: tagged Valid ImmI, inst: 'hfec42703 }
+WR REG__'h0e'h00000000'h00001080
+WR REG'h0e'h00000000
+SB_REM'h0e
+[Decode] pc 'h00001084'h0'h0 DecodedInst { legal: True, valid_rs1: True, valid_rs2: True, valid_rd: False, immediateType: tagged Valid ImmS, inst: 'h00e7a023 }
+REG 'h00001084'h0f'hf000fff8'h0e'h00000000
+[Fetch] 0000108c
+[Execute]  pc 'h00001084'h1'h1 DecodedInst { legal: True, valid_rs1: True, valid_rs2: True, valid_rd: False, immediateType: tagged Valid ImmS, inst: 'h00e7a023 }
+[Execute] MMIOMem { byte_en: 'hf, addr: 'hf000fff8, data: 'h00000000 }
