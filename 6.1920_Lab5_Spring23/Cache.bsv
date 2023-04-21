@@ -10,28 +10,28 @@ typedef Bit#(7) IndexAddr;
 
 
 typedef struct { 
-  Bit#(19) tag; 
+  Bit#(15) tag; 
   IndexAddr idx; 
   MainMemReq memReq;
-  // Bit#(4) offset; 
+  Bit#(4) offset; 
 } CacheReq deriving (Eq, Bits);
 
 
 typedef struct { 
   Bit#(2) valid;
-  Bit#(19) tag;
-  Bit#(512) data;
+  Bit#(15) tag;
+  Bit#(32) data;
 } CacheReqLine deriving (Eq, Bits);
 
 typedef struct { 
   Bit#(26) addr;
-  Bit#(512) data;
+  Bit#(32) data;
 } StbReq deriving (Eq, Bits);
 
 function CacheReq extract_bits(LineAddr addr, MainMemReq e);
-  let tag = addr[25:7];
-  // let offset = addr[3:0];
-  IndexAddr index = addr[6:0];
+  let tag = addr[25:11];
+  let offset = addr[3:0];
+  IndexAddr index = addr[10:4];
   return CacheReq{tag:tag,idx:index,memReq:e};
 endfunction
 
