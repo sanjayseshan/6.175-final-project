@@ -6,7 +6,7 @@ import MemTypes::*;
 import Cache::*;
 
 
-module mkBeveren(Empty);
+module mkBeveren_nested(Empty);
     let verbose = True;
     Randomize#(MainMemReq) randomMem <- mkGenericRandomizer;
     MainMem mainRef <- mkMainMemFast(); //Initialize both to 0
@@ -32,7 +32,7 @@ module mkBeveren(Empty);
         let lineReq <- cache2.getToMem();
         mainMem.put(lineReq);
     endrule
-    
+
     rule connectDramCache;
         let resp <- mainMem.get;
         cache2.putFromMem(resp);

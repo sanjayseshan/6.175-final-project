@@ -131,7 +131,7 @@ module mkCache(Cache);
     $display("startMiss",mshr,fshow(working.memReq));
     if (working_line.valid == 2) begin
       $display("MISS DIRTY");
-      memReqQ.enq(MainMemReq{write:1, addr:{working_line.tag,working.idx},data:working_line.data});
+      memReqQ.enq(MainMemReq{write:1, addr:{working_line.tag,working.idx,working.offset},data:working_line.data});
     end
     mshr <= 2;
   endrule
