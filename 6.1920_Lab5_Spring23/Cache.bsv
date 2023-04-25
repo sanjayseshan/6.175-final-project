@@ -19,8 +19,8 @@ typedef struct {
 
 typedef struct { 
   Bit#(2) valid;
-  Bit#(15) tag;
-  Bit#(32) data;
+  Bit#(19) tag;
+  Bit#(512) data;
 } CacheReqLine deriving (Eq, Bits);
 
 typedef struct { 
@@ -29,9 +29,9 @@ typedef struct {
 } StbReq deriving (Eq, Bits);
 
 function CacheReq extract_bits(LineAddr addr, MainMemReq e);
-  let tag = addr[25:11];
-  let offset = addr[3:0];
-  IndexAddr index = addr[10:4];
+  let tag = addr[31:13];
+  let offset = addr[5:2];
+  IndexAddr index = addr[12:6];
   return CacheReq{tag:tag,idx:index,memReq:e};
 endfunction
 
@@ -85,12 +85,12 @@ module mkCache(Cache);
       let x = stb.first;
       // let x = stb.search_res(working.memReq.addr);
       if (stb.notEmpty() && x.addr == working.memReq.addr) begin
-        hitQ.enq(x.data);
+        hitQ.enq(x.data[working.offset*32+31:working.offset*32]); // CHANGED FROM x.data
         $display("READ HIT Q");
         working_v <= False;
       end 
       else if (out.tag==working.tag && out.valid != 0) begin
-        hitQ.enq(out.data);
+        hitQ.enq(out.data[working.offset*32+31:working.offset*32]); // CHANGED FROM out.data
         $display("READ HIT");
         working_v <= False;
       end else begin
@@ -109,15 +109,27 @@ module mkCache(Cache);
     let bits = extract_bits(e.addr, ?);
     stb.deq();
 
+    // ADDED
+    let data = working_line.data;
+
+    if (bits.offset==15) begin
+      data = {e.data, data[479:0]};
+    end (bits.offset==0) begin
+      data = {data[511:32], e.data};
+    end else begin
+      data = {data[511:32*(bits.offset+1)], e.data, data[32*bits.offset-1:0]}
+    end
+    // END OF ADDED SECTION
+
     if (bits.tag == working_line.tag) begin
       bram.portA.request.put(BRAMRequest{write: True, // False for read
                       responseOnWrite: False,
                       address: working.idx,
-                      datain: CacheReqLine{valid:2,tag:bits.tag,data:e.data}});
+                      datain: CacheReqLine{valid:2,tag:bits.tag,data:data}}); // CHANGED DATA
       working_v <= False;
 
     end else begin
-      missReq <= MainMemReq{write:1,addr:e.addr,data:e.data};
+      missReq <= MainMemReq{write:1,addr:e.addr,data:data}; // CHANGED DATA
       mshr <= 1;
     end
     lockL1 <= True;
@@ -131,7 +143,7 @@ module mkCache(Cache);
     $display("startMiss",mshr,fshow(working.memReq));
     if (working_line.valid == 2) begin
       $display("MISS DIRTY");
-      memReqQ.enq(MainMemReq{write:1, addr:{working_line.tag,working.idx,working.offset},data:working_line.data});
+      memReqQ.enq(MainMemReq{write:1, addr:{working_line.tag,working.idx,working.offset},data:working_line.data}); // original line
     end
     mshr <= 2;
   endrule
@@ -159,7 +171,7 @@ module mkCache(Cache);
                 responseOnWrite: False,
                 address: working.idx,
                 datain: CacheReqLine{valid:1,tag:working.tag,data:data}});
-      hitQ.enq(data);
+      hitQ.enq(data[working.offset*32+31:working.offset*32]); // CHANGED FROM data
       working_v <= False;
       mshr <= 0;
       memRespQ.deq();
@@ -175,15 +187,30 @@ module mkCache(Cache);
 
     // let data = fill_data;
     let m_working_req = working.memReq;
-  
-    $display("WRITE MISS", fshow(working.memReq.data)); 
-    bram.portA.request.put(BRAMRequest{write: True, // False for read
-              responseOnWrite: False,
-              address: working.idx,
-              datain: CacheReqLine{valid:1,tag:working.tag,data:working.memReq.data}});
-    working_v <= False;
-    mshr <= 0;
-    start_fill <= False;
+    
+    // ADDED SECTION
+    // added if statement
+    if (memRespQ.notEmpty()) begin
+      let data = memRespQ.first;
+
+      if (bits.offset==15) begin
+        data = {working.memReq.data, data[479:0]};
+      end (bits.offset==0) begin
+        data = {data[511:32], working.memReq.data};
+      end else begin
+        data = {data[511:32*(bits.offset+1)], working.memReq.data, data[32*bits.offset-1:0]}
+      end
+      // END OF ADDED SECTION
+
+      $display("WRITE MISS", fshow(working.memReq.data)); 
+      bram.portA.request.put(BRAMRequest{write: True, // False for read
+                responseOnWrite: False,
+                address: working.idx,
+                datain: CacheReqLine{valid:1,tag:working.tag,data:data}}); // CHANGED FROM working.memReq.data
+      working_v <= False;
+      mshr <= 0;
+      start_fill <= False;
+    end
   endrule
 
   // TODO Write a Cache

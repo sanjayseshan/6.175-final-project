@@ -3,3 +3,5 @@ typedef struct { Bit#(1) write; LineAddr addr; Bit#(32) data; } MainMemReq deriv
 typedef Bit#(32) MainMemResp;
 
 typedef Bit#(32) Word;
+
+typedef Bit#(22) MemLineAddr;
