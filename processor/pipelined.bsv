@@ -7,6 +7,8 @@ import KonataHelper::*;
 import Printf::*;
 import Ehr::*;
 
+import CacheInterface::*;
+
 typedef struct { Bit#(4) byte_en; Bit#(32) addr; Bit#(32) data; } Mem deriving (Eq, FShow, Bits);
 
 interface RVIfc;
