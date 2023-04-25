@@ -5,6 +5,7 @@ import SpecialFIFOs::*;
 import MemTypes::*;
 import Ehr::*;
 // import SearchFIFO::*;
+import Vector :: * ;
 
 typedef Bit#(7) IndexAddr;
 
@@ -12,47 +13,73 @@ typedef Bit#(7) IndexAddr;
 typedef struct { 
   Bit#(19) tag; 
   IndexAddr idx; 
-  MainMemReq memReq;
-  // Bit#(4) offset; 
-} CacheReq512 deriving (Eq, Bits);
+  CacheReq memReq;
+  Bit#(4) offset; 
+} CacheReqWorking deriving (Eq, Bits);
 
 
 typedef struct { 
   Bit#(2) valid;
   Bit#(19) tag;
-  Bit#(512) data;
-} CacheReq512Line deriving (Eq, Bits);
+  Vector#(16, Word) data;
+} CacheReqLine deriving (Eq, Bits);
 
 typedef struct { 
-  Bit#(26) addr;
-  Bit#(512) data;
+  Bit#(32) addr;
+  Bit#(32) data;
 } StbReq deriving (Eq, Bits);
 
-function CacheReq512 extract_bits(LineAddr addr, MainMemReq e);
-  let tag = addr[25:7];
-  // let offset = addr[3:0];
-  IndexAddr index = addr[6:0];
-  return CacheReq512{tag:tag,idx:index,memReq:e};
+function CacheReqWorking extract_bits(CacheLineAddr addr, CacheReq e);
+  let tag = addr[31:13];
+  IndexAddr index = addr[12:6];
+  let offset = addr[5:2];
+  return CacheReqWorking{tag:tag,idx:index,offset:offset,memReq:e};
+endfunction
+
+function Vector#(16, Word) lineToWordVec(MainMemResp line);
+    // ADDED SECTION
+    // added if statement
+    // if (memRespQ.notEmpty()) begin
+    //   let data = memRespQ.first;
+
+    //   if (bits.offset==15) begin
+    //     data = {working.memReq.data, data[479:0]};
+    //   end else if (bits.offset==0) begin
+    //     data = {data[511:32], working.memReq.data};
+    //   end else begin
+    //     data = {data[511:32*(bits.offset+1)], working.memReq.data, data[32*bits.offset-1:0]};
+    //   end
+      // END OF ADDED SECTION
+
+    Vector#(16, Word) ret;
+    for (Integer i=0; i < 16; i = i + 1) begin
+      ret[i] = line[511-32*i:511-31-32*i];
+    end
+    return ret;
+endfunction
+
+function Bit#(512) vecToLine(Vector#(16, Word) v);
+  return {v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7],v[8],v[9],v[10],v[11],v[12],v[13],v[14],v[15]};
 endfunction
 
 
-interface Cache;
-    method Action putFromProc(MainMemReq e);
-    method ActionValue#(MainMemResp) getToProc();
+interface Cache32;
+    method Action putFromProc(CacheReq e);
+    method ActionValue#(Word) getToProc();
     method ActionValue#(MainMemReq) getToMem();
     method Action putFromMem(MainMemResp e);
 endinterface
 
-module mkCache(Cache);
+module mkCache32(Cache32);
   BRAM_Configure cfg = defaultValue;
-  BRAM1Port#(IndexAddr, CacheReq512Line) bram <- mkBRAM1Server(cfg);
+  BRAM1Port#(IndexAddr, CacheReqLine) bram <- mkBRAM1Server(cfg);
 
 
-  Reg#(CacheReq512) working <- mkReg(unpack(0));
+  Reg#(CacheReqWorking) working <- mkReg(unpack(0));
   Reg#(Bool) working_v <- mkReg(False);
 
-  FIFO#(MainMemResp) hitQ <- mkFIFO();
-  Reg#(MainMemReq) missReq <- mkReg(unpack(0));
+  FIFO#(Word) hitQ <- mkFIFO();
+  // Reg#(CacheReq) missReq <- mkReg(unpack(0));
   Reg#(Bit#(2)) mshr <- mkReg(0);
 
   FIFO#(MainMemReq) memReqQ <- mkFIFO();
@@ -60,7 +87,7 @@ module mkCache(Cache);
 
   FIFOF#(StbReq) stb <- mkFIFOF();
 
-  Reg#(CacheReq512Line) working_line <- mkReg(unpack(0));
+  Reg#(CacheReqLine) working_line <- mkReg(unpack(0));
 
   // Ehr#(2, Bool) lockL1 <- mkEhr(False);
 
@@ -85,16 +112,16 @@ module mkCache(Cache);
       let x = stb.first;
       // let x = stb.search_res(working.memReq.addr);
       if (stb.notEmpty() && x.addr == working.memReq.addr) begin
-        hitQ.enq(x.data);
+        hitQ.enq(x.data); // CHANGED FROM x.data
         //$display("READ HIT Q");
         working_v <= False;
       end 
       else if (out.tag==working.tag && out.valid != 0) begin
-        hitQ.enq(out.data);
+        hitQ.enq(out.data[working.offset]); // CHANGED FROM out.data
         //$display("READ HIT");
         working_v <= False;
       end else begin
-        missReq <= working.memReq;
+        // missReq <= working.memReq;
         mshr <= 1;
       end
     end else begin
@@ -109,15 +136,30 @@ module mkCache(Cache);
     let bits = extract_bits(e.addr, ?);
     stb.deq();
 
+    // ADDED
+    let data = working_line.data;
+
+    // if (bits.offset==15) begin
+    //   data = {e.data, data[479:0]};
+    // end 
+    // else if (bits.offset==0) begin
+    //   data = {data[511:32], e.data};
+    // end 
+    // else begin
+    //   data = {data[511:32*(bits.offset+1)], e.data, data[32*bits.offset-1:0]};
+    // end
+    // END OF ADDED SECTION
+
     if (bits.tag == working_line.tag) begin
+      data[bits.offset] = e.data;
       bram.portA.request.put(BRAMRequest{write: True, // False for read
                       responseOnWrite: False,
                       address: working.idx,
-                      datain: CacheReq512Line{valid:2,tag:bits.tag,data:e.data}});
+                      datain: CacheReqLine{valid:2,tag:bits.tag,data:data}}); // CHANGED DATA
       working_v <= False;
 
     end else begin
-      missReq <= MainMemReq{write:1,addr:e.addr,data:e.data};
+      // missReq <= MainMemReq{write:1,addr:{e.tag,e.idx},data:data}; // CHANGED DATA
       mshr <= 1;
     end
     lockL1 <= True;
@@ -131,7 +173,7 @@ module mkCache(Cache);
     //$display("startMiss",mshr,fshow(working.memReq));
     if (working_line.valid == 2) begin
       //$display("MISS DIRTY");
-      memReqQ.enq(MainMemReq{write:1, addr:{working_line.tag,working.idx},data:working_line.data});
+      memReqQ.enq(MainMemReq{write:1, addr:{working_line.tag,working.idx},data:vecToLine(working_line.data)}); // original line
     end
     mshr <= 2;
   endrule
@@ -140,7 +182,7 @@ module mkCache(Cache);
     //$display("sendFillReq");
 
       //$display("MISS GET FROM MEM");
-      memReqQ.enq(working.memReq);
+      memReqQ.enq(MainMemReq{write:0, addr:{working.tag,working.idx}, data: ?});
       mshr <= 3;
   endrule
 
@@ -158,8 +200,8 @@ module mkCache(Cache);
       bram.portA.request.put(BRAMRequest{write: True, // False for read
                 responseOnWrite: False,
                 address: working.idx,
-                datain: CacheReq512Line{valid:1,tag:working.tag,data:data}});
-      hitQ.enq(data);
+                datain: CacheReqLine{valid:1,tag:working.tag,data:lineToWordVec(data)}});
+      hitQ.enq(lineToWordVec(data)[working.offset]); // CHANGED FROM data
       working_v <= False;
       mshr <= 0;
       memRespQ.deq();
@@ -175,21 +217,39 @@ module mkCache(Cache);
 
     // let data = fill_data;
     let m_working_req = working.memReq;
-  
-    //$display("WRITE MISS", fshow(working.memReq.data)); 
-    bram.portA.request.put(BRAMRequest{write: True, // False for read
-              responseOnWrite: False,
-              address: working.idx,
-              datain: CacheReq512Line{valid:1,tag:working.tag,data:working.memReq.data}});
-    working_v <= False;
-    mshr <= 0;
-    start_fill <= False;
+    
+    // ADDED SECTION
+    // added if statement
+    if (memRespQ.notEmpty()) begin
+      let data = lineToWordVec(memRespQ.first);
+
+      // if (bits.offset==15) begin
+      //   data = {working.memReq.data, data[479:0]};
+      // end else if (bits.offset==0) begin
+      //   data = {data[511:32], working.memReq.data};
+      // end else begin
+      //   data = {data[511:32*(bits.offset+1)], working.memReq.data, data[32*bits.offset-1:0]};
+      // end
+      // END OF ADDED SECTION
+
+      data[working.offset] = working.memReq.data;
+
+      //$display("WRITE MISS", fshow(working.memReq.data)); 
+      bram.portA.request.put(BRAMRequest{write: True, // False for read
+                responseOnWrite: False,
+                address: working.idx,
+                datain: CacheReqLine{valid:2,tag:working.tag,data:data}}); // CHANGED FROM working.memReq.data
+      working_v <= False;
+      mshr <= 0;
+      start_fill <= False;
+      memRespQ.deq();
+    end
   endrule
 
   // TODO Write a Cache
-  method Action putFromProc(MainMemReq e) if (!working_v && mshr == 0);
+  method Action putFromProc(CacheReq e) if (!working_v && mshr == 0);
   
-    //$display("PFP ",fshow(e));
+    //$display("PFP ",fshow(e), fshow(mshr));
     let req = extract_bits(e.addr, e);
     bram.portA.request.put(BRAMRequest{write: False, // False for read
                         responseOnWrite: False,
@@ -199,7 +259,7 @@ module mkCache(Cache);
     working_v <= True;
   endmethod
 
-  method ActionValue#(MainMemResp) getToProc();
+  method ActionValue#(Word) getToProc();
     hitQ.deq();
     let r = hitQ.first;
     //$display("GTP ", fshow(r));

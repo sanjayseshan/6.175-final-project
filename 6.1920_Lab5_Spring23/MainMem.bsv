@@ -11,17 +11,22 @@ interface MainMem;
     method ActionValue#(MainMemResp) get();
 endinterface
 
-module mkMainMemFast(MainMem);
+interface MainMemFast;
+    method Action put(CacheReq req);
+    method ActionValue#(Word) get();
+endinterface
+
+module mkMainMemFast(MainMemFast);
     BRAM_Configure cfg = defaultValue();
-    BRAM1Port#(LineAddr, MainMemResp) bram <- mkBRAM1Server(cfg);
-    DelayLine#(20, MainMemResp) dl <- mkDL(); // Delay by 20 cycles
+    BRAM1Port#(CacheLineAddr, Word) bram <- mkBRAM1Server(cfg);
+    DelayLine#(20, Word) dl <- mkDL(); // Delay by 20 cycles
 
     rule deq;
         let r <- bram.portA.response.get();
         dl.put(r);
     endrule    
 
-    method Action put(MainMemReq req);
+    method Action put(CacheReq req);
         bram.portA.request.put(BRAMRequest{
                     write: unpack(req.write),
                     responseOnWrite: False,
@@ -29,7 +34,7 @@ module mkMainMemFast(MainMem);
                     datain: req.data});
     endmethod
 
-    method ActionValue#(MainMemResp) get();
+    method ActionValue#(Word) get();
         let r <- dl.get();
         return r;
     endmethod
@@ -43,7 +48,7 @@ module mkMainMem(MainMem);
     rule deq;
         let r <- bram.portA.response.get();
         dl.put(r);
-        $display("GOT FROM MM TO DL ",fshow(r));
+        // $display("GOT FROM MM TO DL ",fshow(r));
     endrule    
 
     method Action put(MainMemReq req);
@@ -52,12 +57,12 @@ module mkMainMem(MainMem);
                     responseOnWrite: False,
                     address: req.addr,
                     datain: req.data});
-        $display("SENT TO MM WITH ",fshow(req));
+        // $display("SENT TO MM WITH ",fshow(req));
     endmethod
 
     method ActionValue#(MainMemResp) get();
         let r <- dl.get();
-        $display("GOT FROM DL TO CACHE ",fshow(r));
+        // $display("GOT FROM DL TO CACHE ",fshow(r));
         return r;
     endmethod
 endmodule

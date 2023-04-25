@@ -3,15 +3,16 @@ import GetPut::*;
 import Randomizable::*;
 import MainMem::*;
 import MemTypes::*;
+import Cache32::*;
 import Cache::*;
 
 
 module mkBeveren_nested(Empty);
     let verbose = True;
     Randomize#(CacheReq) randomMem <- mkGenericRandomizer;
-    MainMem mainRef <- mkMainMemFast(); //Initialize both to 0
+    MainMemFast mainRef <- mkMainMemFast(); //Initialize both to 0
     MainMem mainMem <- mkMainMem(); //Initialize both to 0
-    Cache cache <- mkCache;
+    Cache32 cache <- mkCache32;
     Cache cache2 <- mkCache;
     
     Reg#(Bit#(32)) deadlockChecker <- mkReg(0); 
@@ -37,6 +38,17 @@ module mkBeveren_nested(Empty);
         let resp <- mainMem.get;
         cache2.putFromMem(resp);
     endrule
+
+    
+    // rule connectCacheDram;
+    //     let lineReq <- cache.getToMem();
+    //     mainMem.put(lineReq);
+    // endrule
+    // rule connectDramCache;
+    //     let resp <- mainMem.get;
+    //     cache.putFromMem(resp);
+    // endrule
+
 
     rule start (doinit);
         randomMem.cntrl.init;
