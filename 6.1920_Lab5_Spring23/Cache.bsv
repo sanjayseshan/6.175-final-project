@@ -20,7 +20,7 @@ typedef struct {
 typedef struct { 
   Bit#(2) valid;
   Bit#(19) tag;
-  Bit#(512) data;
+  Vector#(16, Word) data;
 } CacheReqLine deriving (Eq, Bits);
 
 typedef struct { 
@@ -33,6 +33,32 @@ function CacheReqWorking extract_bits(LineAddr addr, CacheReq e);
   IndexAddr index = addr[12:6];
   let offset = addr[5:2];
   return CacheReqWorking{tag:tag,idx:index,memReq:e};
+endfunction
+
+function Vector#(16, Word) lineToWord(MainMemResp line);
+    // ADDED SECTION
+    // added if statement
+    // if (memRespQ.notEmpty()) begin
+    //   let data = memRespQ.first;
+
+    //   if (bits.offset==15) begin
+    //     data = {working.memReq.data, data[479:0]};
+    //   end else if (bits.offset==0) begin
+    //     data = {data[511:32], working.memReq.data};
+    //   end else begin
+    //     data = {data[511:32*(bits.offset+1)], working.memReq.data, data[32*bits.offset-1:0]};
+    //   end
+      // END OF ADDED SECTION
+
+    Vector#(16, Word) ret;
+    for (Integer i=0; i < 16; i = i + 1) begin
+      ret[i] = line[511-32*i:511-31-32*i];
+    end
+    return ret;
+endfunction
+
+function Bit#(512) vecToLine(Vector#(16, Word) v);
+  return {v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7],v[8],v[9],v[10],v[11],v[12],v[13],v[14],v[15]};
 endfunction
 
 
@@ -85,12 +111,12 @@ module mkCache(Cache);
       let x = stb.first;
       // let x = stb.search_res(working.memReq.addr);
       if (stb.notEmpty() && x.addr == working.memReq.addr) begin
-        hitQ.enq(x.data[working.offset*32+31:working.offset*32]); // CHANGED FROM x.data
+        hitQ.enq(x.data[valueOf(offset)]); // CHANGED FROM x.data
         $display("READ HIT Q");
         working_v <= False;
       end 
       else if (out.tag==working.tag && out.valid != 0) begin
-        hitQ.enq(out.data[working.offset*32+31:working.offset*32]); // CHANGED FROM out.data
+        hitQ.enq(out.data[valueOf(offset)]); // CHANGED FROM out.data
         $display("READ HIT");
         working_v <= False;
       end else begin
@@ -112,26 +138,26 @@ module mkCache(Cache);
     // ADDED
     let data = working_line.data;
 
-    if (bits.offset==15) begin
-      data = {e.data, data[479:0]};
-    end 
-    else if (bits.offset==0) begin
-      data = {data[511:32], e.data};
-    end 
-    else begin
-      data = {data[511:32*(bits.offset+1)], e.data, data[32*bits.offset-1:0]};
-    end
+    // if (bits.offset==15) begin
+    //   data = {e.data, data[479:0]};
+    // end 
+    // else if (bits.offset==0) begin
+    //   data = {data[511:32], e.data};
+    // end 
+    // else begin
+    //   data = {data[511:32*(bits.offset+1)], e.data, data[32*bits.offset-1:0]};
+    // end
     // END OF ADDED SECTION
 
     if (bits.tag == working_line.tag) begin
       bram.portA.request.put(BRAMRequest{write: True, // False for read
                       responseOnWrite: False,
                       address: working.idx,
-                      datain: CacheReqLine{valid:2,tag:bits.tag,data:data}}); // CHANGED DATA
+                      datain: CacheReqLine{valid:2,tag:bits.tag,data:lineToWord(data)}}); // CHANGED DATA
       working_v <= False;
 
     end else begin
-      missReq <= MainMemReq{write:1,addr:e.addr,data:data}; // CHANGED DATA
+      missReq <= MainMemReq{write:1,addr:{e.tag,e.idx},data:data}; // CHANGED DATA
       mshr <= 1;
     end
     lockL1 <= True;
@@ -145,7 +171,7 @@ module mkCache(Cache);
     $display("startMiss",mshr,fshow(working.memReq));
     if (working_line.valid == 2) begin
       $display("MISS DIRTY");
-      memReqQ.enq(MainMemReq{write:1, addr:{working_line.tag,working.idx,working.offset},data:working_line.data}); // original line
+      memReqQ.enq(MainMemReq{write:1, addr:{working_line.tag,working.idx},data:vecToLine(working_line.data)}); // original line
     end
     mshr <= 2;
   endrule
@@ -154,7 +180,7 @@ module mkCache(Cache);
     $display("sendFillReq");
 
       $display("MISS GET FROM MEM");
-      memReqQ.enq(working.memReq);
+      memReqQ.enq(MainMemReq{write:working.memReq.write, });
       mshr <= 3;
   endrule
 
@@ -172,7 +198,7 @@ module mkCache(Cache);
       bram.portA.request.put(BRAMRequest{write: True, // False for read
                 responseOnWrite: False,
                 address: working.idx,
-                datain: CacheReqLine{valid:1,tag:working.tag,data:data}});
+                datain: CacheReqLine{valid:1,tag:working.tag,data:lineToWord(data)}});
       hitQ.enq(data[working.offset*32+31:working.offset*32]); // CHANGED FROM data
       working_v <= False;
       mshr <= 0;
@@ -195,20 +221,20 @@ module mkCache(Cache);
     if (memRespQ.notEmpty()) begin
       let data = memRespQ.first;
 
-      if (bits.offset==15) begin
-        data = {working.memReq.data, data[479:0]};
-      end else if (bits.offset==0) begin
-        data = {data[511:32], working.memReq.data};
-      end else begin
-        data = {data[511:32*(bits.offset+1)], working.memReq.data, data[32*bits.offset-1:0]};
-      end
+      // if (bits.offset==15) begin
+      //   data = {working.memReq.data, data[479:0]};
+      // end else if (bits.offset==0) begin
+      //   data = {data[511:32], working.memReq.data};
+      // end else begin
+      //   data = {data[511:32*(bits.offset+1)], working.memReq.data, data[32*bits.offset-1:0]};
+      // end
       // END OF ADDED SECTION
 
       $display("WRITE MISS", fshow(working.memReq.data)); 
       bram.portA.request.put(BRAMRequest{write: True, // False for read
                 responseOnWrite: False,
                 address: working.idx,
-                datain: CacheReqLine{valid:1,tag:working.tag,data:data}}); // CHANGED FROM working.memReq.data
+                datain: CacheReqLine{valid:1,tag:working.tag,data:lineToWord(data)}}); // CHANGED FROM working.memReq.data
       working_v <= False;
       mshr <= 0;
       start_fill <= False;
