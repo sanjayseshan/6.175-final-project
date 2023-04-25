@@ -10,11 +10,11 @@ typedef Bit#(7) IndexAddr;
 
 
 typedef struct { 
-  Bit#(15) tag; 
+  Bit#(19) tag; 
   IndexAddr idx; 
-  MainMemReq memReq;
+  CacheReq memReq;
   Bit#(4) offset; 
-} CacheReq deriving (Eq, Bits);
+} CacheReqWorking deriving (Eq, Bits);
 
 
 typedef struct { 
@@ -24,21 +24,21 @@ typedef struct {
 } CacheReqLine deriving (Eq, Bits);
 
 typedef struct { 
-  Bit#(26) addr;
+  Bit#(32) addr;
   Bit#(32) data;
 } StbReq deriving (Eq, Bits);
 
-function CacheReq extract_bits(LineAddr addr, MainMemReq e);
+function CacheReqWorking extract_bits(LineAddr addr, CacheReq e);
   let tag = addr[31:13];
-  let offset = addr[5:2];
   IndexAddr index = addr[12:6];
-  return CacheReq{tag:tag,idx:index,memReq:e};
+  let offset = addr[5:2];
+  return CacheReqWorking{tag:tag,idx:index,memReq:e};
 endfunction
 
 
 interface Cache;
-    method Action putFromProc(MainMemReq e);
-    method ActionValue#(MainMemResp) getToProc();
+    method Action putFromProc(CacheReq e);
+    method ActionValue#(Word) getToProc();
     method ActionValue#(MainMemReq) getToMem();
     method Action putFromMem(MainMemResp e);
 endinterface
@@ -48,11 +48,11 @@ module mkCache(Cache);
   BRAM1Port#(IndexAddr, CacheReqLine) bram <- mkBRAM1Server(cfg);
 
 
-  Reg#(CacheReq) working <- mkReg(unpack(0));
+  Reg#(CacheReqWorking) working <- mkReg(unpack(0));
   Reg#(Bool) working_v <- mkReg(False);
 
-  FIFO#(MainMemResp) hitQ <- mkFIFO();
-  Reg#(MainMemReq) missReq <- mkReg(unpack(0));
+  FIFO#(Word) hitQ <- mkFIFO();
+  Reg#(CacheReq) missReq <- mkReg(unpack(0));
   Reg#(Bit#(2)) mshr <- mkReg(0);
 
   FIFO#(MainMemReq) memReqQ <- mkFIFO();
@@ -114,10 +114,12 @@ module mkCache(Cache);
 
     if (bits.offset==15) begin
       data = {e.data, data[479:0]};
-    end (bits.offset==0) begin
+    end 
+    else if (bits.offset==0) begin
       data = {data[511:32], e.data};
-    end else begin
-      data = {data[511:32*(bits.offset+1)], e.data, data[32*bits.offset-1:0]}
+    end 
+    else begin
+      data = {data[511:32*(bits.offset+1)], e.data, data[32*bits.offset-1:0]};
     end
     // END OF ADDED SECTION
 
@@ -195,10 +197,10 @@ module mkCache(Cache);
 
       if (bits.offset==15) begin
         data = {working.memReq.data, data[479:0]};
-      end (bits.offset==0) begin
+      end else if (bits.offset==0) begin
         data = {data[511:32], working.memReq.data};
       end else begin
-        data = {data[511:32*(bits.offset+1)], working.memReq.data, data[32*bits.offset-1:0]}
+        data = {data[511:32*(bits.offset+1)], working.memReq.data, data[32*bits.offset-1:0]};
       end
       // END OF ADDED SECTION
 
@@ -214,7 +216,7 @@ module mkCache(Cache);
   endrule
 
   // TODO Write a Cache
-  method Action putFromProc(MainMemReq e) if (!working_v && mshr == 0);
+  method Action putFromProc(CacheReq e) if (!working_v && mshr == 0);
   
     $display("PFP ",fshow(e));
     let req = extract_bits(e.addr, e);
@@ -226,7 +228,7 @@ module mkCache(Cache);
     working_v <= True;
   endmethod
 
-  method ActionValue#(MainMemResp) getToProc();
+  method ActionValue#(Word) getToProc();
     hitQ.deq();
     let r = hitQ.first;
     $display("GTP ", fshow(r));
