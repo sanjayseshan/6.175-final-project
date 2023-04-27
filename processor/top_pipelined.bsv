@@ -52,6 +52,7 @@ module mktop_pipelined(Empty);
         let req <- rv_core.getDReq;
         dreq <= req;
         if (debug) $display("Get DReq", fshow(req));
+        $display("DATA ",fshow(CacheReq{write: req.byte_en, addr: req.addr, data: req.data}));
         cache.sendReqData(CacheReq{write: req.byte_en, addr: req.addr, data: req.data});
 
         // bram.portA.request.put(BRAMRequestBE{

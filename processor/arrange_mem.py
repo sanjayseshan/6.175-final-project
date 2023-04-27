@@ -21,9 +21,8 @@ Strategy:
     - for @line directives, we divide by 0x10
 """
 def to_string(list_of_words):
-    # list_of_words.reverse()
-    output = "".join(list_of_words)
-    # .lstrip("0")
+    list_of_words.reverse()
+    output = "".join(list_of_words).lstrip("0")
 
     if not output:
         output = "0"

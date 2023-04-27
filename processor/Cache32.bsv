@@ -32,7 +32,7 @@ typedef struct {
 function CacheReqWorking extract_bits(CacheLineAddr addr, CacheReq e);
   let tag = addr[31:13];
   IndexAddr index = addr[12:6];
-  let offset = addr[5:2];
+  let offset = 15-addr[5:2];
   return CacheReqWorking{tag:tag,idx:index,offset:offset,memReq:e};
 endfunction
 

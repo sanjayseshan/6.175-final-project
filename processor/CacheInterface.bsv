@@ -24,23 +24,23 @@ module mkCacheInterface(CacheInterface);
     Cache32 cache3 <- mkCache32;
     Cache cache4 <- mkCache;
     
-    rule connectCacheL1L2Data;
-        let lineReq <- cache.getToMem();
-        cache2.putFromProc(lineReq);
-    endrule
-    rule connectL2L1CacheData;
-        let resp <- cache2.getToProc();
-        cache.putFromMem(resp);
-    endrule
+    // rule connectCacheL1L2Data;
+    //     let lineReq <- cache.getToMem();
+    //     cache2.putFromProc(lineReq);
+    // endrule
+    // rule connectL2L1CacheData;
+    //     let resp <- cache2.getToProc();
+    //     cache.putFromMem(resp);
+    // endrule
 
     rule connectCacheDramData;
-        let lineReq <- cache2.getToMem();
+        let lineReq <- cache.getToMem();
         mainMem.put1(lineReq);
     endrule
 
     rule connectDramCacheData;
         let resp <- mainMem.get1;
-        cache2.putFromMem(resp);
+        cache.putFromMem(resp);
     endrule
 
 
@@ -80,6 +80,7 @@ module mkCacheInterface(CacheInterface);
 
     method Action sendReqData(CacheReq req);
         cache.putFromProc(req);
+        if (req.write != 0) respD.enq(0);
     endmethod
 
     method ActionValue#(Word) getRespData() if (respD.notEmpty());

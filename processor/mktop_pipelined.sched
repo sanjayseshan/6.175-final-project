@@ -427,7 +427,7 @@ Predicate: ((! cache_cache_memRespQ.notEmpty) ||
 	    ((cache_cache_bram_serverAdapter_cnt .< 3'd3) &&
 	     cache_cache_memRespQ.i_notEmpty)) &&
 	   (cache_cache_mshr == 2'd3) && (cache_cache_working[71:68] == 4'd1)
-Blocking rules: cache_connectL2L1CacheData
+Blocking rules: cache_connectDramCacheData
  
 Rule: cache_cache2_bram_serverAdapter_outData_enqueue
 Predicate: cache_cache2_bram_serverAdapter_outData_enqw.whas &&
@@ -506,7 +506,7 @@ Predicate: cache_cache2_stb.i_notEmpty &&
 		cache_cache2_working_line[530:512])) ||
 	    (cache_cache2_bram_serverAdapter_cnt .< 3'd3)) &&
 	   (cache_cache2_mshr == 2'd0) && (! cache_cache2_lockL1)
-Blocking rules: cache_connectCacheL1L2Data
+Blocking rules: (none)
  
 Rule: cache_cache2_startMiss
 Predicate: ((! (cache_cache2_working_line[532:531] == 2'd2)) ||
@@ -749,26 +749,15 @@ Predicate: (cache_cache4_bram_serverAdapter_cnt .< 3'd3) &&
 	   (cache_cache4_mshr == 2'd3) && cache_cache4_working[538]
 Blocking rules: (none)
  
-Rule: cache_connectCacheL1L2Data
-Predicate: (! cache_cache2_working_v) && (cache_cache2_mshr == 2'd0) &&
-	   (cache_cache2_bram_serverAdapter_cnt .< 3'd3) &&
-	   cache_cache_memReqQ.i_notEmpty
-Blocking rules: (none)
- 
-Rule: cache_connectL2L1CacheData
-Predicate: (! cache_cache_start_fill) &&
-	   cache_cache2_hitQ.i_notEmpty && cache_cache_memRespQ.i_notFull
-Blocking rules: (none)
- 
 Rule: cache_connectCacheDramData
-Predicate: cache_cache2_memReqQ.i_notEmpty &&
+Predicate: cache_cache_memReqQ.i_notEmpty &&
 	   (cache_mainMem_bram_serverAdapterA_cnt .< 3'd3)
 Blocking rules: (none)
  
 Rule: cache_connectDramCacheData
-Predicate: (! cache_cache2_start_fill) &&
+Predicate: (! cache_cache_start_fill) &&
 	   cache_mainMem_dl1_d_19_rv.port0__read[512] &&
-	   cache_cache2_memRespQ.i_notFull
+	   cache_cache_memRespQ.i_notFull
 Blocking rules: (none)
  
 Rule: cache_connectCacheL1L2Instr
@@ -801,7 +790,7 @@ Blocking rules: (none)
 Rule: cache_respsD
 Predicate: cache_cache_hitQ.notEmpty &&
 	   cache_cache_hitQ.i_notEmpty && cache_respD.i_notFull
-Blocking rules: (none)
+Blocking rules: requestD
  
 Rule: tic
 Predicate: True
@@ -820,7 +809,9 @@ Blocking rules: (none)
  
 Rule: requestD
 Predicate: (! cache_cache_working_v) && (cache_cache_mshr == 2'd0) &&
-	   rv_core.RDY_getDReq && (cache_cache_bram_serverAdapter_cnt .< 3'd3)
+	   rv_core.RDY_getDReq &&
+	   (cache_cache_bram_serverAdapter_cnt .< 3'd3) &&
+	   cache_respD.i_notFull
 Blocking rules: (none)
  
 Rule: responseD
@@ -857,8 +848,6 @@ Logical execution order: tic,
 			 bram_serverAdapterB_outData_dequeue,
 			 bram_serverAdapterB_cnt_finalAdd,
 			 bram_serverAdapterB_s1__dreg_update,
-			 cache_connectCacheL1L2Data,
-			 cache_connectL2L1CacheData,
 			 cache_connectCacheDramData,
 			 cache_connectDramCacheData,
 			 cache_connectCacheL1L2Instr,

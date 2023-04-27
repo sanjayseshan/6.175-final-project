@@ -55,13 +55,13 @@ module mkMainMem(MainMem);
     rule deq1;
         let r <- bram.portA.response.get();
         dl1.put(r);
-        // $display("GOT FROM MM TO DL ",fshow(r));
+        $display("GOT FROM MM TO DL1 ",fshow(r));
     endrule    
 
     rule deq2;
         let r <- bram.portB.response.get();
         dl2.put(r);
-        // $display("GOT FROM MM TO DL ",fshow(r));
+        $display("GOT FROM MM TO DL2 ",fshow(r));
     endrule    
 
     method Action put1(MainMemReq req);
@@ -70,12 +70,12 @@ module mkMainMem(MainMem);
                     responseOnWrite: False,
                     address: req.addr,
                     datain: req.data});
-        // $display("SENT TO MM WITH ",fshow(req));
+        $display("SENT TO MM1 WITH ",fshow(req));
     endmethod
 
     method ActionValue#(MainMemResp) get1();
         let r <- dl1.get();
-        // $display("GOT FROM DL TO CACHE ",fshow(r));
+        $display("GOT FROM DL1 TO CACHE ",fshow(r));
         return r;
     endmethod
 
@@ -85,12 +85,12 @@ module mkMainMem(MainMem);
                     responseOnWrite: False,
                     address: req.addr,
                     datain: req.data});
-        $display("SENT TO MM WITH ",fshow(req));
+        $display("SENT TO MM2 WITH ",fshow(req));
     endmethod
 
     method ActionValue#(MainMemResp) get2();
         let r <- dl2.get();
-        // $display("GOT FROM DL TO CACHE ",fshow(r));
+        $display("GOT FROM DL2 TO CACHE ",fshow(r));
         return r;
     endmethod
 endmodule
