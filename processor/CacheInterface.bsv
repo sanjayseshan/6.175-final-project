@@ -5,9 +5,18 @@ import MainMem::*;
 import MemTypes::*;
 import Cache32::*;
 import Cache::*;
+import FIFOF::*;
 
 
-module mkCache_nested(Empty);
+interface CacheInterface;
+    method Action sendReqData(CacheReq req);
+    method ActionValue#(Word) getRespData();
+    method Action sendReqInstr(CacheReq req);
+    method ActionValue#(Word) getRespInstr();
+endinterface
+
+
+module mkCacheInterface(CacheInterface);
     let verbose = True;
     MainMem mainMem <- mkMainMem(); //Initialize both to 0
     Cache32 cache <- mkCache32;
@@ -42,6 +51,7 @@ module mkCache_nested(Empty);
     rule connectL2L1CacheInstr;
         let resp <- cache4.getToProc();
         cache3.putFromMem(resp);
+        $display("GOT INSTR ",fshow(resp));
     endrule
 
     rule connectCacheDramInstr;
@@ -54,15 +64,27 @@ module mkCache_nested(Empty);
         cache4.putFromMem(resp);
     endrule
 
+    FIFOF#(Word) respI <- mkFIFOF();
+    FIFOF#(Word) respD <- mkFIFOF();
+
+    rule respsI;
+        let rI <- cache3.getToProc();
+        respI.enq(rI);
+    endrule
+
+    rule respsD;
+        let rD <- cache.getToProc();
+        respD.enq(rD);
+    endrule
 
 
     method Action sendReqData(CacheReq req);
         cache.putFromProc(req);
     endmethod
 
-    method ActionValue(Word) getRespData();
-        let resp1 <- cache.getToProc();
-        return resp1;
+    method ActionValue#(Word) getRespData() if (respD.notEmpty());
+        respD.deq();
+        return respD.first;
     endmethod
 
 
@@ -70,8 +92,8 @@ module mkCache_nested(Empty);
         cache3.putFromProc(req);
     endmethod
 
-    method ActionValue(Word) getRespInstr();
-        let resp1 <- cache3.getToProc();
-        return resp1;
+    method ActionValue#(Word) getRespInstr() if (respI.notEmpty());
+        respI.deq();
+        return respI.first;
     endmethod
 endmodule

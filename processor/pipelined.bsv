@@ -137,11 +137,18 @@ module mkpipelined(RVIfc);
 
 	FIFO#(KonataId) retired <- mkFIFO;
 	FIFO#(KonataId) squashed <- mkFIFO;
-    Bool debug = False;
+    Bool debug = True;
 
     Reg#(Bit#(1)) epoch <- mkReg(0);
 
     
+    Reg#(Bit#(32)) cycle <- mkReg(0);
+
+    rule cycle_disp;
+        cycle <= cycle +1;
+        $display("CYCLE %d\n",cycle);
+    endrule
+
     Reg#(Bool) starting <- mkReg(True);
 	rule do_tic_logging;
         if (starting) begin

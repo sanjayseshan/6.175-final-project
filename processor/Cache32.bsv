@@ -78,7 +78,7 @@ module mkCache32(Cache32);
   Reg#(CacheReqWorking) working <- mkReg(unpack(0));
   Reg#(Bool) working_v <- mkReg(False);
 
-  FIFO#(Word) hitQ <- mkFIFO();
+  FIFOF#(Word) hitQ <- mkFIFOF();
   // Reg#(CacheReq) missReq <- mkReg(unpack(0));
   Reg#(Bit#(2)) mshr <- mkReg(0);
 
@@ -124,9 +124,32 @@ module mkCache32(Cache32);
         // missReq <= working.memReq;
         mshr <= 1;
       end
-    end else begin
+    end else if (working.memReq.write == 4'b1111) begin
       stb.enq(StbReq{addr:working.memReq.addr,data:working.memReq.data});
       lockL1 <= False;
+    end 
+    else begin
+      let data = out.data;
+      let bits = extract_bits(working.memReq.addr, ?);
+      let e = working.memReq;
+
+      if (bits.tag == out.tag) begin
+        if (working.memReq.write == 8) data[bits.offset][31:24] = e.data[31:24];
+        if (working.memReq.write == 4) data[bits.offset][23:16] = e.data[23:16];
+        if (working.memReq.write == 2) data[bits.offset][15:8] = e.data[15:8];
+        if (working.memReq.write == 1) data[bits.offset][7:0] = e.data[7:0];
+        if (working.memReq.write == 3) data[bits.offset][15:0] = e.data[15:0];
+        if (working.memReq.write == 12) data[bits.offset][31:16] = e.data[31:16];
+        bram.portA.request.put(BRAMRequest{write: True, // False for read
+                        responseOnWrite: False,
+                        address: working.idx,
+                        datain: CacheReqLine{valid:2,tag:bits.tag,data:data}}); // CHANGED DATA
+        working_v <= False;
+
+      end else begin
+        // missReq <= MainMemReq{write:1,addr:{e.tag,e.idx},data:data}; // CHANGED DATA
+        mshr <= 1;
+      end
     end
   endrule
 
@@ -172,7 +195,7 @@ module mkCache32(Cache32);
   rule startMiss(mshr==1);
     //$display("startMiss",mshr,fshow(working.memReq));
     if (working_line.valid == 2) begin
-      //$display("MISS DIRTY");
+      $display("MISS DIRTY");
       memReqQ.enq(MainMemReq{write:1, addr:{working_line.tag,working.idx},data:vecToLine(working_line.data)}); // original line
     end
     mshr <= 2;
@@ -181,7 +204,7 @@ module mkCache32(Cache32);
   rule sendFillReq(mshr == 2);
     //$display("sendFillReq");
 
-      //$display("MISS GET FROM MEM");
+      $display("MISS GET FROM MEM", fshow(working.memReq), fshow({working.tag,working.idx}));
       memReqQ.enq(MainMemReq{write:0, addr:{working.tag,working.idx}, data: ?});
       mshr <= 3;
   endrule
@@ -201,6 +224,8 @@ module mkCache32(Cache32);
                 responseOnWrite: False,
                 address: working.idx,
                 datain: CacheReqLine{valid:1,tag:working.tag,data:lineToWordVec(data)}});
+      $display("OFFSET ",fshow(working.offset),fshow(lineToWordVec(data)[working.offset]));
+
       hitQ.enq(lineToWordVec(data)[working.offset]); // CHANGED FROM data
       working_v <= False;
       mshr <= 0;
@@ -259,14 +284,14 @@ module mkCache32(Cache32);
     working_v <= True;
   endmethod
 
-  method ActionValue#(Word) getToProc();
+  method ActionValue#(Word) getToProc() if (hitQ.notEmpty());
     hitQ.deq();
     let r = hitQ.first;
     //$display("GTP ", fshow(r));
     return r;
   endmethod
 
-  method ActionValue#(MainMemReq) getToMem() ;
+  method ActionValue#(MainMemReq) getToMem();
     memReqQ.deq();
     let r = memReqQ.first;
     //$display("GTM ",fshow(r));

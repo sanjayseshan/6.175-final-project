@@ -2,13 +2,17 @@ import RVUtil::*;
 import BRAM::*;
 import pipelined::*;
 import FIFO::*;
-typedef Bit#(32) Word;
+import MemTypes::*;
+import CacheInterface::*;
+// typedef Bit#(32) Word;
 
 module mktop_pipelined(Empty);
     // Instantiate the dual ported memory
     BRAM_Configure cfg = defaultValue();
     cfg.loadFormat = tagged Hex "mem.vmh";
     BRAM2PortBE#(Bit#(30), Word, 4) bram <- mkBRAM2ServerBE(cfg);
+
+    CacheInterface cache <- mkCacheInterface();
 
     RVIfc rv_core <- mkpipelined;
     Reg#(Mem) ireq <- mkRegU;
@@ -25,34 +29,42 @@ module mktop_pipelined(Empty);
         let req <- rv_core.getIReq;
         if (debug) $display("Get IReq", fshow(req));
         ireq <= req;
-            bram.portB.request.put(BRAMRequestBE{
-                    writeen: req.byte_en,
-                    responseOnWrite: True,
-                    address: truncate(req.addr >> 2),
-                    datain: req.data});
+
+        cache.sendReqInstr(CacheReq{write: req.byte_en, addr: req.addr, data: req.data});
+
+            // bram.portB.request.put(BRAMRequestBE{
+            //         writeen: req.byte_en,
+            //         responseOnWrite: True,
+            //         address: truncate(req.addr >> 2),
+            //         datain: req.data});
     endrule
 
     rule responseI;
-        let x <- bram.portB.response.get();
+        let x <- cache.getRespInstr();
+        // let x <- bram.portB.response.get();
         let req = ireq;
         if (debug) $display("Get IResp ", fshow(req), fshow(x));
         req.data = x;
-            rv_core.getIResp(req);
+        rv_core.getIResp(req);
     endrule
 
     rule requestD;
         let req <- rv_core.getDReq;
         dreq <= req;
         if (debug) $display("Get DReq", fshow(req));
-        bram.portA.request.put(BRAMRequestBE{
-          writeen: req.byte_en,
-          responseOnWrite: True,
-          address: truncate(req.addr >> 2),
-          datain: req.data});
+        cache.sendReqData(CacheReq{write: req.byte_en, addr: req.addr, data: req.data});
+
+        // bram.portA.request.put(BRAMRequestBE{
+        //   writeen: req.byte_en,
+        //   responseOnWrite: True,
+        //   address: truncate(req.addr >> 2),
+        //   datain: req.data});
     endrule
 
     rule responseD;
-        let x <- bram.portA.response.get();
+        // let x <- bram.portA.response.get();
+        let x <- cache.getRespData();
+
         let req = dreq;
         if (debug) $display("Get IResp ", fshow(req), fshow(x));
         req.data = x;
