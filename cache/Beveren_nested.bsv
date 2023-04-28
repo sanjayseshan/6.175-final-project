@@ -59,7 +59,7 @@ module mkBeveren_nested(Empty);
        let newrand <- randomMem.next;
        deadlockChecker <= 0;
        CacheReq newreq = newrand;
-       newreq.addr = {0,newreq.addr[13:2],2'b0};
+       newreq.addr = {0,newreq.addr[5:2],2'b0};
        if ( newreq.write == 0) counterIn <= counterIn + 1;
        mainRef.put(newreq);
        cache.putFromProc(newreq);

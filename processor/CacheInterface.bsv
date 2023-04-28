@@ -80,11 +80,16 @@ module mkCacheInterface(CacheInterface);
 
     method Action sendReqData(CacheReq req);
         cache.putFromProc(req);
-        if (req.write != 0) respD.enq(0);
+        $display("REQUESTING DATA ", fshow(req));
+        if (req.write != 0) begin
+            respD.enq(0);
+        end
     endmethod
 
     method ActionValue#(Word) getRespData() if (respD.notEmpty());
         respD.deq();
+        $display("RETURNING DATA ",fshow(respD.first));
+
         return respD.first;
     endmethod
 
