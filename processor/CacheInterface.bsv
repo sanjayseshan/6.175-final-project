@@ -19,10 +19,12 @@ endinterface
 module mkCacheInterface(CacheInterface);
     let verbose = True;
     MainMem mainMem <- mkMainMem(); //Initialize both to 0
-    Cache32 cache <- mkCache32;
-    Cache cache2 <- mkCache;
-    Cache32 cache3 <- mkCache32;
-    Cache cache4 <- mkCache;
+    Cache32 cacheD <- mkCache32;
+    Cache cacheL2 <- mkCache;
+    Cache32 cacheI <- mkCache32;
+
+    FIFOF#(Bit#(1)) order_req <- mkFIFOF;
+    // Cache cache4 <- mkCache;
     
     // rule connectCacheL1L2Data;
     //     let lineReq <- cache.getToMem();
@@ -33,53 +35,63 @@ module mkCacheInterface(CacheInterface);
     //     cache.putFromMem(resp);
     // endrule
 
-    rule connectCacheDramData;
-        let lineReq <- cache.getToMem();
-        mainMem.put1(lineReq);
+    rule connectCacheDram;
+        let lineReq <- cacheL2.getToMem();
+        mainMem.put(lineReq);
     endrule
 
-    rule connectDramCacheData;
-        let resp <- mainMem.get1;
-        cache.putFromMem(resp);
+    // rule connectCacheDramInstr;
+    //     let lineReq <- cache4.getToMem();
+    //     mainMem.put2(lineReq);
+    // endrule
+
+    rule connectDramCache;
+        let resp <- mainMem.get;
+        cacheL2.putFromMem(resp);
+    endrule
+
+    rule connectL2L1Cache;
+        let resp <- cacheL2.getToProc();
+        if (order_req.first == 0) cacheD.putFromMem(resp);
+        else cacheI.putFromMem(resp);
+        order_req.deq();
+        $display("GOT INSTR ",fshow(resp));
     endrule
 
 
     rule connectCacheL1L2Instr;
-        let lineReq <- cache3.getToMem();
-        cache4.putFromProc(lineReq);
-    endrule
-    rule connectL2L1CacheInstr;
-        let resp <- cache4.getToProc();
-        cache3.putFromMem(resp);
-        $display("GOT INSTR ",fshow(resp));
+        let lineReq <- cacheI.getToMem();
+        cacheL2.putFromProc(lineReq);
+        order_req.enq(1);
     endrule
 
-    rule connectCacheDramInstr;
-        let lineReq <- cache4.getToMem();
-        mainMem.put2(lineReq);
+    rule connectCacheL1L2Data;
+        let lineReq <- cacheD.getToMem();
+        cacheL2.putFromProc(lineReq);
+        order_req.enq(0);
     endrule
 
-    rule connectDramCacheInstr;
-        let resp <- mainMem.get2;
-        cache4.putFromMem(resp);
-    endrule
+    // rule connectDramCacheInstr;
+    //     let resp <- mainMem.get2;
+    //     cache4.putFromMem(resp);
+    // endrule
 
     FIFOF#(Word) respI <- mkFIFOF();
     FIFOF#(Word) respD <- mkFIFOF();
 
     rule respsI;
-        let rI <- cache3.getToProc();
+        let rI <- cacheI.getToProc();
         respI.enq(rI);
     endrule
 
     rule respsD;
-        let rD <- cache.getToProc();
+        let rD <- cacheD.getToProc();
         respD.enq(rD);
     endrule
 
 
     method Action sendReqData(CacheReq req);
-        cache.putFromProc(req);
+        cacheD.putFromProc(req);
         $display("REQUESTING DATA ", fshow(req));
         if (req.write != 0) begin
             respD.enq(0);
@@ -95,7 +107,7 @@ module mkCacheInterface(CacheInterface);
 
 
     method Action sendReqInstr(CacheReq req);
-        cache3.putFromProc(req);
+        cacheI.putFromProc(req);
     endmethod
 
     method ActionValue#(Word) getRespInstr() if (respI.notEmpty());
