@@ -93,7 +93,7 @@ module mkCacheInterface(CacheInterface);
     method Action sendReqData(CacheReq req);
         cacheD.putFromProc(req);
         $display("REQUESTING DATA ", fshow(req));
-        if (req.write != 0) begin
+        if (req.word_byte != 0) begin
             respD.enq(0);
         end
     endmethod

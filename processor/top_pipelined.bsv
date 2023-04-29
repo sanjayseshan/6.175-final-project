@@ -30,7 +30,7 @@ module mktop_pipelined(Empty);
         if (debug) $display("Get IReq", fshow(req));
         ireq <= req;
 
-        cache.sendReqInstr(CacheReq{write: req.byte_en, addr: req.addr, data: req.data});
+        cache.sendReqInstr(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data});
 
             // bram.portB.request.put(BRAMRequestBE{
             //         writeen: req.byte_en,
@@ -52,8 +52,8 @@ module mktop_pipelined(Empty);
         let req <- rv_core.getDReq;
         dreq <= req;
         if (debug) $display("Get DReq", fshow(req));
-        $display("DATA ",fshow(CacheReq{write: req.byte_en, addr: req.addr, data: req.data}));
-        cache.sendReqData(CacheReq{write: req.byte_en, addr: req.addr, data: req.data});
+        $display("DATA ",fshow(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data}));
+        cache.sendReqData(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data});
 
         // bram.portA.request.put(BRAMRequestBE{
         //   writeen: req.byte_en,

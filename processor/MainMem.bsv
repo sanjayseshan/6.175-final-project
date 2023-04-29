@@ -7,10 +7,10 @@ import MemTypes::*;
 import Cache::*;
 
 interface MainMem;
-    method Action put1(MainMemReq req);
-    method ActionValue#(MainMemResp) get1();
-    method Action put2(MainMemReq req);
-    method ActionValue#(MainMemResp) get2();
+    method Action put(MainMemReq req);
+    method ActionValue#(MainMemResp) get();
+    // method Action put2(MainMemReq req);
+    // method ActionValue#(MainMemResp) get2();
 endinterface
 
 // interface MainMemFast;
