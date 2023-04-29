@@ -60,7 +60,7 @@ module mkBeveren_nested(Empty);
        deadlockChecker <= 0;
        CacheReq newreq = newrand;
        newreq.addr = {0,newreq.addr[5:2],2'b0};
-       if ( newreq.write == 0) counterIn <= counterIn + 1;
+       if ( newreq.byte_en == 0) counterIn <= counterIn + 1;
        mainRef.put(newreq);
        cache.putFromProc(newreq);
     endrule

@@ -13,34 +13,34 @@ interface MainMem;
     // method ActionValue#(MainMemResp) get2();
 endinterface
 
-// interface MainMemFast;
-//     method Action put(CacheReq req);
-//     method ActionValue#(Word) get();
-// endinterface
+interface MainMemFast;
+    method Action put(CacheReq req);
+    method ActionValue#(Word) get();
+endinterface
 
-// module mkMainMemFast(MainMemFast);
-//     BRAM_Configure cfg = defaultValue();
-//     BRAM1Port#(CacheLineAddr, Word) bram <- mkBRAM1Server(cfg);
-//     DelayLine#(20, Word) dl <- mkDL(); // Delay by 20 cycles
+module mkMainMemFast(MainMemFast);
+    BRAM_Configure cfg = defaultValue();
+    BRAM1PortBE#(CacheLineAddr, Word, 4) bram <- mkBRAM1ServerBE(cfg);
+    DelayLine#(10, Word) dl <- mkDL(); // Delay by 20 cycles
 
-//     rule deq;
-//         let r <- bram.portA.response.get();
-//         dl.put(r);
-//     endrule    
+    rule deq;
+        let r <- bram.portA.response.get();
+        dl.put(r);
+    endrule    
 
-//     method Action put(CacheReq req);
-//         bram.portA.request.put(BRAMRequest{
-//                     write: unpack(req.write),
-//                     responseOnWrite: False,
-//                     address: req.addr,
-//                     datain: req.data});
-//     endmethod
+    method Action put(CacheReq req);
+        bram.portA.request.put(BRAMRequestBE{
+                    writeen: req.word_byte,
+                    responseOnWrite: False,
+                    address: req.addr,
+                    datain: req.data});
+    endmethod
 
-//     method ActionValue#(Word) get();
-//         let r <- dl.get();
-//         return r;
-//     endmethod
-// endmodule
+    method ActionValue#(Word) get();
+        let r <- dl.get();
+        return r;
+    endmethod
+endmodule
 
 module mkMainMem(MainMem);
     BRAM_Configure cfg = defaultValue();
