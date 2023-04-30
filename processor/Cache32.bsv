@@ -286,8 +286,8 @@ module mkCache32(Cache32);
       // END OF ADDED SECTION
 
       data[working.offset] = working.memReq.data;
-      let en_bytes = 64'hffffffffffffffff;
-      en_bytes[(working.offset+1)*16:working.offset*16] = working.memReq.word_byte;
+      Bit#(64) en_bytes = 64'hffffffffffffffff;
+      en_bytes[(zeroExtend(working.offset)+1)*16:zeroExtend(working.offset)*16] = working.memReq.word_byte;
 
       //$display("WRITE MISS", fshow(working.memReq.data)); 
       bram1.portA.request.put(BRAMRequest{write: True, // False for read
