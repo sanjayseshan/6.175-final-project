@@ -55,7 +55,7 @@ module mkCacheInterface(CacheInterface);
         if (order_req.first == 0) cacheD.putFromMem(resp);
         else cacheI.putFromMem(resp);
         order_req.deq();
-        $display("GOT INSTR ",fshow(resp));
+        //$display("GOT INSTR ",fshow(resp));
     endrule
 
 
@@ -92,7 +92,7 @@ module mkCacheInterface(CacheInterface);
 
     method Action sendReqData(CacheReq req);
         cacheD.putFromProc(req);
-        $display("REQUESTING DATA ", fshow(req));
+        //$display("REQUESTING DATA ", fshow(req));
         if (req.word_byte != 0) begin
             respD.enq(0);
         end
@@ -100,7 +100,7 @@ module mkCacheInterface(CacheInterface);
 
     method ActionValue#(Word) getRespData() if (respD.notEmpty());
         respD.deq();
-        $display("RETURNING DATA ",fshow(respD.first));
+        //$display("RETURNING DATA ",fshow(respD.first));
 
         return respD.first;
     endmethod

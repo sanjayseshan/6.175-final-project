@@ -294,10 +294,6 @@ Rule: sb_rfile_sb_31_canonicalize
 Predicate: True
 Blocking rules: (none)
  
-Rule: cycle_disp
-Predicate: True
-Blocking rules: (none)
- 
 Rule: do_tic_logging
 Predicate: True
 Blocking rules: (none)
@@ -862,11 +858,11 @@ Predicate: d2e.i_notEmpty &&
 			       3'd3))
 			     ? {d2e.first[208:189], 12'b0}
 			     : ((d2e.first[212] &&
-				 ((d2e_first____d1254(...)[212]
-				   ? d2e_first____d1254(...)[211:209]
+				 ((d2e_first____d1149(...)[212]
+				   ? d2e_first____d1149(...)[211:209]
 				   : (_ :: Bit 3)) ==
 				  3'd4))
-				? sext {d2e.first[208], d2e.first[196:189], d2e_first____d1254(...)[197], d2e_first____d1254(...)[207:198], 1'b0}
+				? sext {d2e.first[208], d2e.first[196:189], d2e_first____d1149(...)[197], d2e_first____d1149(...)[207:198], 1'b0}
 				: 32'd0))))))[31:2] ==
 		  30'd1006649340) ||
 		 ((d2e.first[111:80] +
@@ -889,17 +885,17 @@ Predicate: d2e.i_notEmpty &&
 			    3'd2))
 			  ? sext {d2e.first[208], d2e.first[184], d2e.first[207:202], d2e.first[188:185], 1'b0}
 			  : ((d2e.first[212] &&
-			      ((d2e_first____d1254(...)[212]
-				? d2e_first____d1254(...)[211:209]
+			      ((d2e_first____d1149(...)[212]
+				? d2e_first____d1149(...)[211:209]
 				: (_ :: Bit 3)) ==
 			       3'd3))
 			     ? {d2e.first[208:189], 12'b0}
 			     : ((d2e.first[212] &&
-				 ((d2e_first__254_BIT_212___d1264(...)
-				   ? d2e_first__254_BITS_211_TO_209___d1265(...)
+				 ((d2e_first__149_BIT_212___d1159(...)
+				   ? d2e_first__149_BITS_211_TO_209___d1160(...)
 				   : (_ :: Bit 3)) ==
 				  3'd4))
-				? sext {d2e_first____d1254(...)[208], d2e_first____d1254(...)[196:189], d2e_first__254_BIT_197___d1293(...), d2e_first__254_BITS_207_TO_198___d1294(...), 1'b0}
+				? sext {d2e_first____d1149(...)[208], d2e_first____d1149(...)[196:189], d2e_first__149_BIT_197___d1188(...), d2e_first__149_BITS_207_TO_198___d1189(...), 1'b0}
 				: 32'd0))))))[31:2] ==
 		  30'd1006649341) ||
 		 ((d2e.first[111:80] +
@@ -922,17 +918,17 @@ Predicate: d2e.i_notEmpty &&
 			    3'd2))
 			  ? sext {d2e.first[208], d2e.first[184], d2e.first[207:202], d2e.first[188:185], 1'b0}
 			  : ((d2e.first[212] &&
-			      ((d2e_first____d1254(...)[212]
-				? d2e_first____d1254(...)[211:209]
+			      ((d2e_first____d1149(...)[212]
+				? d2e_first____d1149(...)[211:209]
 				: (_ :: Bit 3)) ==
 			       3'd3))
 			     ? {d2e.first[208:189], 12'b0}
 			     : ((d2e.first[212] &&
-				 ((d2e_first__254_BIT_212___d1264(...)
-				   ? d2e_first__254_BITS_211_TO_209___d1265(...)
+				 ((d2e_first__149_BIT_212___d1159(...)
+				   ? d2e_first__149_BITS_211_TO_209___d1160(...)
 				   : (_ :: Bit 3)) ==
 				  3'd4))
-				? sext {d2e_first____d1254(...)[208], d2e_first____d1254(...)[196:189], d2e_first__254_BIT_197___d1293(...), d2e_first__254_BITS_207_TO_198___d1294(...), 1'b0}
+				? sext {d2e_first____d1149(...)[208], d2e_first____d1149(...)[196:189], d2e_first__149_BIT_197___d1188(...), d2e_first__149_BITS_207_TO_198___d1189(...), 1'b0}
 				: 32'd0))))))[31:2] ==
 		  30'd1006649342))
 		? ! toMMIO_rv.port0__read[68]
@@ -986,21 +982,21 @@ Predicate: d2e.i_notEmpty &&
 				3'd1))
 			      ? sext {d2e.first[208:202], d2e.first[188:184]}
 			      : ((d2e.first[212] &&
-				  ((d2e_first____d1254(...)[212]
-				    ? d2e_first____d1254(...)[211:209]
+				  ((d2e_first____d1149(...)[212]
+				    ? d2e_first____d1149(...)[211:209]
 				    : (_ :: Bit 3)) ==
 				   3'd2))
-				 ? sext {d2e.first[208], d2e.first[184], d2e_first____d1254(...)[207:202], d2e_first____d1254(...)[188:185], 1'b0}
+				 ? sext {d2e.first[208], d2e.first[184], d2e_first____d1149(...)[207:202], d2e_first____d1149(...)[188:185], 1'b0}
 				 : ((d2e.first[212] &&
-				     ((d2e_first__254_BIT_212___d1264(...)
-				       ? d2e_first__254_BITS_211_TO_209___d1265(...)
+				     ((d2e_first__149_BIT_212___d1159(...)
+				       ? d2e_first__149_BITS_211_TO_209___d1160(...)
 				       : (_ :: Bit 3)) ==
 				      3'd3))
 				    ? {d2e.first[208:189], 12'b0}
-				    : ((d2e_first____d1254(...)[212] &&
-					(IF_d2e_first__254_BIT_212_264_THEN_d2e_first___ETC___d1266(...) ==
+				    : ((d2e_first____d1149(...)[212] &&
+					(IF_d2e_first__149_BIT_212_159_THEN_d2e_first___ETC___d1161(...) ==
 					 3'd4))
-				       ? sext {d2e_first__254_BIT_208___d1279(...), d2e_first__254_BITS_196_TO_189___d1292(...), d2e_first__254_BIT_197_293_CONCAT_d2e_first__2_ETC___d1295(...), 1'b0}
+				       ? sext {d2e_first__149_BIT_208___d1174(...), d2e_first__149_BITS_196_TO_189___d1187(...), d2e_first__149_BIT_197_188_CONCAT_d2e_first__1_ETC___d1190(...), 1'b0}
 				       : 32'd0))))))[31:1], 1'd0}
 		      : (((d2e.first[191:189] == 3'b0)
 			  ? d2e.first[111:80] == d2e.first[79:48]
@@ -1034,17 +1030,17 @@ Predicate: d2e.i_notEmpty &&
 				    3'd2))
 				  ? sext {d2e.first[208], d2e.first[184], d2e.first[207:202], d2e.first[188:185], 1'b0}
 				  : ((d2e.first[212] &&
-				      ((d2e_first____d1254(...)[212]
-					? d2e_first____d1254(...)[211:209]
+				      ((d2e_first____d1149(...)[212]
+					? d2e_first____d1149(...)[211:209]
 					: (_ :: Bit 3)) ==
 				       3'd3))
 				     ? {d2e.first[208:189], 12'b0}
 				     : ((d2e.first[212] &&
-					 ((d2e_first__254_BIT_212___d1264(...)
-					   ? d2e_first__254_BITS_211_TO_209___d1265(...)
+					 ((d2e_first__149_BIT_212___d1159(...)
+					   ? d2e_first__149_BITS_211_TO_209___d1160(...)
 					   : (_ :: Bit 3)) ==
 					  3'd4))
-					? sext {d2e_first____d1254(...)[208], d2e_first____d1254(...)[196:189], d2e_first__254_BIT_197___d1293(...), d2e_first__254_BITS_207_TO_198___d1294(...), 1'b0}
+					? sext {d2e_first____d1149(...)[208], d2e_first____d1149(...)[196:189], d2e_first__149_BIT_197___d1188(...), d2e_first__149_BITS_207_TO_198___d1189(...), 1'b0}
 					: 32'd0)))))
 			 : (d2e.first[176:145] + 32'd4)))
 		 : (d2e.first[176:145] + 32'd4)) ==
@@ -1062,53 +1058,447 @@ Predicate: e2w.i_notEmpty &&
 	     ? fromMMIO_rv.port1__read[68]
 	     : fromDmem_rv.port1__read[68])) &&
 	   ((! e2w.first[84]) ||
-	    ((e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
-	      (((e2w.first[157:155] == 3'b0) ||
-		(e2w.first[157:155] == 3'b1) ||
-		(e2w.first[157:155] == 3'b100) ||
-		(e2w.first[157:155] == 3'b101))
-	       ? (e2w.i_notEmpty && e2w.first[152])
-		 ? fromMMIO_rv.port1__read[68]
-		 : fromDmem_rv.port1__read[68]
-	       : ((! (e2w.first[157:155] == 3'b10)) ||
-		  ((e2w.i_notEmpty && e2w.first[152])
-		   ? fromMMIO_rv.port1__read[68]
-		   : fromDmem_rv.port1__read[68])))) &&
-	     ((e2w.first[59:55] == 5'd0) ||
-	      case e2w.first[59:55] of
-	      5'd0 -> 1'd1
-	      5'd1 -> 1'd1
-	      5'd2 -> 1'd1
-	      5'd3 -> 1'd1
-	      5'd4 -> 1'd1
-	      5'd5 -> 1'd1
-	      5'd6 -> 1'd1
-	      5'd7 -> 1'd1
-	      5'd8 -> 1'd1
-	      5'd9 -> 1'd1
-	      5'd10 -> 1'd1
-	      5'd11 -> 1'd1
-	      5'd12 -> 1'd1
-	      5'd13 -> 1'd1
-	      5'd14 -> 1'd1
-	      5'd15 -> 1'd1
-	      5'd16 -> 1'd1
-	      5'd17 -> 1'd1
-	      5'd18 -> 1'd1
-	      5'd19 -> 1'd1
-	      5'd20 -> 1'd1
-	      5'd21 -> 1'd1
-	      5'd22 -> 1'd1
-	      5'd23 -> 1'd1
-	      5'd24 -> 1'd1
-	      5'd25 -> 1'd1
-	      5'd26 -> 1'd1
-	      5'd27 -> 1'd1
-	      5'd28 -> 1'd1
-	      5'd29 -> 1'd1
-	      5'd30 -> 1'd1
-	      5'd31 -> 1'd1
-	      _ -> 1'd1))) &&
+	    (e2w.first[59:55] == 5'd0) ||
+	    case e2w.first[59:55] of
+	    5'd0 -> (! rf_rfile_0_readBeforeLaterWrites_0.read) ||
+		    1'd0 || e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		    (((e2w.first[157:155] == 3'b0) ||
+		      (e2w.first[157:155] == 3'b1) ||
+		      (e2w.first[157:155] == 3'b100) ||
+		      (e2w.first[157:155] == 3'b101))
+		     ? (e2w.i_notEmpty && e2w.first[152])
+		       ? fromMMIO_rv.port1__read[68]
+		       : fromDmem_rv.port1__read[68]
+		     : ((! (e2w.first[157:155] == 3'b10)) ||
+			((e2w.i_notEmpty && e2w.first[152])
+			 ? fromMMIO_rv.port1__read[68]
+			 : fromDmem_rv.port1__read[68])))
+	    5'd1 -> (! rf_rfile_1_readBeforeLaterWrites_0.read) ||
+		    1'd0 || e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		    (((e2w.first[157:155] == 3'b0) ||
+		      (e2w.first[157:155] == 3'b1) ||
+		      (e2w.first[157:155] == 3'b100) ||
+		      (e2w.first[157:155] == 3'b101))
+		     ? (e2w.i_notEmpty && e2w.first[152])
+		       ? fromMMIO_rv.port1__read[68]
+		       : fromDmem_rv.port1__read[68]
+		     : ((! (e2w.first[157:155] == 3'b10)) ||
+			((e2w.i_notEmpty && e2w.first[152])
+			 ? fromMMIO_rv.port1__read[68]
+			 : fromDmem_rv.port1__read[68])))
+	    5'd2 -> (! rf_rfile_2_readBeforeLaterWrites_0.read) ||
+		    1'd0 || e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		    (((e2w.first[157:155] == 3'b0) ||
+		      (e2w.first[157:155] == 3'b1) ||
+		      (e2w.first[157:155] == 3'b100) ||
+		      (e2w.first[157:155] == 3'b101))
+		     ? (e2w.i_notEmpty && e2w.first[152])
+		       ? fromMMIO_rv.port1__read[68]
+		       : fromDmem_rv.port1__read[68]
+		     : ((! (e2w.first[157:155] == 3'b10)) ||
+			((e2w.i_notEmpty && e2w.first[152])
+			 ? fromMMIO_rv.port1__read[68]
+			 : fromDmem_rv.port1__read[68])))
+	    5'd3 -> (! rf_rfile_3_readBeforeLaterWrites_0.read) ||
+		    1'd0 || e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		    (((e2w.first[157:155] == 3'b0) ||
+		      (e2w.first[157:155] == 3'b1) ||
+		      (e2w.first[157:155] == 3'b100) ||
+		      (e2w.first[157:155] == 3'b101))
+		     ? (e2w.i_notEmpty && e2w.first[152])
+		       ? fromMMIO_rv.port1__read[68]
+		       : fromDmem_rv.port1__read[68]
+		     : ((! (e2w.first[157:155] == 3'b10)) ||
+			((e2w.i_notEmpty && e2w.first[152])
+			 ? fromMMIO_rv.port1__read[68]
+			 : fromDmem_rv.port1__read[68])))
+	    5'd4 -> (! rf_rfile_4_readBeforeLaterWrites_0.read) ||
+		    1'd0 || e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		    (((e2w.first[157:155] == 3'b0) ||
+		      (e2w.first[157:155] == 3'b1) ||
+		      (e2w.first[157:155] == 3'b100) ||
+		      (e2w.first[157:155] == 3'b101))
+		     ? (e2w.i_notEmpty && e2w.first[152])
+		       ? fromMMIO_rv.port1__read[68]
+		       : fromDmem_rv.port1__read[68]
+		     : ((! (e2w.first[157:155] == 3'b10)) ||
+			((e2w.i_notEmpty && e2w.first[152])
+			 ? fromMMIO_rv.port1__read[68]
+			 : fromDmem_rv.port1__read[68])))
+	    5'd5 -> (! rf_rfile_5_readBeforeLaterWrites_0.read) ||
+		    1'd0 || e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		    (((e2w.first[157:155] == 3'b0) ||
+		      (e2w.first[157:155] == 3'b1) ||
+		      (e2w.first[157:155] == 3'b100) ||
+		      (e2w.first[157:155] == 3'b101))
+		     ? (e2w.i_notEmpty && e2w.first[152])
+		       ? fromMMIO_rv.port1__read[68]
+		       : fromDmem_rv.port1__read[68]
+		     : ((! (e2w.first[157:155] == 3'b10)) ||
+			((e2w.i_notEmpty && e2w.first[152])
+			 ? fromMMIO_rv.port1__read[68]
+			 : fromDmem_rv.port1__read[68])))
+	    5'd6 -> (! rf_rfile_6_readBeforeLaterWrites_0.read) ||
+		    1'd0 || e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		    (((e2w.first[157:155] == 3'b0) ||
+		      (e2w.first[157:155] == 3'b1) ||
+		      (e2w.first[157:155] == 3'b100) ||
+		      (e2w.first[157:155] == 3'b101))
+		     ? (e2w.i_notEmpty && e2w.first[152])
+		       ? fromMMIO_rv.port1__read[68]
+		       : fromDmem_rv.port1__read[68]
+		     : ((! (e2w.first[157:155] == 3'b10)) ||
+			((e2w.i_notEmpty && e2w.first[152])
+			 ? fromMMIO_rv.port1__read[68]
+			 : fromDmem_rv.port1__read[68])))
+	    5'd7 -> (! rf_rfile_7_readBeforeLaterWrites_0.read) ||
+		    1'd0 || e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		    (((e2w.first[157:155] == 3'b0) ||
+		      (e2w.first[157:155] == 3'b1) ||
+		      (e2w.first[157:155] == 3'b100) ||
+		      (e2w.first[157:155] == 3'b101))
+		     ? (e2w.i_notEmpty && e2w.first[152])
+		       ? fromMMIO_rv.port1__read[68]
+		       : fromDmem_rv.port1__read[68]
+		     : ((! (e2w.first[157:155] == 3'b10)) ||
+			((e2w.i_notEmpty && e2w.first[152])
+			 ? fromMMIO_rv.port1__read[68]
+			 : fromDmem_rv.port1__read[68])))
+	    5'd8 -> (! rf_rfile_8_readBeforeLaterWrites_0.read) ||
+		    1'd0 || e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		    (((e2w.first[157:155] == 3'b0) ||
+		      (e2w.first[157:155] == 3'b1) ||
+		      (e2w.first[157:155] == 3'b100) ||
+		      (e2w.first[157:155] == 3'b101))
+		     ? (e2w.i_notEmpty && e2w.first[152])
+		       ? fromMMIO_rv.port1__read[68]
+		       : fromDmem_rv.port1__read[68]
+		     : ((! (e2w.first[157:155] == 3'b10)) ||
+			((e2w.i_notEmpty && e2w.first[152])
+			 ? fromMMIO_rv.port1__read[68]
+			 : fromDmem_rv.port1__read[68])))
+	    5'd9 -> (! rf_rfile_9_readBeforeLaterWrites_0.read) ||
+		    1'd0 || e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		    (((e2w.first[157:155] == 3'b0) ||
+		      (e2w.first[157:155] == 3'b1) ||
+		      (e2w.first[157:155] == 3'b100) ||
+		      (e2w.first[157:155] == 3'b101))
+		     ? (e2w.i_notEmpty && e2w.first[152])
+		       ? fromMMIO_rv.port1__read[68]
+		       : fromDmem_rv.port1__read[68]
+		     : ((! (e2w.first[157:155] == 3'b10)) ||
+			((e2w.i_notEmpty && e2w.first[152])
+			 ? fromMMIO_rv.port1__read[68]
+			 : fromDmem_rv.port1__read[68])))
+	    5'd10 -> (! rf_rfile_10_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd11 -> (! rf_rfile_11_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd12 -> (! rf_rfile_12_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd13 -> (! rf_rfile_13_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd14 -> (! rf_rfile_14_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd15 -> (! rf_rfile_15_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd16 -> (! rf_rfile_16_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd17 -> (! rf_rfile_17_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd18 -> (! rf_rfile_18_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd19 -> (! rf_rfile_19_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd20 -> (! rf_rfile_20_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd21 -> (! rf_rfile_21_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd22 -> (! rf_rfile_22_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd23 -> (! rf_rfile_23_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd24 -> (! rf_rfile_24_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd25 -> (! rf_rfile_25_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd26 -> (! rf_rfile_26_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd27 -> (! rf_rfile_27_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd28 -> (! rf_rfile_28_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd29 -> (! rf_rfile_29_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd30 -> (! rf_rfile_30_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    5'd31 -> (! rf_rfile_31_readBeforeLaterWrites_0.read) ||
+		     1'd0 ||
+		     e2w.first[54] || (! (e2w.first[52:51] == 2'b0)) ||
+		     (((e2w.first[157:155] == 3'b0) ||
+		       (e2w.first[157:155] == 3'b1) ||
+		       (e2w.first[157:155] == 3'b100) ||
+		       (e2w.first[157:155] == 3'b101))
+		      ? (e2w.i_notEmpty && e2w.first[152])
+			? fromMMIO_rv.port1__read[68]
+			: fromDmem_rv.port1__read[68]
+		      : ((! (e2w.first[157:155] == 3'b10)) ||
+			 ((e2w.i_notEmpty && e2w.first[152])
+			  ? fromMMIO_rv.port1__read[68]
+			  : fromDmem_rv.port1__read[68])))
+	    _ -> 1'd1) &&
 	   (! starting)
 Blocking rules: (none)
  
@@ -1123,7 +1513,6 @@ Blocking rules: (none)
 Logical execution order: getIResp,
 			 getDResp,
 			 getMMIOResp,
-			 cycle_disp,
 			 fetch,
 			 getIReq,
 			 writeback,

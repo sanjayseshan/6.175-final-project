@@ -20,6 +20,7 @@ endinterface
 
 module mkMainMemFast(MainMemFast);
     BRAM_Configure cfg = defaultValue();
+    cfg.loadFormat = tagged Hex "mem.vmh";
     BRAM1PortBE#(CacheLineAddr, Word, 4) bram <- mkBRAM1ServerBE(cfg);
     DelayLine#(10, Word) dl <- mkDL(); // Delay by 20 cycles
 
@@ -44,7 +45,7 @@ endmodule
 
 module mkMainMem(MainMem);
     BRAM_Configure cfg = defaultValue();
-    // cfg.loadFormat = tagged Hex "memlines.vmh";
+    cfg.loadFormat = tagged Hex "memlines.vmh";
     BRAM1Port#(LineAddr, MainMemResp) bram <- mkBRAM1Server(cfg);
 
     // BRAM_Configure cfg = defaultValue();
@@ -55,13 +56,13 @@ module mkMainMem(MainMem);
     rule deq;
         let r <- bram.portA.response.get();
         dl.put(r);
-        $display("GOT FROM MM TO DL1 ",fshow(r));
+        //$display("GOT FROM MM TO DL1 ",fshow(r));
     endrule    
 
     // rule deq2;
     //     let r <- bram.portB.response.get();
     //     dl2.put(r);
-    //     $display("GOT FROM MM TO DL2 ",fshow(r));
+    //     //$display("GOT FROM MM TO DL2 ",fshow(r));
     // endrule    
 
     method Action put(MainMemReq req);
@@ -70,12 +71,12 @@ module mkMainMem(MainMem);
                     responseOnWrite: False,
                     address: req.addr,
                     datain: req.data});
-        $display("SENT TO MM1 WITH ",fshow(req));
+        //$display("SENT TO MM1 WITH ",fshow(req));
     endmethod
 
     method ActionValue#(MainMemResp) get();
         let r <- dl.get();
-        $display("GOT FROM DL1 TO CACHE ",fshow(r));
+        //$display("GOT FROM DL1 TO CACHE ",fshow(r));
         return r;
     endmethod
 
@@ -85,12 +86,12 @@ module mkMainMem(MainMem);
     //                 responseOnWrite: False,
     //                 address: req.addr,
     //                 datain: req.data});
-    //     $display("SENT TO MM2 WITH ",fshow(req));
+    //     //$display("SENT TO MM2 WITH ",fshow(req));
     // endmethod
 
     // method ActionValue#(MainMemResp) get2();
     //     let r <- dl2.get();
-    //     $display("GOT FROM DL2 TO CACHE ",fshow(r));
+    //     //$display("GOT FROM DL2 TO CACHE ",fshow(r));
     //     return r;
     // endmethod
 endmodule

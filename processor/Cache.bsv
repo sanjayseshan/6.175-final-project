@@ -6,11 +6,11 @@ import MemTypes::*;
 import Ehr::*;
 // import SearchFIFO::*;
 
-typedef Bit#(7) IndexAddr;
+typedef Bit#(8) IndexAddr;
 
 
 typedef struct { 
-  Bit#(19) tag; 
+  Bit#(18) tag; 
   IndexAddr idx; 
   MainMemReq memReq;
   // Bit#(4) offset; 
@@ -19,7 +19,7 @@ typedef struct {
 
 typedef struct { 
   Bit#(2) valid;
-  Bit#(19) tag;
+  Bit#(18) tag;
   Bit#(512) data;
 } CacheReq512Line deriving (Eq, Bits);
 
@@ -29,9 +29,9 @@ typedef struct {
 } StbReq deriving (Eq, Bits);
 
 function CacheReq512 extract_bits(LineAddr addr, MainMemReq e);
-  let tag = addr[25:7];
+  let tag = addr[25:8];
   // let offset = addr[3:0];
-  IndexAddr index = addr[6:0];
+  IndexAddr index = addr[7:0];
   return CacheReq512{tag:tag,idx:index,memReq:e};
 endfunction
 
