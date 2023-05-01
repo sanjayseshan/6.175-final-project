@@ -44,7 +44,7 @@ endmodule
 
 module mkMainMem(MainMem);
     BRAM_Configure cfg = defaultValue();
-    cfg.loadFormat = tagged Hex "memlines.vmh";
+    // cfg.loadFormat = tagged Hex "memlines.vmh";
     BRAM1Port#(LineAddr, MainMemResp) bram <- mkBRAM1Server(cfg);
 
     // BRAM_Configure cfg = defaultValue();

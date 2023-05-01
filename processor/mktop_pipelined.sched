@@ -304,16 +304,14 @@ Predicate: cache_cacheD_bram1_serverAdapter_outData_beforeDeq.read &&
 		       : (_ :: Bit 2))) ==
 		   2'd0) ||
 		  cache_cacheD_hitQ.i_notFull))
-	    : ((cache_cacheD_working[71:68] == 4'b1111)
-	       ? cache_cacheD_stb.i_notFull
-	       : ((! (cache_cacheD_working[67:49] ==
-		      (cache_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
-		       ? cache_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
-		       : (cache_cacheD_bram1_serverAdapter_outData_enqw.whas
-			  ? cache_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
-			  : (_ :: Bit 19))))) ||
-		  ((cache_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
-		   (cache_cacheD_bram1_serverAdapter_cnt .< 3'd3))))) &&
+	    : ((! (cache_cacheD_working[67:49] ==
+		   (cache_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
+		    ? cache_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
+		    : (cache_cacheD_bram1_serverAdapter_outData_enqw.whas
+		       ? cache_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
+		       : (_ :: Bit 19))))) ||
+	       ((cache_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
+		(cache_cacheD_bram1_serverAdapter_cnt .< 3'd3)))) &&
 	   cache_cacheD_working_v && (cache_cacheD_mshr == 2'd0) &&
 	   cache_cacheD_lockL1
 Blocking rules: (none)
@@ -566,16 +564,14 @@ Predicate: cache_cacheI_bram1_serverAdapter_outData_beforeDeq.read &&
 		       : (_ :: Bit 2))) ==
 		   2'd0) ||
 		  cache_cacheI_hitQ.i_notFull))
-	    : ((cache_cacheI_working[71:68] == 4'b1111)
-	       ? cache_cacheI_stb.i_notFull
-	       : ((! (cache_cacheI_working[67:49] ==
-		      (cache_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
-		       ? cache_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
-		       : (cache_cacheI_bram1_serverAdapter_outData_enqw.whas
-			  ? cache_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
-			  : (_ :: Bit 19))))) ||
-		  ((cache_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
-		   (cache_cacheI_bram1_serverAdapter_cnt .< 3'd3))))) &&
+	    : ((! (cache_cacheI_working[67:49] ==
+		   (cache_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
+		    ? cache_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
+		    : (cache_cacheI_bram1_serverAdapter_outData_enqw.whas
+		       ? cache_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
+		       : (_ :: Bit 19))))) ||
+	       ((cache_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
+		(cache_cacheI_bram1_serverAdapter_cnt .< 3'd3)))) &&
 	   cache_cacheI_working_v && (cache_cacheI_mshr == 2'd0) &&
 	   cache_cacheI_lockL1
 Blocking rules: (none)
