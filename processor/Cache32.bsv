@@ -201,7 +201,7 @@ module mkCache32(Cache32);
       // stb_en_byte[(zeroExtend(working.offset)+1)*4-1:zeroExtend(working.offset)*4] = zeroExtend(working.memReq.word_byte);
 
       Bit#(6) offset = {0, working.offset};
-      bram2.portA.request.put(BRAMRequestBE{writeen: 64'h000000000000000f << 4*offset, // False for read // (zeroExtend(working.memReq.word_byte) << working.offset)
+      bram2.portA.request.put(BRAMRequestBE{writeen: zeroExtend(working.memReq.word_byte) << 4*offset, // False for read // (zeroExtend(working.memReq.word_byte) << working.offset)
                       responseOnWrite: False,
                       address: working.idx,
                       datain: d_vec}); // CHANGED DATA
