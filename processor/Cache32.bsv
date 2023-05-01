@@ -108,7 +108,7 @@ module mkCache32(Cache32);
   endrule
 
   rule req_process (working_v && mshr == 0 && lockL1);
-    $display("req_process");
+    // $display("req_process");
 
 
     let out <- bram1.portA.response.get();
@@ -132,11 +132,10 @@ module mkCache32(Cache32);
         // missReq <= working.memReq;
         mshr <= 1;
       end
+    end else if (working.memReq.word_byte == 4'b1111) begin
+      stb.enq(StbReq{addr:working.memReq.addr,data:working.memReq.data, byte_en: working.memReq.word_byte});
+      lockL1 <= False;
     end 
-    // else if (working.memReq.word_byte == 4'b1111) begin
-    //   stb.enq(StbReq{addr:working.memReq.addr,data:working.memReq.data, byte_en: working.memReq.word_byte});
-    //   lockL1 <= False;
-    // end 
     else begin
       // let data = out.data;
       // $display("WORD BYTE NOT 0 OR 1111");
@@ -174,7 +173,7 @@ module mkCache32(Cache32);
   endrule
 
   rule mvStbToL1 (mshr == 0 && !lockL1);
-    $display("mvStbToL1");
+    // $display("mvStbToL1");
     let e = stb.first;
     let bits = extract_bits(e.addr, ?);
     stb.deq();
@@ -196,9 +195,13 @@ module mkCache32(Cache32);
     if (bits.tag == working_line.tag) begin
       // data[bits.offset] = e.data;
       Vector#(16, Word) d_vec = unpack(0);
-      d_vec[working.offset] = e.data; 
+      d_vec[working.offset] = e.data;
 
-      bram2.portA.request.put(BRAMRequestBE{writeen: (zeroExtend(working.memReq.word_byte) << working.offset), // False for read
+      // Bit#(64) stb_en_byte = 0;
+      // stb_en_byte[(zeroExtend(working.offset)+1)*4-1:zeroExtend(working.offset)*4] = zeroExtend(working.memReq.word_byte);
+
+      Bit#(6) offset = {0, working.offset};
+      bram2.portA.request.put(BRAMRequestBE{writeen: 64'h000000000000000f << 4*offset, // False for read // (zeroExtend(working.memReq.word_byte) << working.offset)
                       responseOnWrite: False,
                       address: working.idx,
                       datain: d_vec}); // CHANGED DATA
@@ -241,7 +244,7 @@ module mkCache32(Cache32);
   // Reg#(Bit#(512)) fill_data <- mkReg(0);
 
   rule waitFillResp_Ld(mshr==3 && start_fill && working.memReq.word_byte == 0);
-    $display("waitFillResp_ld");
+    // $display("waitFillResp_ld");
 
     // let data = fill_data;
     let m_working_req = working.memReq;
@@ -271,7 +274,7 @@ module mkCache32(Cache32);
 
 
   rule waitFillResp_St(mshr==3 && working.memReq.word_byte != 0);
-    $display("waitFillResp_st");
+    // $display("waitFillResp_st");
 
     // let data = fill_data;
     let m_working_req = working.memReq;
@@ -298,7 +301,7 @@ module mkCache32(Cache32);
       if(working.memReq.word_byte[1]==1) data[working.offset][15:8] = working.memReq.data[15:8];
       if(working.memReq.word_byte[2]==1) data[working.offset][23:16] = working.memReq.data[23:16];
       if(working.memReq.word_byte[3]==1) data[working.offset][31:24] = working.memReq.data[31:24];
-      $display("DATA", fshow(data));
+      // $display("DATA", fshow(data));
       
       $display("WRITE MISS", fshow(working.memReq.data)); 
       bram1.portA.request.put(BRAMRequest{write: True, // False for read
@@ -320,7 +323,7 @@ module mkCache32(Cache32);
   // TODO Write a Cache
   method Action putFromProc(CacheReq e) if (!working_v && mshr == 0);
   
-    $display("PFP ",fshow(e), fshow(mshr));
+    // $display("PFP ",fshow(e), fshow(mshr));
     let req = extract_bits(e.addr, e);
     bram1.portA.request.put(BRAMRequest{write: False, // False for read
                         responseOnWrite: False,

@@ -317,14 +317,16 @@ Predicate: cache_bram1_serverAdapter_outData_beforeDeq.read &&
 		       : (_ :: Bit 2))) ==
 		   2'd0) ||
 		  cache_hitQ.i_notFull))
-	    : ((! (cache_working[67:49] ==
-		   (cache_bram1_serverAdapter_outData_ff.i_notEmpty
-		    ? cache_bram1_serverAdapter_outData_ff.first[18:0]
-		    : (cache_bram1_serverAdapter_outData_enqw.whas
-		       ? cache_bram1_serverAdapter_outData_enqw.wget[18:0]
-		       : (_ :: Bit 19))))) ||
-	       ((cache_bram2_serverAdapter_cnt .< 3'd3) &&
-		(cache_bram1_serverAdapter_cnt .< 3'd3)))) &&
+	    : ((cache_working[71:68] == 4'b1111)
+	       ? cache_stb.i_notFull
+	       : ((! (cache_working[67:49] ==
+		      (cache_bram1_serverAdapter_outData_ff.i_notEmpty
+		       ? cache_bram1_serverAdapter_outData_ff.first[18:0]
+		       : (cache_bram1_serverAdapter_outData_enqw.whas
+			  ? cache_bram1_serverAdapter_outData_enqw.wget[18:0]
+			  : (_ :: Bit 19))))) ||
+		  ((cache_bram2_serverAdapter_cnt .< 3'd3) &&
+		   (cache_bram1_serverAdapter_cnt .< 3'd3))))) &&
 	   cache_working_v && (cache_mshr == 2'd0) && cache_lockL1
 Blocking rules: (none)
  
