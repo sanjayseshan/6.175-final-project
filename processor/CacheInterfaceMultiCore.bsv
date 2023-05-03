@@ -16,15 +16,30 @@ interface CacheInterface;
     method ActionValue#(Word) getRespInstr();
 endinterface
 
+interface ParentProtocolProcessor;
+endinterface
+
+module mkParentProtocolProcessor(CacheInterface core1, CacheInterface core2)(ParentProtocolProcessor);
+    Cache cacheL2 <- mkCache;
+
+    rule connectCacheDram;
+        let lineReq <- cacheL2.getToMem();
+        mainMem.put(lineReq);
+    endrule
+
+    rule connectDramCache;
+        let resp <- mainMem.get;
+        cacheL2.putFromMem(resp);
+    endrule
+
+endmodule
+
 
 module mkCacheInterface(CacheInterface);
-    let verbose = True;
+    let verbose = False;
     MainMem mainMem <- mkMainMem(); //Initialize both to 0
     Cache32 cacheD <- mkCache32;
-    Cache cacheL2 <- mkCache;
     Cache32 cacheI <- mkCache32;
-
-    PPP ppp <- mkPPP;
 
     FIFOF#(Bit#(1)) order_req <- mkFIFOF;
     // Cache cache4 <- mkCache;
@@ -38,20 +53,12 @@ module mkCacheInterface(CacheInterface);
     //     cache.putFromMem(resp);
     // endrule
 
-    rule connectCacheDram;
-        let lineReq <- cacheL2.getToMem();
-        mainMem.put(lineReq);
-    endrule
 
     // rule connectCacheDramInstr;
     //     let lineReq <- cache4.getToMem();
     //     mainMem.put2(lineReq);
     // endrule
 
-    rule connectDramCache;
-        let resp <- mainMem.get;
-        cacheL2.putFromMem(resp);
-    endrule
 
     rule connectL2L1Cache;
         let resp <- cacheL2.getToProc();
@@ -116,5 +123,15 @@ module mkCacheInterface(CacheInterface);
     method ActionValue#(Word) getRespInstr() if (respI.notEmpty());
         respI.deq();
         return respI.first;
+    endmethod
+
+
+    method ActionValue#(MainMemReq) upgrade();
+        let lineReq <- cacheL2.getToMem();
+        return lineReq;
+    endmethod
+
+    method Action downgrade(MaimMemReq req);
+
     endmethod
 endmodule
