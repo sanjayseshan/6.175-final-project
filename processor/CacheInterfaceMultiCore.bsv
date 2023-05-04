@@ -3,7 +3,7 @@ import GetPut::*;
 import Randomizable::*;
 import MainMem::*;
 import MemTypes::*;
-import Cache32::*;
+import Cache32MC::*;
 import Cache::*;
 import FIFOF::*;
 import PP::*
@@ -21,6 +21,7 @@ endinterface
 
 module mkParentProtocolProcessor(CacheInterface core1, CacheInterface core2)(ParentProtocolProcessor);
     Cache cacheL2 <- mkCache;
+    FIFOF#(Bit#(1)) order_req <- mkFIFOF;
 
     rule connectCacheDram;
         let lineReq <- cacheL2.getToMem();
@@ -31,7 +32,40 @@ module mkParentProtocolProcessor(CacheInterface core1, CacheInterface core2)(Par
         let resp <- mainMem.get;
         cacheL2.putFromMem(resp);
     endrule
+    
 
+    rule processUpgrade1;
+        let upgrade <- core1.upgrade();
+        core2.downgrade();
+        cacheL2.putFromProc(upgrade);
+        // if (upgrade.write == 0) order_req.enq(0);
+    endrule
+
+    rule processReq1;
+        let req <- core1.sendReq();
+        cacheL2.putFromProc(req);
+        if (req.write == 0) order_req.enq(0);
+    endrule
+
+    rule processUpgrade2;
+        let upgrade <- core2.upgrade();
+        core1.downgrade();
+        cacheL2.putFromProc(upgrade);
+        // if (upgrade.write == 0) order_req.enq(1);
+    endrule
+
+    rule processReq2;
+        let req <- core2.sendReq();
+        cacheL2.putFromProc(req);
+        if (req.write == 0) order_req.enq(1);
+    endrule
+
+    rule processReqRes;
+        let resp <- cacheL2.getToProc();
+        if (order_req.first == 0) core1.connectL2L1Cache(resp);
+        else core2.connectL2L1Cache(resp);
+        order_req.deq();
+    endrule
 endmodule
 
 
@@ -60,24 +94,20 @@ module mkCacheInterface(CacheInterface);
     // endrule
 
 
-    rule connectL2L1Cache;
-        let resp <- cacheL2.getToProc();
-        if (order_req.first == 0) cacheD.putFromMem(resp);
-        else cacheI.putFromMem(resp);
-        order_req.deq();
-        //$display("GOT INSTR ",fshow(resp));
-    endrule
 
 
-    rule connectCacheL1L2Instr;
+
+    FIFOF#(MainMemReq) upreqs <- mkFIFOF;
+
+    rule connectCacheInstrPPP;
         let lineReq <- cacheI.getToMem();
-        cacheL2.putFromProc(lineReq);
+        upreqs.enq(lineReq);
         order_req.enq(1);
     endrule
 
-    rule connectCacheL1L2Data;
+    rule connectCacheDataPPP;
         let lineReq <- cacheD.getToMem();
-        cacheL2.putFromProc(lineReq);
+        upreqs.enq(lineReq);
         order_req.enq(0);
     endrule
 
@@ -125,13 +155,23 @@ module mkCacheInterface(CacheInterface);
         return respI.first;
     endmethod
 
-
-    method ActionValue#(MainMemReq) upgrade();
-        let lineReq <- cacheL2.getToMem();
-        return lineReq;
+    method ActionValue#(MainMemReq) sendReq() if (upreqs.notEmpty());
+        upreqs.deq();
+        return upreqs.first;
     endmethod
 
-    method Action downgrade(MaimMemReq req);
+    method ActionValue#(CacheReq) upgrade();
+        let req <- cacheD.getToUpgrade();
+        return req;
+    endmethod
 
+    method Action downgrade(CacheReq req);
+        cacheD.procDowngrade(req);
+    endmethod
+
+    method Action connectL2L1Cache(Word resp);
+        if (order_req.first == 0) cacheD.putFromMem(resp);
+        else cacheI.putFromMem(resp);
+        order_req.deq();
     endmethod
 endmodule
