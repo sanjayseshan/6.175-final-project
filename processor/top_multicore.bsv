@@ -6,7 +6,7 @@ import MemTypes::*;
 import CacheInterfaceMultiCore::*;
 // typedef Bit#(32) Word;
 
-module mktop_pipelined(Empty);
+module mktop_multicore(Empty);
     // Instantiate the dual ported memory
     BRAM_Configure cfg = defaultValue();
     cfg.loadFormat = tagged Hex "mem.vmh";
