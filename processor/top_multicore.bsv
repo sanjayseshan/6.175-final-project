@@ -13,8 +13,11 @@ module mktop_multicore(Empty);
     BRAM2PortBE#(Bit#(30), Word, 4) bram <- mkBRAM2ServerBE(cfg);
 
     CacheInterface cache <- mkCacheInterface();
+    CacheInterface cache2 <- mkCacheInterface();
+    ParentProtocolProcessor ppp <- mkParentProtocolProcessor(cache, cache2);
 
     RVIfc rv_core <- mkpipelined;
+    RVIfc rv_core2 <- mkpipelined;
     Reg#(Mem) ireq <- mkRegU;
     Reg#(Mem) dreq <- mkRegU;
     FIFO#(Mem) mmioreq <- mkFIFO;
