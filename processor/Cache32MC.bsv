@@ -327,6 +327,16 @@ module mkCache32(Cache32);
     end
   endrule
 
+  Reg#(Bool) downgrade_en <- mkReg();
+
+  rule processDowngradeLine (working_v && downgrade_en);
+    
+
+
+    downgrade_en <= False;
+    working_v <= False;
+  endrule
+
   // TODO Write a Cache
   method Action putFromProc(CacheReq e) if (!working_v && mshr == 0);
   
@@ -372,7 +382,7 @@ module mkCache32(Cache32);
     return upgrades.first;
   endmethod
 
-  method Action procDowngrade(CacheReq req);
+  method Action procDowngrade(CacheReq req) if (!working_v && !downgrade_en);
     let req = extract_bits(e.addr, e);
     bram1.portA.request.put(BRAMRequest{write: False, // False for read
                         responseOnWrite: False,
@@ -380,6 +390,7 @@ module mkCache32(Cache32);
                         datain: ?});
     working <= req;
     working_v <= True;
+    downgrade_en <= True;
   endmethod
 
 endmodule
