@@ -72,7 +72,7 @@ interface Cache32;
     method ActionValue#(MainMemReq) getToMem();
     method Action putFromMem(MainMemResp e);
     method ActionValue#(CacheReq) getToUpgrade();
-
+    method Action procDowngrade(CacheReq e);
 endinterface
 
 module mkCache32(Cache32);
@@ -327,11 +327,25 @@ module mkCache32(Cache32);
     end
   endrule
 
-  Reg#(Bool) downgrade_en <- mkReg();
+  Reg#(Bool) downgrade_en <- mkReg(False);
 
-  rule processDowngradeLine (working_v && downgrade_en);
+  rule processDowngradeLine (working_v && downgrade_en && mshr==0);
+    let req = extract_bits(working.memReq.addr, ?);
     
+    if(req.tag == working.tag) begin
+      Vector#(16, Word) d_vec = unpack(0);
+      d_vec[working.offset] = working.memReq.data; 
+      
+      bram1.portA.request.put(BRAMRequest{write: True, // False for read
+                        responseOnWrite: False,
+                        address: req.idx,
+                        datain: CacheReqLine{valid:2,tag:working.tag}});
 
+      bram2.portA.request.put(BRAMRequestBE{writeen: zeroExtend(working.memReq.word_byte) << working.offset, // False for read
+                        responseOnWrite: False,
+                        address: working.idx,
+                        datain: d_vec}); // CHANGED DATA    
+    end
 
     downgrade_en <= False;
     working_v <= False;
@@ -382,7 +396,7 @@ module mkCache32(Cache32);
     return upgrades.first;
   endmethod
 
-  method Action procDowngrade(CacheReq req) if (!working_v && !downgrade_en);
+  method Action procDowngrade(CacheReq e) if (!working_v && !downgrade_en);
     let req = extract_bits(e.addr, e);
     bram1.portA.request.put(BRAMRequest{write: False, // False for read
                         responseOnWrite: False,

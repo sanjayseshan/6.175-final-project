@@ -6,22 +6,28 @@ import MemTypes::*;
 import Cache32MC::*;
 import Cache::*;
 import FIFOF::*;
-import PP::*
+// import PP::*;
 
 
 interface CacheInterface;
     method Action sendReqData(CacheReq req);
     method ActionValue#(Word) getRespData();
-    method Action sendReqInstr(CacheReq req);
+    method  Action sendReqInstr(CacheReq req);
     method ActionValue#(Word) getRespInstr();
+    method ActionValue#(MainMemReq) sendReq();
+    method ActionValue#(CacheReq) upgrade();
+    method Action downgrade(CacheReq req);
+    method Action connectL2L1Cache(MainMemResp resp);
 endinterface
 
 interface ParentProtocolProcessor;
 endinterface
 
-module mkParentProtocolProcessor(CacheInterface core1, CacheInterface core2)(ParentProtocolProcessor);
+module mkParentProtocolProcessor#(CacheInterface core1, CacheInterface core2)(ParentProtocolProcessor);
     Cache cacheL2 <- mkCache;
     FIFOF#(Bit#(1)) order_req <- mkFIFOF;
+
+    MainMem mainMem <- mkMainMem(); //Initialize both to 0
 
     rule connectCacheDram;
         let lineReq <- cacheL2.getToMem();
@@ -36,8 +42,8 @@ module mkParentProtocolProcessor(CacheInterface core1, CacheInterface core2)(Par
 
     rule processUpgrade1;
         let upgrade <- core1.upgrade();
-        core2.downgrade();
-        cacheL2.putFromProc(upgrade);
+        core2.downgrade(upgrade);
+        // cacheL2.putFromProc(upgrade);
         // if (upgrade.write == 0) order_req.enq(0);
     endrule
 
@@ -49,8 +55,8 @@ module mkParentProtocolProcessor(CacheInterface core1, CacheInterface core2)(Par
 
     rule processUpgrade2;
         let upgrade <- core2.upgrade();
-        core1.downgrade();
-        cacheL2.putFromProc(upgrade);
+        core1.downgrade(upgrade);
+        // cacheL2.putFromProc(upgrade);
         // if (upgrade.write == 0) order_req.enq(1);
     endrule
 
@@ -71,7 +77,7 @@ endmodule
 
 module mkCacheInterface(CacheInterface);
     let verbose = False;
-    MainMem mainMem <- mkMainMem(); //Initialize both to 0
+
     Cache32 cacheD <- mkCache32;
     Cache32 cacheI <- mkCache32;
 
@@ -169,7 +175,7 @@ module mkCacheInterface(CacheInterface);
         cacheD.procDowngrade(req);
     endmethod
 
-    method Action connectL2L1Cache(Word resp);
+    method Action connectL2L1Cache(MainMemResp resp);
         if (order_req.first == 0) cacheD.putFromMem(resp);
         else cacheI.putFromMem(resp);
         order_req.deq();
