@@ -43,10 +43,12 @@ def main():
     
                 current_word = 0
 
-                num = int(line[1:])
-                if (num % 10 != 0):
-                    raise ValueError("Need to check the line addresses are divisible by 0x10")
-                num = num // 10
+                num = line[1:-2]
+                # print(line,num)
+                # num = hex(line[1:])
+                # if (num % 10 != 0):
+                #     raise ValueError("Need to check the line addresses are divisible by 0x10")
+                # num = num // 10
 
                 output.write("@" + str(num) + "\n")
                 continue

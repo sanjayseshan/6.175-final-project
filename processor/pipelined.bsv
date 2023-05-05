@@ -111,7 +111,7 @@ endmodule
 
 
 (* synthesize *)
-module mkpipelined(RVIfc);
+module mkpipelined#(Bit#(32) start_pc, Bit#(1) coreId)(RVIfc);
     // Interface with memory and devices
     FIFO#(F2D) f2d <- mkFIFO;
     FIFO#(D2E) d2e <- mkFIFO;
@@ -137,7 +137,7 @@ module mkpipelined(RVIfc);
 
 	FIFO#(KonataId) retired <- mkFIFO;
 	FIFO#(KonataId) squashed <- mkFIFO;
-    Bool debug = False;
+    Bool debug = True;
 
     Reg#(Bit#(1)) epoch <- mkReg(0);
 
@@ -150,8 +150,10 @@ module mkpipelined(RVIfc);
     // endrule
 
     Reg#(Bool) starting <- mkReg(True);
+    Reg#(Bit#(32)) pc_fetched_reg <- mkReg(0);
 	rule do_tic_logging;
         if (starting) begin
+            pc_fetched_reg <= start_pc;
             let f <- $fopen(dumpFile, "w") ;
             lfh <= f;
             $fwrite(f, "Kanata\t0004\nC=\t1\n");
@@ -160,10 +162,9 @@ module mkpipelined(RVIfc);
 		konataTic(lfh);
 	endrule
 		
-    Reg#(Bit#(32)) pc_fetched_reg <- mkReg(0);
     rule fetch if (!starting);
         Bit#(32) pc_fetched = pc_fetched_reg;
-        if(debug) $display("[Fetch] %x", pc_fetched_reg);
+        if(debug) $display("C",coreId, "[Fetch] %x", pc_fetched_reg);
         pc_fetched_reg <= pc_fetched_reg + 4;
 
         // You should put the pc that you fetch in pc_fetched
@@ -220,7 +221,7 @@ module mkpipelined(RVIfc);
         let rs2_idx = getInstFields(instr).rs2;
         let stall1 = sb.ready(rs1_idx);
         let stall2 = sb.ready(rs2_idx);
-		if (debug) $display("[Decode] pc ", fshow(from_fetch.pc), fshow(stall1),fshow(stall2), " ", fshow(decodedInst));
+		if (debug) $display("C",coreId,"[Decode] pc ", fshow(from_fetch.pc), fshow(stall1),fshow(stall2), " ", fshow(decodedInst));
 
         // rs1_idx <= rs1;
         // rs2_idx <= rs2;
@@ -256,7 +257,7 @@ module mkpipelined(RVIfc);
                 rv2: rs2, 
                 k_id: from_fetch.k_id});
         end else begin
-            if(debug) $display("STALL ",getInstFields(instr).rd,rs1,rs2,"S1 ",stall1," S2 ",stall2);
+            if(debug) $display("C",coreId,"STALL ",getInstFields(instr).rd,rs1,rs2,"S1 ",stall1," S2 ",stall2);
         end
         // To add a decode event in Konata you will likely do something like:
         //  let from_fetch = f2d.first();
@@ -276,7 +277,7 @@ module mkpipelined(RVIfc);
 
         let dInst = from_dec.dinst;
 
-        if (debug) $display("[Execute]  pc ", fshow(from_dec.pc) ,fshow(epoch),fshow(from_dec.epoch) , " ", fshow(dInst));
+        if (debug) $display("C",coreId,"[Execute]  pc ", fshow(from_dec.pc) ,fshow(epoch),fshow(from_dec.epoch) , " ", fshow(dInst));
         
         if (from_dec.epoch == epoch) begin
 
@@ -326,7 +327,7 @@ module mkpipelined(RVIfc);
 
             if (nextPc != from_dec.ppc) begin
                 squashed.enq(from_dec.k_id);
-                if(debug) $display("REDIRECT ",fshow(nextPc), fshow(pc));
+                if(debug) $display("C",coreId,"REDIRECT ",fshow(nextPc), fshow(pc));
                 pc_fetched_reg <= nextPc;
                 epoch <= epoch + 1;
                 // d2e.deq();
@@ -355,7 +356,7 @@ module mkpipelined(RVIfc);
 
             labelKonataLeft(lfh,from_dec.k_id, $format(" ALU output: %x" , data));
         end else begin
-            if(debug) $display("ANNUL ",fshow(pc));
+            if(debug) $display("C",coreId,"ANNUL ",fshow(pc));
             if (dInst.valid_rd) sb.remove1(getInstFields(dInst.inst).rd);
             squashed.enq(from_dec.k_id);
         end
@@ -405,7 +406,7 @@ module mkpipelined(RVIfc);
 	     	3'b010 : data = mem_data;
              endcase
 		end
-		if(debug) $display("[Writeback]", fshow(from_exec.pc),fshow(dInst));
+		if(debug) $display("C",coreId,"[Writeback]", fshow(from_exec.pc),fshow(dInst));
         if (!dInst.legal) begin
 			if (debug) $display("[Writeback] Illegal Inst, Drop and fault: ", fshow(dInst));
 			// pc_fetched_reg <= 0;	// Fault
@@ -413,7 +414,7 @@ module mkpipelined(RVIfc);
 
         if (dInst.valid_rd) begin
             let rd_idx = fields.rd;
-            if(debug) $display("WR REG__", fshow(rd_idx),fshow(data),fshow(from_exec.pc));
+            if(debug) $display("C",coreId,"WR REG__", fshow(rd_idx),fshow(data),fshow(from_exec.pc));
 
             if (rd_idx != 0) begin rf.wr(rd_idx,data); end
             sb.remove(rd_idx);
