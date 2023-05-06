@@ -17,7 +17,7 @@ module mktop_multicore(Empty);
     ParentProtocolProcessor ppp <- mkParentProtocolProcessor(cache1, cache2);
 
     RVIfc rv_core1 <- mkpipelined(0,0);
-    RVIfc rv_core2 <- mkpipelined(4096,1);
+    // RVIfc rv_core2 <- mkpipelined(4096,1);
 
     Reg#(Mem) ireq1 <- mkRegU;
     Reg#(Mem) dreq1 <- mkRegU;
@@ -120,6 +120,7 @@ module mktop_multicore(Empty);
     endrule
 
 
+    /*
 
     rule requestI2;
         let req <- rv_core2.getIReq;
@@ -199,11 +200,13 @@ module mktop_multicore(Empty);
         mmioreq2.enq(req);
     endrule
 
-    rule responseMMIO;
+    rule responseMMIO2;
         let req = mmioreq2.first();
         mmioreq2.deq();
         if (debug) $display("Put MMIOResp", fshow(req));
         rv_core2.getMMIOResp(req);
     endrule
+
+    */
     
 endmodule

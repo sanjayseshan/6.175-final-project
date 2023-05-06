@@ -43,6 +43,7 @@ module mkParentProtocolProcessor#(CacheInterface core1, CacheInterface core2)(Pa
     rule processUpgrade1;
         let upgrade <- core1.upgrade();
         core2.downgrade(upgrade);
+        $display("UPGRADE ",fshow(upgrade));
         // cacheL2.putFromProc(upgrade);
         // if (upgrade.write == 0) order_req.enq(0);
     endrule
