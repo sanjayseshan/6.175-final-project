@@ -138,12 +138,12 @@ module mkCache32(Cache32);
         mshr <= 1;
       end
     end else if (working.memReq.word_byte == 4'b1111) begin
-      upgrades.enq(working.memReq);
+      // upgrades.enq(working.memReq);
       stb.enq(StbReq{addr:working.memReq.addr,data:working.memReq.data, byte_en: working.memReq.word_byte});
       lockL1 <= False;
     end 
     else begin
-      upgrades.enq(working.memReq);
+      // upgrades.enq(working.memReq);
     // let data = out.data;
       // //$display("WORD BYTE NOT 0 OR 1111");
       let bits = extract_bits(working.memReq.addr, ?);
@@ -391,20 +391,20 @@ module mkCache32(Cache32);
     // fill_data <= e;
   endmethod
 
-  method ActionValue#(CacheReq) getToUpgrade() if (upgrades.notEmpty());
-    upgrades.deq();
-    return upgrades.first;
-  endmethod
+  // method ActionValue#(CacheReq) getToUpgrade() if (upgrades.notEmpty());
+  //   upgrades.deq();
+  //   return upgrades.first;
+  // endmethod
 
-  method Action procDowngrade(CacheReq e) if (!working_v && !downgrade_en);
-    let req = extract_bits(e.addr, e);
-    bram1.portA.request.put(BRAMRequest{write: False, // False for read
-                        responseOnWrite: False,
-                        address: req.idx,
-                        datain: ?});
-    working <= req;
-    working_v <= True;
-    downgrade_en <= True;
-  endmethod
+  // method Action procDowngrade(CacheReq e) if (!working_v && !downgrade_en);
+  //   let req = extract_bits(e.addr, e);
+  //   bram1.portA.request.put(BRAMRequest{write: False, // False for read
+  //                       responseOnWrite: False,
+  //                       address: req.idx,
+  //                       datain: ?});
+  //   working <= req;
+  //   working_v <= True;
+  //   downgrade_en <= True;
+  // endmethod
 
 endmodule

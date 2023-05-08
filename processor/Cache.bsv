@@ -51,11 +51,11 @@ module mkCache(Cache);
   Reg#(CacheReq512) working <- mkReg(unpack(0));
   Reg#(Bool) working_v <- mkReg(False);
 
-  FIFO#(MainMemResp) hitQ <- mkFIFO();
+  FIFOF#(MainMemResp) hitQ <- mkFIFOF();
   Reg#(MainMemReq) missReq <- mkReg(unpack(0));
   Reg#(Bit#(2)) mshr <- mkReg(0);
 
-  FIFO#(MainMemReq) memReqQ <- mkFIFO();
+  FIFOF#(MainMemReq) memReqQ <- mkFIFOF();
   FIFOF#(MainMemResp) memRespQ <- mkFIFOF();
 
   FIFOF#(StbReq) stb <- mkFIFOF();
@@ -104,7 +104,7 @@ module mkCache(Cache);
   endrule
 
   rule mvStbToL1 (mshr == 0 && !lockL1);
-    //$display("mvStbToL1");
+    $display("mvStbToL1");
     let e = stb.first;
     let bits = extract_bits(e.addr, ?);
     stb.deq();
@@ -148,13 +148,13 @@ module mkCache(Cache);
   // Reg#(Bit#(512)) fill_data <- mkReg(0);
 
   rule waitFillResp_Ld(mshr==3 && start_fill && working.memReq.write == 0);
-    //$display("waitFillResp_ld");
+    $display("waitFillResp_ld");
 
     // let data = fill_data;
     let m_working_req = working.memReq;
     if (memRespQ.notEmpty()) begin
       let data = memRespQ.first;
-      //$display("READ MISS", fshow(data)); 
+      $display("READ MISS", fshow(data)); 
       bram.portA.request.put(BRAMRequest{write: True, // False for read
                 responseOnWrite: False,
                 address: working.idx,
@@ -189,7 +189,7 @@ module mkCache(Cache);
   // TODO Write a Cache
   method Action putFromProc(MainMemReq e) if (!working_v && mshr == 0);
   
-    //$display("PFP ",fshow(e));
+    $display("PFPL2 ",fshow(e));
     let req = extract_bits(e.addr, e);
     bram.portA.request.put(BRAMRequest{write: False, // False for read
                         responseOnWrite: False,
@@ -199,23 +199,23 @@ module mkCache(Cache);
     working_v <= True;
   endmethod
 
-  method ActionValue#(MainMemResp) getToProc();
+  method ActionValue#(MainMemResp) getToProc() if (hitQ.notEmpty());
     hitQ.deq();
     let r = hitQ.first;
-    //$display("GTP ", fshow(r));
+    $display("GTPL2 ", fshow(r));
     return r;
   endmethod
 
-  method ActionValue#(MainMemReq) getToMem() ;
+  method ActionValue#(MainMemReq) getToMem() if (memReqQ.notEmpty);
     memReqQ.deq();
     let r = memReqQ.first;
-    //$display("GTM ",fshow(r));
+    $display("GTML2 ",fshow(r));
     return r;
   endmethod
 
   method Action putFromMem(MainMemResp e) if(!start_fill);
     start_fill <= True;
-    //$display("PFM ",fshow(e));
+    $display("PFML2 ",fshow(e));
     memRespQ.enq(e);
     // fill_data <= e;
   endmethod
