@@ -8,9 +8,9 @@ import CacheInterfaceMultiCore::*;
 
 module mktop_multicore(Empty);
     // Instantiate the dual ported memory
-    BRAM_Configure cfg = defaultValue();
-    cfg.loadFormat = tagged Hex "mem.vmh";
-    BRAM2PortBE#(Bit#(30), Word, 4) bram <- mkBRAM2ServerBE(cfg);
+    // BRAM_Configure cfg = defaultValue();
+    // cfg.loadFormat = tagged Hex "mem.vmh";
+    // BRAM2PortBE#(Bit#(30), Word, 4) bram <- mkBRAM2ServerBE(cfg);
 
     CacheInterface cache1 <- mkCacheInterface();
     CacheInterface cache2 <- mkCacheInterface();

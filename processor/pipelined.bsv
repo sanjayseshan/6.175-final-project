@@ -257,7 +257,7 @@ module mkpipelined#(Bit#(32) start_pc, Bit#(1) coreId)(RVIfc);
                 rv2: rs2, 
                 k_id: from_fetch.k_id});
         end else begin
-            if(debug) $display("C",coreId,"STALL ",getInstFields(instr).rd,rs1,rs2,"S1 ",stall1," S2 ",stall2);
+            if(debug) $display("C",coreId,"STALL ",fshow(getInstFields(instr).rd),fshow(rs1),fshow(rs2),fshow(rs1_idx),fshow(rs2_idx),"S1 ",stall1," S2 ",stall2);
         end
         // To add a decode event in Konata you will likely do something like:
         //  let from_fetch = f2d.first();
