@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1683174323 "/home/seshan/Documents/6.175-final-project/tex/main.tex" "main.pdf" "main" 1683174324
+["pdflatex"] 1683750094 "/home/seshan/Documents/6.175-final-project/tex/main.tex" "main.pdf" "main" 1683750094
   "/etc/texmf/web2c/texmf.cnf" 1667065086 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/seshan/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk" 1677180900 11524 5cd3cd27f7814cb559e657142ac7da61 ""
-  "/home/seshan/Documents/6.175-final-project/tex/main.tex" 1683174323 5532 073af014b480c5d1381c45f06f4a802f ""
+  "/home/seshan/Documents/6.175-final-project/tex/main.tex" 1683750093 5758 f2438e534891a5f60792ae899faee91e ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
@@ -39,8 +39,8 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1667065098 128028 f533b797fba58d231669ea19e894e23e ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1668702326 1405659 66d4ee6a9fc4d38c351eb64b93c8c161 ""
-  "main.aux" 1683174324 1115 1964a30640dbb31eb8f0ec630ed55b92 "pdflatex"
-  "main.tex" 1683174323 5532 073af014b480c5d1381c45f06f4a802f ""
+  "main.aux" 1683750094 1115 1964a30640dbb31eb8f0ec630ed55b92 "pdflatex"
+  "main.tex" 1683750093 5758 f2438e534891a5f60792ae899faee91e ""
   "ppp.jpg" 1683074149 28890 4afcb2a2e0db5150b3dbbc326be506cd ""
   "system.png" 1682498696 27835 696ee95c3bd46f72ad80ae1c15c6a3d0 ""
   (generated)
