@@ -103,6 +103,8 @@ module mkCache32MC(Cache32MC);
 
   Reg#(Bool) lockL1 <- mkReg(True);
 
+  Reg#(Bool) is_downgrade <- mkReg(False);
+
 
 
   Reg#(Bit#(32)) cycle <- mkReg(0);
@@ -168,11 +170,13 @@ module mkCache32MC(Cache32MC);
                         address: working.idx,
                         datain: CacheReqLine{valid:2,tag:bits.tag}}); // CHANGED DATA
 
-        mshr <= 1;
+        // mshr <= 1;
 
-      end else begin
+        is_downgrade <= False;
+      end else  begin
         // missReq <= MainMemReq{write:1,addr:{e.tag,e.idx},data:data}; // CHANGED DATA
-        mshr <= 1;
+        if (!is_downgrade) mshr <= 1;
+        else working_v <= False;
       end
     end
   endrule
@@ -216,10 +220,13 @@ module mkCache32MC(Cache32MC);
                         address: working.idx,
                         datain: CacheReqLine{valid:2,tag:bits.tag}}); // CHANGED DATA
       working_v <= False;
+      is_downgrade <= False;
 
-    end else begin
+    end else  begin
       // missReq <= MainMemReq{write:1,addr:{e.tag,e.idx},data:data}; // CHANGED DATA
-      mshr <= 1;
+      if (!is_downgrade) mshr <= 1;
+      else working_v <= False;
+
     end
     lockL1 <= True;
   endrule
@@ -355,8 +362,11 @@ module mkCache32MC(Cache32MC);
   method Action putFromProc(CacheReq e, Bit#(1) skip_upgrade) if (!working_v && mshr == 0);
 
     // //$display("WORD_BYTE ",e.word_byte, e.word_byte==0);
-    if (e.word_byte != 0 && skip_upgrade==0) upgrades.enq(e);
-
+    if (e.word_byte != 0 && skip_upgrade==0) begin
+      upgrades.enq(e);
+    end else begin
+      is_downgrade <= True;
+    end
   
     //$display("PFPL1 ",fshow(e), fshow(mshr));
     let req = extract_bits(e.addr, e);
