@@ -101,11 +101,11 @@ module mkCache32(Cache32);
 
 
 
-  Reg#(Bit#(32)) cycle <- mkReg(0);
-  rule count;
-    cycle <= cycle+1;
-    // //$display("CYCLE ",cycle, " " , fshow(working_v), " ", mshr, fshow(lockL1));
-  endrule
+  // Reg#(Bit#(32)) cycle <- mkReg(0);
+  // rule count;
+  //   cycle <= cycle+1;
+  //   // //$display("CYCLE ",cycle, " " , fshow(working_v), " ", mshr, fshow(lockL1));
+  // endrule
 
   rule req_process (working_v && mshr == 0 && lockL1);
     // //$display("req_process");

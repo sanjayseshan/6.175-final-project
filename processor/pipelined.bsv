@@ -312,6 +312,7 @@ module mkpipelined#(Bit#(32) start_pc, Bit#(1) coreId)(RVIfc);
                     labelKonataLeft(lfh,from_dec.k_id, $format(" MMIO ", fshow(req)));
                     mmio = True;
                 end else begin 
+                    // $display("SENDING DMEM REQ FROM PROCESSOR ", fshow(req), fshow(from_dec.pc));
                     labelKonataLeft(lfh,from_dec.k_id, $format(" MEM ", fshow(req)));
                     toDmem.enq(req);
                 end

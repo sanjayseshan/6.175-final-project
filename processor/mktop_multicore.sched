@@ -109,20 +109,19 @@ Predicate: cache1_cacheD_bram1_serverAdapter_outData_beforeDeq.read &&
 		       : (_ :: Bit 2))) ==
 		   2'd0) ||
 		  cache1_cacheD_hitQ.i_notFull))
-	    : (cache1_cacheD_upgrades.i_notFull &&
-	       ((cache1_cacheD_working[71:68] == 4'b1111)
-		? cache1_cacheD_stb.i_notFull
-		: ((! (cache1_cacheD_working[67:49] ==
-		       (cache1_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
-			? cache1_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
-			: (cache1_cacheD_bram1_serverAdapter_outData_enqw.whas
-			   ? cache1_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
-			   : (_ :: Bit 19))))) ||
-		   ((cache1_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
-		    (cache1_cacheD_bram1_serverAdapter_cnt .< 3'd3)))))) &&
+	    : ((cache1_cacheD_working[71:68] == 4'b1111)
+	       ? cache1_cacheD_stb.i_notFull
+	       : ((! (cache1_cacheD_working[67:49] ==
+		      (cache1_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
+		       ? cache1_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
+		       : (cache1_cacheD_bram1_serverAdapter_outData_enqw.whas
+			  ? cache1_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
+			  : (_ :: Bit 19))))) ||
+		  ((cache1_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
+		   (cache1_cacheD_bram1_serverAdapter_cnt .< 3'd3))))) &&
 	   cache1_cacheD_working_v && (cache1_cacheD_mshr == 2'd0) &&
 	   cache1_cacheD_lockL1
-Blocking rules: cache1_cacheD_processDowngradeLine
+Blocking rules: (none)
  
 Rule: cache1_cacheD_mvStbToL1
 Predicate: cache1_cacheD_stb.i_notEmpty &&
@@ -161,15 +160,6 @@ Predicate: ((! cache1_cacheD_memRespQ.notEmpty) ||
 	   (cache1_cacheD_mshr == 2'd3) &&
 	   (! (cache1_cacheD_working[71:68] == 4'd0))
 Blocking rules: (none)
- 
-Rule: cache1_cacheD_processDowngradeLine
-Predicate: ((! (cache1_cacheD_working[67:49] ==
-		cache1_cacheD_working[97:79])) ||
-	    ((cache1_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
-	     (cache1_cacheD_bram1_serverAdapter_cnt .< 3'd3))) &&
-	   cache1_cacheD_working_v && cache1_cacheD_downgrade_en &&
-	   (cache1_cacheD_mshr == 2'd0)
-Blocking rules: cache1_cacheD_mvStbToL1
  
 Rule: cache1_cacheI_bram1_serverAdapter_outData_enqueue
 Predicate: cache1_cacheI_bram1_serverAdapter_outData_enqw.whas &&
@@ -278,20 +268,19 @@ Predicate: cache1_cacheI_bram1_serverAdapter_outData_beforeDeq.read &&
 		       : (_ :: Bit 2))) ==
 		   2'd0) ||
 		  cache1_cacheI_hitQ.i_notFull))
-	    : (cache1_cacheI_upgrades.i_notFull &&
-	       ((cache1_cacheI_working[71:68] == 4'b1111)
-		? cache1_cacheI_stb.i_notFull
-		: ((! (cache1_cacheI_working[67:49] ==
-		       (cache1_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
-			? cache1_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
-			: (cache1_cacheI_bram1_serverAdapter_outData_enqw.whas
-			   ? cache1_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
-			   : (_ :: Bit 19))))) ||
-		   ((cache1_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
-		    (cache1_cacheI_bram1_serverAdapter_cnt .< 3'd3)))))) &&
+	    : ((cache1_cacheI_working[71:68] == 4'b1111)
+	       ? cache1_cacheI_stb.i_notFull
+	       : ((! (cache1_cacheI_working[67:49] ==
+		      (cache1_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
+		       ? cache1_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
+		       : (cache1_cacheI_bram1_serverAdapter_outData_enqw.whas
+			  ? cache1_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
+			  : (_ :: Bit 19))))) ||
+		  ((cache1_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
+		   (cache1_cacheI_bram1_serverAdapter_cnt .< 3'd3))))) &&
 	   cache1_cacheI_working_v && (cache1_cacheI_mshr == 2'd0) &&
 	   cache1_cacheI_lockL1
-Blocking rules: cache1_cacheI_processDowngradeLine
+Blocking rules: (none)
  
 Rule: cache1_cacheI_mvStbToL1
 Predicate: cache1_cacheI_stb.i_notEmpty &&
@@ -330,15 +319,6 @@ Predicate: ((! cache1_cacheI_memRespQ.notEmpty) ||
 	   (cache1_cacheI_mshr == 2'd3) &&
 	   (! (cache1_cacheI_working[71:68] == 4'd0))
 Blocking rules: (none)
- 
-Rule: cache1_cacheI_processDowngradeLine
-Predicate: ((! (cache1_cacheI_working[67:49] ==
-		cache1_cacheI_working[97:79])) ||
-	    ((cache1_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
-	     (cache1_cacheI_bram1_serverAdapter_cnt .< 3'd3))) &&
-	   cache1_cacheI_working_v && cache1_cacheI_downgrade_en &&
-	   (cache1_cacheI_mshr == 2'd0)
-Blocking rules: cache1_cacheI_mvStbToL1
  
 Rule: cache1_connectCacheInstrPPP
 Predicate: cache1_cacheI_memReqQ.i_notEmpty &&
@@ -468,20 +448,19 @@ Predicate: cache2_cacheD_bram1_serverAdapter_outData_beforeDeq.read &&
 		       : (_ :: Bit 2))) ==
 		   2'd0) ||
 		  cache2_cacheD_hitQ.i_notFull))
-	    : (cache2_cacheD_upgrades.i_notFull &&
-	       ((cache2_cacheD_working[71:68] == 4'b1111)
-		? cache2_cacheD_stb.i_notFull
-		: ((! (cache2_cacheD_working[67:49] ==
-		       (cache2_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
-			? cache2_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
-			: (cache2_cacheD_bram1_serverAdapter_outData_enqw.whas
-			   ? cache2_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
-			   : (_ :: Bit 19))))) ||
-		   ((cache2_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
-		    (cache2_cacheD_bram1_serverAdapter_cnt .< 3'd3)))))) &&
+	    : ((cache2_cacheD_working[71:68] == 4'b1111)
+	       ? cache2_cacheD_stb.i_notFull
+	       : ((! (cache2_cacheD_working[67:49] ==
+		      (cache2_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
+		       ? cache2_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
+		       : (cache2_cacheD_bram1_serverAdapter_outData_enqw.whas
+			  ? cache2_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
+			  : (_ :: Bit 19))))) ||
+		  ((cache2_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
+		   (cache2_cacheD_bram1_serverAdapter_cnt .< 3'd3))))) &&
 	   cache2_cacheD_working_v && (cache2_cacheD_mshr == 2'd0) &&
 	   cache2_cacheD_lockL1
-Blocking rules: cache2_cacheD_processDowngradeLine
+Blocking rules: (none)
  
 Rule: cache2_cacheD_mvStbToL1
 Predicate: cache2_cacheD_stb.i_notEmpty &&
@@ -490,7 +469,7 @@ Predicate: cache2_cacheD_stb.i_notEmpty &&
 	    ((cache2_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
 	     (cache2_cacheD_bram1_serverAdapter_cnt .< 3'd3))) &&
 	   (cache2_cacheD_mshr == 2'd0) && (! cache2_cacheD_lockL1)
-Blocking rules: (none)
+Blocking rules: requestD2
  
 Rule: cache2_cacheD_startMiss
 Predicate: ((! (cache2_cacheD_working_line[20:19] == 2'd2)) ||
@@ -520,15 +499,6 @@ Predicate: ((! cache2_cacheD_memRespQ.notEmpty) ||
 	   (cache2_cacheD_mshr == 2'd3) &&
 	   (! (cache2_cacheD_working[71:68] == 4'd0))
 Blocking rules: (none)
- 
-Rule: cache2_cacheD_processDowngradeLine
-Predicate: ((! (cache2_cacheD_working[67:49] ==
-		cache2_cacheD_working[97:79])) ||
-	    ((cache2_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
-	     (cache2_cacheD_bram1_serverAdapter_cnt .< 3'd3))) &&
-	   cache2_cacheD_working_v && cache2_cacheD_downgrade_en &&
-	   (cache2_cacheD_mshr == 2'd0)
-Blocking rules: cache2_cacheD_mvStbToL1
  
 Rule: cache2_cacheI_bram1_serverAdapter_outData_enqueue
 Predicate: cache2_cacheI_bram1_serverAdapter_outData_enqw.whas &&
@@ -637,20 +607,19 @@ Predicate: cache2_cacheI_bram1_serverAdapter_outData_beforeDeq.read &&
 		       : (_ :: Bit 2))) ==
 		   2'd0) ||
 		  cache2_cacheI_hitQ.i_notFull))
-	    : (cache2_cacheI_upgrades.i_notFull &&
-	       ((cache2_cacheI_working[71:68] == 4'b1111)
-		? cache2_cacheI_stb.i_notFull
-		: ((! (cache2_cacheI_working[67:49] ==
-		       (cache2_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
-			? cache2_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
-			: (cache2_cacheI_bram1_serverAdapter_outData_enqw.whas
-			   ? cache2_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
-			   : (_ :: Bit 19))))) ||
-		   ((cache2_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
-		    (cache2_cacheI_bram1_serverAdapter_cnt .< 3'd3)))))) &&
+	    : ((cache2_cacheI_working[71:68] == 4'b1111)
+	       ? cache2_cacheI_stb.i_notFull
+	       : ((! (cache2_cacheI_working[67:49] ==
+		      (cache2_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
+		       ? cache2_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
+		       : (cache2_cacheI_bram1_serverAdapter_outData_enqw.whas
+			  ? cache2_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
+			  : (_ :: Bit 19))))) ||
+		  ((cache2_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
+		   (cache2_cacheI_bram1_serverAdapter_cnt .< 3'd3))))) &&
 	   cache2_cacheI_working_v && (cache2_cacheI_mshr == 2'd0) &&
 	   cache2_cacheI_lockL1
-Blocking rules: cache2_cacheI_processDowngradeLine
+Blocking rules: (none)
  
 Rule: cache2_cacheI_mvStbToL1
 Predicate: cache2_cacheI_stb.i_notEmpty &&
@@ -659,7 +628,7 @@ Predicate: cache2_cacheI_stb.i_notEmpty &&
 	    ((cache2_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
 	     (cache2_cacheI_bram1_serverAdapter_cnt .< 3'd3))) &&
 	   (cache2_cacheI_mshr == 2'd0) && (! cache2_cacheI_lockL1)
-Blocking rules: (none)
+Blocking rules: requestI2
  
 Rule: cache2_cacheI_startMiss
 Predicate: ((! (cache2_cacheI_working_line[20:19] == 2'd2)) ||
@@ -690,15 +659,6 @@ Predicate: ((! cache2_cacheI_memRespQ.notEmpty) ||
 	   (! (cache2_cacheI_working[71:68] == 4'd0))
 Blocking rules: (none)
  
-Rule: cache2_cacheI_processDowngradeLine
-Predicate: ((! (cache2_cacheI_working[67:49] ==
-		cache2_cacheI_working[97:79])) ||
-	    ((cache2_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
-	     (cache2_cacheI_bram1_serverAdapter_cnt .< 3'd3))) &&
-	   cache2_cacheI_working_v && cache2_cacheI_downgrade_en &&
-	   (cache2_cacheI_mshr == 2'd0)
-Blocking rules: cache2_cacheI_mvStbToL1
- 
 Rule: cache2_connectCacheInstrPPP
 Predicate: cache2_cacheI_memReqQ.i_notEmpty &&
 	   cache2_upreqs.i_notFull && cache2_order_req.i_notFull
@@ -718,7 +678,7 @@ Blocking rules: (none)
 Rule: cache2_respsD
 Predicate: cache2_cacheD_hitQ.notEmpty &&
 	   cache2_cacheD_hitQ.i_notEmpty && cache2_respD.i_notFull
-Blocking rules: (none)
+Blocking rules: requestD2
  
 Rule: ppp_cacheL2_bram_serverAdapter_outData_enqueue
 Predicate: ppp_cacheL2_bram_serverAdapter_outData_enqw.whas &&
@@ -756,10 +716,6 @@ Predicate: ppp_cacheL2_bram_serverAdapter_s1[1] &&
 	   ((! ppp_cacheL2_bram_serverAdapter_outData_beforeEnq.read) ||
 	    (! ppp_cacheL2_bram_serverAdapter_outData_beforeDeq.read) ||
 	    (! ppp_cacheL2_bram_serverAdapter_outData_ff.i_notFull))
-Blocking rules: (none)
- 
-Rule: ppp_cacheL2_count
-Predicate: True
 Blocking rules: (none)
  
 Rule: ppp_cacheL2_req_process
@@ -956,13 +912,12 @@ Predicate: (! ppp_cacheL2_start_fill) &&
 Blocking rules: (none)
  
 Rule: ppp_processUpgrade1
-Predicate: (! cache2_cacheD_working_v) && (! cache2_cacheD_downgrade_en) &&
+Predicate: (! cache2_cacheD_working_v) && (cache2_cacheD_mshr == 2'd0) &&
+	   (cache2_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
 	   (cache2_cacheD_bram1_serverAdapter_cnt .< 3'd3) &&
 	   cache1_cacheD_upgrades.notEmpty &&
 	   cache1_cacheD_upgrades.i_notEmpty
-Blocking rules: cache2_cacheD_waitFillResp_St,
-		cache2_cacheD_waitFillResp_Ld,
-		cache2_cacheD_mvStbToL1
+Blocking rules: cache2_cacheD_mvStbToL1, requestD2
  
 Rule: ppp_processReq1
 Predicate: (! ppp_cacheL2_working_v) && (ppp_cacheL2_mshr == 2'd0) &&
@@ -973,14 +928,12 @@ Predicate: (! ppp_cacheL2_working_v) && (ppp_cacheL2_mshr == 2'd0) &&
 Blocking rules: (none)
  
 Rule: ppp_processUpgrade2
-Predicate: (! cache1_cacheD_working_v) && (! cache1_cacheD_downgrade_en) &&
+Predicate: (! cache1_cacheD_working_v) && (cache1_cacheD_mshr == 2'd0) &&
+	   (cache1_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
 	   (cache1_cacheD_bram1_serverAdapter_cnt .< 3'd3) &&
 	   cache2_cacheD_upgrades.notEmpty &&
 	   cache2_cacheD_upgrades.i_notEmpty
-Blocking rules: cache1_cacheD_waitFillResp_Ld,
-		cache1_cacheD_waitFillResp_St,
-		cache1_cacheD_mvStbToL1,
-		requestD1
+Blocking rules: cache1_cacheD_mvStbToL1, requestD1
  
 Rule: ppp_processReq2
 Predicate: (! ppp_cacheL2_working_v) && (ppp_cacheL2_mshr == 2'd0) &&
@@ -1025,7 +978,7 @@ Predicate: (! cache1_cacheD_working_v) && (cache1_cacheD_mshr == 2'd0) &&
 	   rv_core1.RDY_getDReq &&
 	   (cache1_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
 	   (cache1_cacheD_bram1_serverAdapter_cnt .< 3'd3) &&
-	   cache1_respD.i_notFull
+	   cache1_cacheD_upgrades.i_notFull && cache1_respD.i_notFull
 Blocking rules: (none)
  
 Rule: responseD1
@@ -1041,13 +994,50 @@ Rule: responseMMIO1
 Predicate: rv_core1.RDY_getMMIOResp && mmioreq1.i_notEmpty
 Blocking rules: (none)
  
+Rule: requestI2
+Predicate: (! cache2_cacheI_working_v) && (cache2_cacheI_mshr == 2'd0) &&
+	   rv_core2.RDY_getIReq &&
+	   (cache2_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
+	   (cache2_cacheI_bram1_serverAdapter_cnt .< 3'd3)
+Blocking rules: (none)
+ 
+Rule: responseI2
+Predicate: rv_core2.RDY_getIResp &&
+	   cache2_respI.notEmpty && cache2_respI.i_notEmpty
+Blocking rules: (none)
+ 
+Rule: requestD2
+Predicate: (! cache2_cacheD_working_v) && (cache2_cacheD_mshr == 2'd0) &&
+	   rv_core2.RDY_getDReq &&
+	   (cache2_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
+	   (cache2_cacheD_bram1_serverAdapter_cnt .< 3'd3) &&
+	   cache2_cacheD_upgrades.i_notFull && cache2_respD.i_notFull
+Blocking rules: (none)
+ 
+Rule: responseD2
+Predicate: rv_core2.RDY_getDResp &&
+	   cache2_respD.notEmpty && cache2_respD.i_notEmpty
+Blocking rules: (none)
+ 
+Rule: requestMMIO2
+Predicate: rv_core2.RDY_getMMIOReq && mmioreq2.i_notFull
+Blocking rules: (none)
+ 
+Rule: responseMMIO2
+Predicate: rv_core2.RDY_getMMIOResp && mmioreq2.i_notEmpty
+Blocking rules: (none)
+ 
 Logical execution order: tic,
 			 responseI1,
 			 requestI1,
 			 responseD1,
 			 responseMMIO1,
-			 requestD1,
 			 requestMMIO1,
+			 responseI2,
+			 requestI2,
+			 responseD2,
+			 responseMMIO2,
+			 requestMMIO2,
 			 cache1_respsI,
 			 cache1_respsD,
 			 cache1_cacheD_count,
@@ -1056,18 +1046,21 @@ Logical execution order: tic,
 			 cache1_cacheD_sendFillReq,
 			 cache1_cacheD_waitFillResp_Ld,
 			 cache1_cacheD_waitFillResp_St,
-			 cache1_cacheD_processDowngradeLine,
 			 cache1_cacheD_bram1_serverAdapter_overRun,
 			 cache1_cacheD_bram1_serverAdapter_moveToOutFIFO,
 			 cache1_cacheD_bram2_serverAdapter_overRun,
 			 cache1_cacheD_bram2_serverAdapter_moveToOutFIFO,
+			 cache1_cacheD_req_process,
+			 cache1_cacheD_bram1_serverAdapter_outData_enqueue,
+			 cache1_cacheD_bram1_serverAdapter_outData_dequeue,
+			 cache1_cacheD_bram2_serverAdapter_outData_enqueue,
+			 cache1_cacheD_bram2_serverAdapter_outData_dequeue,
 			 cache1_cacheI_count,
 			 cache1_cacheI_mvStbToL1,
 			 cache1_cacheI_startMiss,
 			 cache1_cacheI_sendFillReq,
 			 cache1_cacheI_waitFillResp_Ld,
 			 cache1_cacheI_waitFillResp_St,
-			 cache1_cacheI_processDowngradeLine,
 			 cache1_cacheI_bram1_serverAdapter_overRun,
 			 cache1_cacheI_bram1_serverAdapter_moveToOutFIFO,
 			 cache1_cacheI_bram2_serverAdapter_overRun,
@@ -1091,18 +1084,21 @@ Logical execution order: tic,
 			 cache2_cacheD_sendFillReq,
 			 cache2_cacheD_waitFillResp_Ld,
 			 cache2_cacheD_waitFillResp_St,
-			 cache2_cacheD_processDowngradeLine,
 			 cache2_cacheD_bram1_serverAdapter_overRun,
 			 cache2_cacheD_bram1_serverAdapter_moveToOutFIFO,
 			 cache2_cacheD_bram2_serverAdapter_overRun,
 			 cache2_cacheD_bram2_serverAdapter_moveToOutFIFO,
+			 cache2_cacheD_req_process,
+			 cache2_cacheD_bram1_serverAdapter_outData_enqueue,
+			 cache2_cacheD_bram1_serverAdapter_outData_dequeue,
+			 cache2_cacheD_bram2_serverAdapter_outData_enqueue,
+			 cache2_cacheD_bram2_serverAdapter_outData_dequeue,
 			 cache2_cacheI_count,
 			 cache2_cacheI_mvStbToL1,
 			 cache2_cacheI_startMiss,
 			 cache2_cacheI_sendFillReq,
 			 cache2_cacheI_waitFillResp_Ld,
 			 cache2_cacheI_waitFillResp_St,
-			 cache2_cacheI_processDowngradeLine,
 			 cache2_cacheI_bram1_serverAdapter_overRun,
 			 cache2_cacheI_bram1_serverAdapter_moveToOutFIFO,
 			 cache2_cacheI_bram2_serverAdapter_overRun,
@@ -1121,37 +1117,28 @@ Logical execution order: tic,
 			 ppp_connectCacheDram,
 			 ppp_connectDramCache,
 			 ppp_processUpgrade1,
-			 cache1_cacheD_req_process,
-			 cache1_cacheD_bram1_serverAdapter_outData_enqueue,
-			 cache1_cacheD_bram1_serverAdapter_outData_dequeue,
-			 cache1_cacheD_bram2_serverAdapter_stageReadResponseAlways,
-			 cache1_cacheD_bram2_serverAdapter_outData_enqueue,
-			 cache1_cacheD_bram2_serverAdapter_outData_dequeue,
-			 cache1_cacheD_bram2_serverAdapter_cnt_finalAdd,
-			 cache1_cacheD_bram2_serverAdapter_s1__dreg_update,
+			 requestD1,
 			 ppp_processReq1,
 			 cache1_connectCacheInstrPPP,
 			 cache1_connectCacheDataPPP,
 			 ppp_processUpgrade2,
+			 requestD2,
 			 cache1_cacheD_bram1_serverAdapter_stageReadResponseAlways,
 			 cache1_cacheD_bram1_serverAdapter_cnt_finalAdd,
 			 cache1_cacheD_bram1_serverAdapter_s1__dreg_update,
-			 cache2_cacheD_req_process,
+			 cache1_cacheD_bram2_serverAdapter_stageReadResponseAlways,
+			 cache1_cacheD_bram2_serverAdapter_cnt_finalAdd,
+			 cache1_cacheD_bram2_serverAdapter_s1__dreg_update,
 			 cache2_cacheD_bram1_serverAdapter_stageReadResponseAlways,
-			 cache2_cacheD_bram1_serverAdapter_outData_enqueue,
-			 cache2_cacheD_bram1_serverAdapter_outData_dequeue,
-			 cache2_cacheD_bram1_serverAdapter_s1__dreg_update,
 			 cache2_cacheD_bram1_serverAdapter_cnt_finalAdd,
+			 cache2_cacheD_bram1_serverAdapter_s1__dreg_update,
 			 cache2_cacheD_bram2_serverAdapter_stageReadResponseAlways,
-			 cache2_cacheD_bram2_serverAdapter_outData_enqueue,
-			 cache2_cacheD_bram2_serverAdapter_outData_dequeue,
 			 cache2_cacheD_bram2_serverAdapter_cnt_finalAdd,
 			 cache2_cacheD_bram2_serverAdapter_s1__dreg_update,
 			 ppp_processReq2,
 			 cache2_connectCacheInstrPPP,
 			 cache2_connectCacheDataPPP,
 			 ppp_processReqRes,
-			 ppp_cacheL2_count,
 			 ppp_cacheL2_mvStbToL1,
 			 ppp_cacheL2_startMiss,
 			 ppp_cacheL2_sendFillReq,

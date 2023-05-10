@@ -4,6 +4,7 @@ import Randomizable::*;
 import MainMem::*;
 import MemTypes::*;
 import Cache32MC::*;
+// import Cache32::*;
 import Cache::*;
 import FIFOF::*;
 // import PP::*;
@@ -37,14 +38,14 @@ module mkParentProtocolProcessor#(CacheInterface core1, CacheInterface core2)(Pa
     rule connectDramCache;
         let resp <- mainMem.get;
         cacheL2.putFromMem(resp);
-        $display("FROM MEM ",fshow(resp));
+        //$display("FROM MEM ",fshow(resp));
     endrule
     
 
     rule processUpgrade1;
         let upgrade <- core1.upgrade();
         core2.downgrade(upgrade);
-        $display("UPGRADE1 ",fshow(upgrade));
+        //$display("UPGRADE1 ",fshow(upgrade));
         // cacheL2.putFromProc(upgrade);
         // if (upgrade.write == 0) order_req.enq(0);
     endrule
@@ -53,7 +54,7 @@ module mkParentProtocolProcessor#(CacheInterface core1, CacheInterface core2)(Pa
         let req <- core1.sendReq();
         cacheL2.putFromProc(req);
         if (req.write == 0) order_req.enq(0);
-        $display("REQ1 ",fshow(req));
+        //$display("REQ1 ",fshow(req));
     endrule
 
     rule processUpgrade2;
@@ -72,7 +73,7 @@ module mkParentProtocolProcessor#(CacheInterface core1, CacheInterface core2)(Pa
     // (order_req.notEmpty())
     rule processReqRes;
         let resp <- cacheL2.getToProc();
-        $display("GOT RESP ",fshow(resp));
+        //$display("GOT RESP ",fshow(resp));
         if (order_req.first == 0) core1.connectL2L1Cache(resp);
         else core2.connectL2L1Cache(resp);
         order_req.deq();
@@ -83,8 +84,8 @@ endmodule
 module mkCacheInterface(CacheInterface);
     let verbose = False;
 
-    Cache32 cacheD <- mkCache32;
-    Cache32 cacheI <- mkCache32;
+    Cache32MC cacheD <- mkCache32MC;
+    Cache32MC cacheI <- mkCache32MC;
 
     FIFOF#(Bit#(1)) order_req <- mkFIFOF;
     // Cache cache4 <- mkCache;
@@ -110,7 +111,7 @@ module mkCacheInterface(CacheInterface);
 
     // rule cycle_disp;
     //     cycle <= cycle +1;
-    //     $display("CYCLE %d\n",cycle,fshow(order_req.notEmpty));
+    //     //$display("CYCLE %d\n",cycle,fshow(order_req.notEmpty));
     // endrule
 
 
@@ -119,7 +120,7 @@ module mkCacheInterface(CacheInterface);
     rule connectCacheInstrPPP;
         let lineReq <- cacheI.getToMem();
         upreqs.enq(lineReq);
-        $display("INSTR UPREQ ",fshow(lineReq));
+        //$display("INSTR UPREQ ",fshow(lineReq));
         order_req.enq(1);
     endrule
 
@@ -127,7 +128,7 @@ module mkCacheInterface(CacheInterface);
         let lineReq <- cacheD.getToMem();
         upreqs.enq(lineReq);
         if (lineReq.write == 0) order_req.enq(0);
-        $display("DATA UPREQ ",fshow(lineReq));
+        //$display("DATA UPREQ ",fshow(lineReq));
     endrule
 
     // rule connectDramCacheInstr;
@@ -150,8 +151,8 @@ module mkCacheInterface(CacheInterface);
 
 
     method Action sendReqData(CacheReq req);
-        cacheD.putFromProc(req);
-        $display("REQUESTING DATA ", fshow(req));
+        cacheD.putFromProc(req, 0);
+        //$display("REQUESTING DATA ", fshow(req));
         if (req.word_byte != 0) begin
             respD.enq(0);
         end
@@ -159,27 +160,27 @@ module mkCacheInterface(CacheInterface);
 
     method ActionValue#(Word) getRespData() if (respD.notEmpty());
         respD.deq();
-        $display("RETURNING DATA ",fshow(respD.first));
+        //$display("RETURNING DATA ",fshow(respD.first));
 
         return respD.first;
     endmethod
 
 
     method Action sendReqInstr(CacheReq req);
-        $display("REQUESTING INSTR ", fshow(req));
+        //$display("REQUESTING INSTR ", fshow(req));
 
-        cacheI.putFromProc(req);
+        cacheI.putFromProc(req, 1);
     endmethod
 
     method ActionValue#(Word) getRespInstr() if (respI.notEmpty());
-        $display("RETURNING INSTR ",fshow(respI.first));
+        //$display("RETURNING INSTR ",fshow(respI.first));
         respI.deq();
         return respI.first;
     endmethod
 
     method ActionValue#(MainMemReq) sendReq() if (upreqs.notEmpty());
         upreqs.deq();
-        $display("sending request to PPP ",fshow(upreqs.first));
+        //$display("sending request to PPP ",fshow(upreqs.first));
         return upreqs.first;
     endmethod
 
@@ -189,11 +190,12 @@ module mkCacheInterface(CacheInterface);
     endmethod
 
     method Action downgrade(CacheReq req);
-        cacheD.procDowngrade(req);
+        //$display("DOWNGRADE ",fshow(req));
+        cacheD.putFromProc(req, 1);
     endmethod
 
     method Action connectL2L1Cache(MainMemResp resp);
-        $display("connectL2L1Cache ",order_req.first);
+        //$display("connectL2L1Cache ",order_req.first);
         if (order_req.first == 0) cacheD.putFromMem(resp);
         if (order_req.first == 1) cacheI.putFromMem(resp);
         order_req.deq();

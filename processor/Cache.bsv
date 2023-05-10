@@ -68,14 +68,14 @@ module mkCache(Cache);
 
 
 
-  Reg#(Bit#(32)) cycle <- mkReg(0);
-  rule count;
-    cycle <= cycle+1;
-    //$display("CYCLE ",cycle, " " , fshow(working_v), " ", mshr, fshow(lockL1));
-  endrule
+  // Reg#(Bit#(32)) cycle <- mkReg(0);
+  // rule count;
+  //   cycle <= cycle+1;
+  //   ////$display("CYCLE ",cycle, " " , fshow(working_v), " ", mshr, fshow(lockL1));
+  // endrule
 
   rule req_process (working_v && mshr == 0 && lockL1);
-    //$display("req_process");
+    ////$display("req_process");
 
 
     let out <- bram.portA.response.get();
@@ -86,12 +86,12 @@ module mkCache(Cache);
       // let x = stb.search_res(working.memReq.addr);
       if (stb.notEmpty() && x.addr == working.memReq.addr) begin
         hitQ.enq(x.data);
-        //$display("READ HIT Q");
+        ////$display("READ HIT Q");
         working_v <= False;
       end 
       else if (out.tag==working.tag && out.valid != 0) begin
         hitQ.enq(out.data);
-        //$display("READ HIT");
+        ////$display("READ HIT");
         working_v <= False;
       end else begin
         missReq <= working.memReq;
@@ -104,7 +104,7 @@ module mkCache(Cache);
   endrule
 
   rule mvStbToL1 (mshr == 0 && !lockL1);
-    $display("mvStbToL1");
+    //$display("mvStbToL1");
     let e = stb.first;
     let bits = extract_bits(e.addr, ?);
     stb.deq();
@@ -128,18 +128,18 @@ module mkCache(Cache);
   // endrule
 
   rule startMiss(mshr==1);
-    //$display("startMiss",mshr,fshow(working.memReq));
+    ////$display("startMiss",mshr,fshow(working.memReq));
     if (working_line.valid == 2) begin
-      //$display("MISS DIRTY");
+      ////$display("MISS DIRTY");
       memReqQ.enq(MainMemReq{write:1, addr:{working_line.tag,working.idx},data:working_line.data});
     end
     mshr <= 2;
   endrule
 
   rule sendFillReq(mshr == 2);
-    //$display("sendFillReq");
+    ////$display("sendFillReq");
 
-      //$display("MISS GET FROM MEM");
+      ////$display("MISS GET FROM MEM");
       memReqQ.enq(working.memReq);
       mshr <= 3;
   endrule
@@ -148,13 +148,13 @@ module mkCache(Cache);
   // Reg#(Bit#(512)) fill_data <- mkReg(0);
 
   rule waitFillResp_Ld(mshr==3 && start_fill && working.memReq.write == 0);
-    $display("waitFillResp_ld");
+    //$display("waitFillResp_ld");
 
     // let data = fill_data;
     let m_working_req = working.memReq;
     if (memRespQ.notEmpty()) begin
       let data = memRespQ.first;
-      $display("READ MISS", fshow(data)); 
+      //$display("READ MISS", fshow(data)); 
       bram.portA.request.put(BRAMRequest{write: True, // False for read
                 responseOnWrite: False,
                 address: working.idx,
@@ -171,12 +171,12 @@ module mkCache(Cache);
 
 
   rule waitFillResp_St(mshr==3 && working.memReq.write == 1);
-    //$display("waitFillResp_st");
+    ////$display("waitFillResp_st");
 
     // let data = fill_data;
     let m_working_req = working.memReq;
   
-    //$display("WRITE MISS", fshow(working.memReq.data)); 
+    ////$display("WRITE MISS", fshow(working.memReq.data)); 
     bram.portA.request.put(BRAMRequest{write: True, // False for read
               responseOnWrite: False,
               address: working.idx,
@@ -189,7 +189,7 @@ module mkCache(Cache);
   // TODO Write a Cache
   method Action putFromProc(MainMemReq e) if (!working_v && mshr == 0);
   
-    $display("PFPL2 ",fshow(e));
+    //$display("PFPL2 ",fshow(e));
     let req = extract_bits(e.addr, e);
     bram.portA.request.put(BRAMRequest{write: False, // False for read
                         responseOnWrite: False,
@@ -202,20 +202,20 @@ module mkCache(Cache);
   method ActionValue#(MainMemResp) getToProc() if (hitQ.notEmpty());
     hitQ.deq();
     let r = hitQ.first;
-    $display("GTPL2 ", fshow(r));
+    //$display("GTPL2 ", fshow(r));
     return r;
   endmethod
 
   method ActionValue#(MainMemReq) getToMem() if (memReqQ.notEmpty);
     memReqQ.deq();
     let r = memReqQ.first;
-    $display("GTML2 ",fshow(r));
+    //$display("GTML2 ",fshow(r));
     return r;
   endmethod
 
   method Action putFromMem(MainMemResp e) if(!start_fill);
     start_fill <= True;
-    $display("PFML2 ",fshow(e));
+    //$display("PFML2 ",fshow(e));
     memRespQ.enq(e);
     // fill_data <= e;
   endmethod
