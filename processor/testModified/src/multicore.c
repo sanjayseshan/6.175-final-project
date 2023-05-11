@@ -1,21 +1,24 @@
 static volatile int input_data[8] = {0,1,2,3,4,5,6,7};
 static volatile int flag = 0;
 static volatile int acc_thread0 = 0;
+static volatile int acc_thread0lol = 42;
 
 char *s = "Success\n";
 char *f = "Failure\n";
 
 void program_thread0(){
-    acc_thread0 = 0;
+    // acc_thread0 = 0;
 
-    // putchar((char)flag);
-    // putchar((char)acc_thread0);
+    putchar((char)flag);
+    putchar((char)acc_thread0);
+    putchar((char)acc_thread0lol);
     for (int i = 0; i < 4; i++) {
         acc_thread0 += input_data[i];
         putchar(input_data[i]);
         putchar((char)acc_thread0);
 
     }
+    acc_thread0lol = acc_thread0;
     char *p;
 
     while (flag == 0); // Wait until thread1 produced the value
