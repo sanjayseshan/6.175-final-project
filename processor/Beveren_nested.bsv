@@ -3,7 +3,7 @@ import GetPut::*;
 import Randomizable::*;
 import MainMem::*;
 import MemTypes::*;
-import Cache32::*;
+import Cache32MC::*;
 import Cache::*;
 
 
@@ -12,7 +12,7 @@ module mkBeveren_nested(Empty);
     Randomize#(CacheReq) randomMem <- mkGenericRandomizer;
     MainMemFast mainRef <- mkMainMemFast(); //Initialize both to 0
     MainMem mainMem <- mkMainMem(); //Initialize both to 0
-    Cache32 cache <- mkCache32;
+    Cache32MC cache <- mkCache32MC;
     Cache cache2 <- mkCache;
     
     Reg#(Bit#(32)) deadlockChecker <- mkReg(0); 
@@ -62,7 +62,7 @@ module mkBeveren_nested(Empty);
        newreq.addr = {0,newreq.addr[5:2],2'b0};
        if ( newreq.word_byte == 0) counterIn <= counterIn + 1;
        mainRef.put(newreq);
-       cache.putFromProc(newreq);
+       cache.putFromProc(newreq, 0);
     endrule
 
     rule resps;

@@ -170,7 +170,7 @@ module mkCache32MC(Cache32MC);
                         address: working.idx,
                         datain: CacheReqLine{valid:2,tag:bits.tag}}); // CHANGED DATA
 
-        // mshr <= 1;
+        mshr <= 1;
 
         is_downgrade <= False;
       end else  begin
@@ -368,7 +368,7 @@ module mkCache32MC(Cache32MC);
       is_downgrade <= True;
     end
   
-    //$display("PFPL1 ",fshow(e), fshow(mshr));
+    $display("PFPL1 ",fshow(e), fshow(mshr));
     let req = extract_bits(e.addr, e);
     bram1.portA.request.put(BRAMRequest{write: False, // False for read
                         responseOnWrite: False,
@@ -387,21 +387,21 @@ module mkCache32MC(Cache32MC);
   method ActionValue#(Word) getToProc() if (hitQ.notEmpty());
     hitQ.deq();
     let r = hitQ.first;
-    //$display("GTPL1 ", fshow(r));
+    $display("GTPL1 ", fshow(r));
     return r;
   endmethod
 
   method ActionValue#(MainMemReq) getToMem();
     memReqQ.deq();
     let r = memReqQ.first;
-    //$display("GTML1 ",fshow(r));
+    $display("GTML1 ",fshow(r));
     return r;
   endmethod
 
   method Action putFromMem(MainMemResp e) ;
     // if(!start_fill)
     start_fill <= True;
-    //$display("PFM ",fshow(e));
+    $display("PFML1 ",fshow(e));
     memRespQ.enq(e);
     // fill_data <= e;
   endmethod
