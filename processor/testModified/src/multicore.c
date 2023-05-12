@@ -7,17 +7,17 @@ char *s = "Success\n";
 char *f = "Failure\n";
 
 void program_thread0(){
-    // acc_thread0 = 0;
+    acc_thread0 = 0;
 
-    putchar((char)flag);
-    putchar((char)acc_thread0);
-    putchar((char)acc_thread0lol);
     for (int i = 0; i < 4; i++) {
         acc_thread0 += input_data[i];
         putchar(input_data[i]);
         putchar((char)acc_thread0);
 
     }
+    putchar((char)flag);
+    putchar((char)acc_thread0);
+    putchar((char)acc_thread0lol);
     acc_thread0lol = acc_thread0;
     char *p;
 

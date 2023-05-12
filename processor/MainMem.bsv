@@ -21,7 +21,7 @@ endinterface
 module mkMainMemFast(MainMemFast);
     BRAM_Configure cfg = defaultValue();
     cfg.loadFormat = tagged Hex "mem.vmh";
-    BRAM1PortBE#(CacheLineAddr, Word, 4) bram <- mkBRAM1ServerBE(cfg);
+    BRAM1PortBE#(Bit#(30), Word, 4) bram <- mkBRAM1ServerBE(cfg);
     DelayLine#(10, Word) dl <- mkDL(); // Delay by 20 cycles
 
     rule deq;
@@ -33,7 +33,7 @@ module mkMainMemFast(MainMemFast);
         bram.portA.request.put(BRAMRequestBE{
                     writeen: req.word_byte,
                     responseOnWrite: False,
-                    address: req.addr,
+                    address: req.addr[31:2],
                     datain: req.data});
     endmethod
 

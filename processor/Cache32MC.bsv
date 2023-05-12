@@ -107,11 +107,11 @@ module mkCache32MC(Cache32MC);
 
 
 
-  Reg#(Bit#(32)) cycle <- mkReg(0);
-  rule count;
-    cycle <= cycle+1;
-    //$display("CYCLE ",cycle, " " , fshow(working_v), " ", mshr, fshow(lockL1));
-  endrule
+  // Reg#(Bit#(32)) cycle <- mkReg(0);
+  // rule count;
+  //   cycle <= cycle+1;
+  //   //$display("CYCLE ",cycle, " " , fshow(working_v), " ", mshr, fshow(lockL1));
+  // endrule
 
   rule req_process (working_v && mshr == 0 && lockL1);
     // ////$display("req_process");
@@ -368,7 +368,7 @@ module mkCache32MC(Cache32MC);
       is_downgrade <= True;
     end
   
-    $display("PFPL1 ",fshow(e), fshow(mshr));
+    // $display("PFPL1 ",fshow(e), fshow(mshr));
     let req = extract_bits(e.addr, e);
     bram1.portA.request.put(BRAMRequest{write: False, // False for read
                         responseOnWrite: False,
@@ -387,21 +387,21 @@ module mkCache32MC(Cache32MC);
   method ActionValue#(Word) getToProc() if (hitQ.notEmpty());
     hitQ.deq();
     let r = hitQ.first;
-    $display("GTPL1 ", fshow(r));
+    // $display("GTPL1 ", fshow(r));
     return r;
   endmethod
 
   method ActionValue#(MainMemReq) getToMem();
     memReqQ.deq();
     let r = memReqQ.first;
-    $display("GTML1 ",fshow(r));
+    // $display("GTML1 ",fshow(r));
     return r;
   endmethod
 
   method Action putFromMem(MainMemResp e) ;
     // if(!start_fill)
     start_fill <= True;
-    $display("PFML1 ",fshow(e));
+    // $display("PFML1 ",fshow(e));
     memRespQ.enq(e);
     // fill_data <= e;
   endmethod

@@ -78,10 +78,6 @@ Predicate: cache1_cacheD_bram2_serverAdapter_s1[1] &&
 	    (! cache1_cacheD_bram2_serverAdapter_outData_ff.i_notFull))
 Blocking rules: (none)
  
-Rule: cache1_cacheD_count
-Predicate: True
-Blocking rules: (none)
- 
 Rule: cache1_cacheD_req_process
 Predicate: cache1_cacheD_bram1_serverAdapter_outData_beforeDeq.read &&
 	   (cache1_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty ||
@@ -235,10 +231,6 @@ Predicate: cache1_cacheI_bram2_serverAdapter_s1[1] &&
 	   ((! cache1_cacheI_bram2_serverAdapter_outData_beforeEnq.read) ||
 	    (! cache1_cacheI_bram2_serverAdapter_outData_beforeDeq.read) ||
 	    (! cache1_cacheI_bram2_serverAdapter_outData_ff.i_notFull))
-Blocking rules: (none)
- 
-Rule: cache1_cacheI_count
-Predicate: True
 Blocking rules: (none)
  
 Rule: cache1_cacheI_req_process
@@ -417,10 +409,6 @@ Predicate: cache2_cacheD_bram2_serverAdapter_s1[1] &&
 	    (! cache2_cacheD_bram2_serverAdapter_outData_ff.i_notFull))
 Blocking rules: (none)
  
-Rule: cache2_cacheD_count
-Predicate: True
-Blocking rules: (none)
- 
 Rule: cache2_cacheD_req_process
 Predicate: cache2_cacheD_bram1_serverAdapter_outData_beforeDeq.read &&
 	   (cache2_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty ||
@@ -574,10 +562,6 @@ Predicate: cache2_cacheI_bram2_serverAdapter_s1[1] &&
 	   ((! cache2_cacheI_bram2_serverAdapter_outData_beforeEnq.read) ||
 	    (! cache2_cacheI_bram2_serverAdapter_outData_beforeDeq.read) ||
 	    (! cache2_cacheI_bram2_serverAdapter_outData_ff.i_notFull))
-Blocking rules: (none)
- 
-Rule: cache2_cacheI_count
-Predicate: True
 Blocking rules: (none)
  
 Rule: cache2_cacheI_req_process
@@ -1040,7 +1024,6 @@ Logical execution order: tic,
 			 requestMMIO2,
 			 cache1_respsI,
 			 cache1_respsD,
-			 cache1_cacheD_count,
 			 cache1_cacheD_mvStbToL1,
 			 cache1_cacheD_startMiss,
 			 cache1_cacheD_sendFillReq,
@@ -1055,7 +1038,6 @@ Logical execution order: tic,
 			 cache1_cacheD_bram1_serverAdapter_outData_dequeue,
 			 cache1_cacheD_bram2_serverAdapter_outData_enqueue,
 			 cache1_cacheD_bram2_serverAdapter_outData_dequeue,
-			 cache1_cacheI_count,
 			 cache1_cacheI_mvStbToL1,
 			 cache1_cacheI_startMiss,
 			 cache1_cacheI_sendFillReq,
@@ -1078,7 +1060,6 @@ Logical execution order: tic,
 			 cache1_cacheI_bram2_serverAdapter_s1__dreg_update,
 			 cache2_respsI,
 			 cache2_respsD,
-			 cache2_cacheD_count,
 			 cache2_cacheD_mvStbToL1,
 			 cache2_cacheD_startMiss,
 			 cache2_cacheD_sendFillReq,
@@ -1093,7 +1074,6 @@ Logical execution order: tic,
 			 cache2_cacheD_bram1_serverAdapter_outData_dequeue,
 			 cache2_cacheD_bram2_serverAdapter_outData_enqueue,
 			 cache2_cacheD_bram2_serverAdapter_outData_dequeue,
-			 cache2_cacheI_count,
 			 cache2_cacheI_mvStbToL1,
 			 cache2_cacheI_startMiss,
 			 cache2_cacheI_sendFillReq,

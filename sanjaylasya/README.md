@@ -1,0 +1,1 @@
+# 6.1920_aws_template
