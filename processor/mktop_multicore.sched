@@ -86,35 +86,33 @@ Predicate: cache1_cacheD_bram1_serverAdapter_outData_beforeDeq.read &&
 	   (cache1_cacheD_bram2_serverAdapter_outData_ff.i_notEmpty ||
 	    cache1_cacheD_bram2_serverAdapter_outData_enqw.whas) &&
 	   ((cache1_cacheD_working[71:68] == 4'd0)
-	    ? ((! cache1_cacheD_stb.notEmpty) ||
-	       cache1_cacheD_stb.i_notEmpty) &&
-	      ((cache1_cacheD_stb.notEmpty &&
-		(cache1_cacheD_stb.first[67:36] ==
-		 cache1_cacheD_working[67:36]))
-	       ? cache1_cacheD_stb.i_notEmpty && cache1_cacheD_hitQ.i_notFull
-	       : ((! ((cache1_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
-		       ? cache1_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
-		       : (cache1_cacheD_bram1_serverAdapter_outData_enqw.whas
-			  ? cache1_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
-			  : (_ :: Bit 19))) ==
-		      cache1_cacheD_working[97:79])) ||
-		  ((cache1_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
-		    ? cache1_cacheD_bram1_serverAdapter_outData_ff.first[20:19]
+	    ? (! ((cache1_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
+		   ? cache1_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
+		   : (cache1_cacheD_bram1_serverAdapter_outData_enqw.whas
+		      ? cache1_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
+		      : (_ :: Bit 19))) ==
+		  cache1_cacheD_working[97:79])) ||
+	      ((cache1_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
+		? cache1_cacheD_bram1_serverAdapter_outData_ff.first[20:19]
+		: (cache1_cacheD_bram1_serverAdapter_outData_enqw.whas
+		   ? cache1_cacheD_bram1_serverAdapter_outData_enqw.wget[20:19]
+		   : (_ :: Bit 2))) ==
+	       2'd0) ||
+	      cache1_cacheD_hitQ.i_notFull
+	    : ((! (cache1_cacheD_working[67:49] ==
+		   (cache1_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
+		    ? cache1_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
 		    : (cache1_cacheD_bram1_serverAdapter_outData_enqw.whas
-		       ? cache1_cacheD_bram1_serverAdapter_outData_enqw.wget[20:19]
-		       : (_ :: Bit 2))) ==
-		   2'd0) ||
-		  cache1_cacheD_hitQ.i_notFull))
-	    : ((cache1_cacheD_working[71:68] == 4'b1111)
-	       ? cache1_cacheD_stb.i_notFull
-	       : ((! (cache1_cacheD_working[67:49] ==
-		      (cache1_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
-		       ? cache1_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
-		       : (cache1_cacheD_bram1_serverAdapter_outData_enqw.whas
-			  ? cache1_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
-			  : (_ :: Bit 19))))) ||
-		  ((cache1_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
-		   (cache1_cacheD_bram1_serverAdapter_cnt .< 3'd3))))) &&
+		       ? cache1_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
+		       : (_ :: Bit 19))))) ||
+	       ((cache1_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
+		 ? cache1_cacheD_bram1_serverAdapter_outData_ff.first[20:19]
+		 : (cache1_cacheD_bram1_serverAdapter_outData_enqw.whas
+		    ? cache1_cacheD_bram1_serverAdapter_outData_enqw.wget[20:19]
+		    : (_ :: Bit 2))) ==
+		2'd0) ||
+	       ((cache1_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
+		(cache1_cacheD_bram1_serverAdapter_cnt .< 3'd3)))) &&
 	   cache1_cacheD_working_v && (cache1_cacheD_mshr == 2'd0) &&
 	   cache1_cacheD_lockL1
 Blocking rules: (none)
@@ -241,35 +239,33 @@ Predicate: cache1_cacheI_bram1_serverAdapter_outData_beforeDeq.read &&
 	   (cache1_cacheI_bram2_serverAdapter_outData_ff.i_notEmpty ||
 	    cache1_cacheI_bram2_serverAdapter_outData_enqw.whas) &&
 	   ((cache1_cacheI_working[71:68] == 4'd0)
-	    ? ((! cache1_cacheI_stb.notEmpty) ||
-	       cache1_cacheI_stb.i_notEmpty) &&
-	      ((cache1_cacheI_stb.notEmpty &&
-		(cache1_cacheI_stb.first[67:36] ==
-		 cache1_cacheI_working[67:36]))
-	       ? cache1_cacheI_stb.i_notEmpty && cache1_cacheI_hitQ.i_notFull
-	       : ((! ((cache1_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
-		       ? cache1_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
-		       : (cache1_cacheI_bram1_serverAdapter_outData_enqw.whas
-			  ? cache1_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
-			  : (_ :: Bit 19))) ==
-		      cache1_cacheI_working[97:79])) ||
-		  ((cache1_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
-		    ? cache1_cacheI_bram1_serverAdapter_outData_ff.first[20:19]
+	    ? (! ((cache1_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
+		   ? cache1_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
+		   : (cache1_cacheI_bram1_serverAdapter_outData_enqw.whas
+		      ? cache1_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
+		      : (_ :: Bit 19))) ==
+		  cache1_cacheI_working[97:79])) ||
+	      ((cache1_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
+		? cache1_cacheI_bram1_serverAdapter_outData_ff.first[20:19]
+		: (cache1_cacheI_bram1_serverAdapter_outData_enqw.whas
+		   ? cache1_cacheI_bram1_serverAdapter_outData_enqw.wget[20:19]
+		   : (_ :: Bit 2))) ==
+	       2'd0) ||
+	      cache1_cacheI_hitQ.i_notFull
+	    : ((! (cache1_cacheI_working[67:49] ==
+		   (cache1_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
+		    ? cache1_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
 		    : (cache1_cacheI_bram1_serverAdapter_outData_enqw.whas
-		       ? cache1_cacheI_bram1_serverAdapter_outData_enqw.wget[20:19]
-		       : (_ :: Bit 2))) ==
-		   2'd0) ||
-		  cache1_cacheI_hitQ.i_notFull))
-	    : ((cache1_cacheI_working[71:68] == 4'b1111)
-	       ? cache1_cacheI_stb.i_notFull
-	       : ((! (cache1_cacheI_working[67:49] ==
-		      (cache1_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
-		       ? cache1_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
-		       : (cache1_cacheI_bram1_serverAdapter_outData_enqw.whas
-			  ? cache1_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
-			  : (_ :: Bit 19))))) ||
-		  ((cache1_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
-		   (cache1_cacheI_bram1_serverAdapter_cnt .< 3'd3))))) &&
+		       ? cache1_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
+		       : (_ :: Bit 19))))) ||
+	       ((cache1_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
+		 ? cache1_cacheI_bram1_serverAdapter_outData_ff.first[20:19]
+		 : (cache1_cacheI_bram1_serverAdapter_outData_enqw.whas
+		    ? cache1_cacheI_bram1_serverAdapter_outData_enqw.wget[20:19]
+		    : (_ :: Bit 2))) ==
+		2'd0) ||
+	       ((cache1_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
+		(cache1_cacheI_bram1_serverAdapter_cnt .< 3'd3)))) &&
 	   cache1_cacheI_working_v && (cache1_cacheI_mshr == 2'd0) &&
 	   cache1_cacheI_lockL1
 Blocking rules: (none)
@@ -417,35 +413,33 @@ Predicate: cache2_cacheD_bram1_serverAdapter_outData_beforeDeq.read &&
 	   (cache2_cacheD_bram2_serverAdapter_outData_ff.i_notEmpty ||
 	    cache2_cacheD_bram2_serverAdapter_outData_enqw.whas) &&
 	   ((cache2_cacheD_working[71:68] == 4'd0)
-	    ? ((! cache2_cacheD_stb.notEmpty) ||
-	       cache2_cacheD_stb.i_notEmpty) &&
-	      ((cache2_cacheD_stb.notEmpty &&
-		(cache2_cacheD_stb.first[67:36] ==
-		 cache2_cacheD_working[67:36]))
-	       ? cache2_cacheD_stb.i_notEmpty && cache2_cacheD_hitQ.i_notFull
-	       : ((! ((cache2_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
-		       ? cache2_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
-		       : (cache2_cacheD_bram1_serverAdapter_outData_enqw.whas
-			  ? cache2_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
-			  : (_ :: Bit 19))) ==
-		      cache2_cacheD_working[97:79])) ||
-		  ((cache2_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
-		    ? cache2_cacheD_bram1_serverAdapter_outData_ff.first[20:19]
+	    ? (! ((cache2_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
+		   ? cache2_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
+		   : (cache2_cacheD_bram1_serverAdapter_outData_enqw.whas
+		      ? cache2_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
+		      : (_ :: Bit 19))) ==
+		  cache2_cacheD_working[97:79])) ||
+	      ((cache2_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
+		? cache2_cacheD_bram1_serverAdapter_outData_ff.first[20:19]
+		: (cache2_cacheD_bram1_serverAdapter_outData_enqw.whas
+		   ? cache2_cacheD_bram1_serverAdapter_outData_enqw.wget[20:19]
+		   : (_ :: Bit 2))) ==
+	       2'd0) ||
+	      cache2_cacheD_hitQ.i_notFull
+	    : ((! (cache2_cacheD_working[67:49] ==
+		   (cache2_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
+		    ? cache2_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
 		    : (cache2_cacheD_bram1_serverAdapter_outData_enqw.whas
-		       ? cache2_cacheD_bram1_serverAdapter_outData_enqw.wget[20:19]
-		       : (_ :: Bit 2))) ==
-		   2'd0) ||
-		  cache2_cacheD_hitQ.i_notFull))
-	    : ((cache2_cacheD_working[71:68] == 4'b1111)
-	       ? cache2_cacheD_stb.i_notFull
-	       : ((! (cache2_cacheD_working[67:49] ==
-		      (cache2_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
-		       ? cache2_cacheD_bram1_serverAdapter_outData_ff.first[18:0]
-		       : (cache2_cacheD_bram1_serverAdapter_outData_enqw.whas
-			  ? cache2_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
-			  : (_ :: Bit 19))))) ||
-		  ((cache2_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
-		   (cache2_cacheD_bram1_serverAdapter_cnt .< 3'd3))))) &&
+		       ? cache2_cacheD_bram1_serverAdapter_outData_enqw.wget[18:0]
+		       : (_ :: Bit 19))))) ||
+	       ((cache2_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty
+		 ? cache2_cacheD_bram1_serverAdapter_outData_ff.first[20:19]
+		 : (cache2_cacheD_bram1_serverAdapter_outData_enqw.whas
+		    ? cache2_cacheD_bram1_serverAdapter_outData_enqw.wget[20:19]
+		    : (_ :: Bit 2))) ==
+		2'd0) ||
+	       ((cache2_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
+		(cache2_cacheD_bram1_serverAdapter_cnt .< 3'd3)))) &&
 	   cache2_cacheD_working_v && (cache2_cacheD_mshr == 2'd0) &&
 	   cache2_cacheD_lockL1
 Blocking rules: (none)
@@ -572,35 +566,33 @@ Predicate: cache2_cacheI_bram1_serverAdapter_outData_beforeDeq.read &&
 	   (cache2_cacheI_bram2_serverAdapter_outData_ff.i_notEmpty ||
 	    cache2_cacheI_bram2_serverAdapter_outData_enqw.whas) &&
 	   ((cache2_cacheI_working[71:68] == 4'd0)
-	    ? ((! cache2_cacheI_stb.notEmpty) ||
-	       cache2_cacheI_stb.i_notEmpty) &&
-	      ((cache2_cacheI_stb.notEmpty &&
-		(cache2_cacheI_stb.first[67:36] ==
-		 cache2_cacheI_working[67:36]))
-	       ? cache2_cacheI_stb.i_notEmpty && cache2_cacheI_hitQ.i_notFull
-	       : ((! ((cache2_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
-		       ? cache2_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
-		       : (cache2_cacheI_bram1_serverAdapter_outData_enqw.whas
-			  ? cache2_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
-			  : (_ :: Bit 19))) ==
-		      cache2_cacheI_working[97:79])) ||
-		  ((cache2_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
-		    ? cache2_cacheI_bram1_serverAdapter_outData_ff.first[20:19]
+	    ? (! ((cache2_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
+		   ? cache2_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
+		   : (cache2_cacheI_bram1_serverAdapter_outData_enqw.whas
+		      ? cache2_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
+		      : (_ :: Bit 19))) ==
+		  cache2_cacheI_working[97:79])) ||
+	      ((cache2_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
+		? cache2_cacheI_bram1_serverAdapter_outData_ff.first[20:19]
+		: (cache2_cacheI_bram1_serverAdapter_outData_enqw.whas
+		   ? cache2_cacheI_bram1_serverAdapter_outData_enqw.wget[20:19]
+		   : (_ :: Bit 2))) ==
+	       2'd0) ||
+	      cache2_cacheI_hitQ.i_notFull
+	    : ((! (cache2_cacheI_working[67:49] ==
+		   (cache2_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
+		    ? cache2_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
 		    : (cache2_cacheI_bram1_serverAdapter_outData_enqw.whas
-		       ? cache2_cacheI_bram1_serverAdapter_outData_enqw.wget[20:19]
-		       : (_ :: Bit 2))) ==
-		   2'd0) ||
-		  cache2_cacheI_hitQ.i_notFull))
-	    : ((cache2_cacheI_working[71:68] == 4'b1111)
-	       ? cache2_cacheI_stb.i_notFull
-	       : ((! (cache2_cacheI_working[67:49] ==
-		      (cache2_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
-		       ? cache2_cacheI_bram1_serverAdapter_outData_ff.first[18:0]
-		       : (cache2_cacheI_bram1_serverAdapter_outData_enqw.whas
-			  ? cache2_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
-			  : (_ :: Bit 19))))) ||
-		  ((cache2_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
-		   (cache2_cacheI_bram1_serverAdapter_cnt .< 3'd3))))) &&
+		       ? cache2_cacheI_bram1_serverAdapter_outData_enqw.wget[18:0]
+		       : (_ :: Bit 19))))) ||
+	       ((cache2_cacheI_bram1_serverAdapter_outData_ff.i_notEmpty
+		 ? cache2_cacheI_bram1_serverAdapter_outData_ff.first[20:19]
+		 : (cache2_cacheI_bram1_serverAdapter_outData_enqw.whas
+		    ? cache2_cacheI_bram1_serverAdapter_outData_enqw.wget[20:19]
+		    : (_ :: Bit 2))) ==
+		2'd0) ||
+	       ((cache2_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
+		(cache2_cacheI_bram1_serverAdapter_cnt .< 3'd3)))) &&
 	   cache2_cacheI_working_v && (cache2_cacheI_mshr == 2'd0) &&
 	   cache2_cacheI_lockL1
 Blocking rules: (none)

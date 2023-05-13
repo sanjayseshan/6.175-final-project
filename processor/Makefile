@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := all
 BUILD_DIR=build
-BINARY_NAME=multicycle top_bsv top_pipelined Beveren_nested top_multicore
+BINARY_NAME=multicycle top_bsv top_pipelined Beveren_nested top_multicore top_pipelined_mem
 BSC_FLAGS=--aggressive-conditions --show-schedule -vdir $(BUILD_DIR) -bdir $(BUILD_DIR) -simdir $(BUILD_DIR) -o 
 
 .PHONY: clean all $(BINARY_NAME)

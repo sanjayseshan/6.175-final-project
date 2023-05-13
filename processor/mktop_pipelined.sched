@@ -273,10 +273,6 @@ Predicate: cache_cacheD_bram2_serverAdapter_s1[1] &&
 	    (! cache_cacheD_bram2_serverAdapter_outData_ff.i_notFull))
 Blocking rules: (none)
  
-Rule: cache_cacheD_count
-Predicate: True
-Blocking rules: (none)
- 
 Rule: cache_cacheD_req_process
 Predicate: cache_cacheD_bram1_serverAdapter_outData_beforeDeq.read &&
 	   (cache_cacheD_bram1_serverAdapter_outData_ff.i_notEmpty ||
@@ -392,10 +388,6 @@ Predicate: cache_cacheL2_bram_serverAdapter_s1[1] &&
 	   ((! cache_cacheL2_bram_serverAdapter_outData_beforeEnq.read) ||
 	    (! cache_cacheL2_bram_serverAdapter_outData_beforeDeq.read) ||
 	    (! cache_cacheL2_bram_serverAdapter_outData_ff.i_notFull))
-Blocking rules: (none)
- 
-Rule: cache_cacheL2_count
-Predicate: True
 Blocking rules: (none)
  
 Rule: cache_cacheL2_req_process
@@ -533,10 +525,6 @@ Predicate: cache_cacheI_bram2_serverAdapter_s1[1] &&
 	   ((! cache_cacheI_bram2_serverAdapter_outData_beforeEnq.read) ||
 	    (! cache_cacheI_bram2_serverAdapter_outData_beforeDeq.read) ||
 	    (! cache_cacheI_bram2_serverAdapter_outData_ff.i_notFull))
-Blocking rules: (none)
- 
-Rule: cache_cacheI_count
-Predicate: True
 Blocking rules: (none)
  
 Rule: cache_cacheI_req_process
@@ -754,7 +742,6 @@ Logical execution order: tic,
 			 cache_mainMem_bram_serverAdapter_outData_enqueue,
 			 cache_mainMem_bram_serverAdapter_outData_dequeue,
 			 cache_mainMem_bram_serverAdapter_cnt_finalAdd,
-			 cache_cacheD_count,
 			 cache_cacheD_mvStbToL1,
 			 cache_cacheD_startMiss,
 			 cache_cacheD_sendFillReq,
@@ -775,7 +762,6 @@ Logical execution order: tic,
 			 cache_cacheD_bram2_serverAdapter_outData_dequeue,
 			 cache_cacheD_bram2_serverAdapter_cnt_finalAdd,
 			 cache_cacheD_bram2_serverAdapter_s1__dreg_update,
-			 cache_cacheL2_count,
 			 cache_cacheL2_mvStbToL1,
 			 cache_cacheL2_startMiss,
 			 cache_cacheL2_sendFillReq,
@@ -789,7 +775,6 @@ Logical execution order: tic,
 			 cache_cacheL2_bram_serverAdapter_outData_dequeue,
 			 cache_cacheL2_bram_serverAdapter_cnt_finalAdd,
 			 cache_cacheL2_bram_serverAdapter_s1__dreg_update,
-			 cache_cacheI_count,
 			 cache_cacheI_mvStbToL1,
 			 cache_cacheI_startMiss,
 			 cache_cacheI_sendFillReq,

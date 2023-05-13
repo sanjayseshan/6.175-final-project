@@ -1,6 +1,8 @@
 """
 martinch@mit.edu for 6.1920 Spring 2023 final project
 
+Updated by seshan@mit.edu and lasyab@mit.edus
+
 Converts mem.vmh with Word (32 bits) on each line to a memlines.vmh with a Line (512 bits) on each line.
 
 The lines run right to left, but the words run left to right. Something
@@ -22,13 +24,15 @@ Strategy:
 """
 def to_string(list_of_words):
     list_of_words.reverse()
-    output = "".join(list_of_words).lstrip("0")
+    output = "".join(list_of_words)
+    # .lstrip("0")
 
     if not output:
         output = "0"
 
     list_of_words.clear()
-    return output + "\n"
+    #  
+    return "a"*(128-len(output)) + output + "\n"
 
 def main():
     with open("mem.vmh") as input, open("memlines.vmh", "w") as output:
@@ -44,11 +48,6 @@ def main():
                 current_word = 0
 
                 num = line[1:-2]
-                # print(line,num)
-                # num = hex(line[1:])
-                # if (num % 10 != 0):
-                #     raise ValueError("Need to check the line addresses are divisible by 0x10")
-                # num = num // 10
 
                 output.write("@" + str(num) + "\n")
                 continue

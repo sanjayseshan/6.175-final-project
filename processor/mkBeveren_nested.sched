@@ -288,10 +288,6 @@ Predicate: cache_bram2_serverAdapter_s1[1] &&
 	    (! cache_bram2_serverAdapter_outData_ff.i_notFull))
 Blocking rules: (none)
  
-Rule: cache_count
-Predicate: True
-Blocking rules: (none)
- 
 Rule: cache_req_process
 Predicate: cache_bram1_serverAdapter_outData_beforeDeq.read &&
 	   (cache_bram1_serverAdapter_outData_ff.i_notEmpty ||
@@ -300,33 +296,33 @@ Predicate: cache_bram1_serverAdapter_outData_beforeDeq.read &&
 	   (cache_bram2_serverAdapter_outData_ff.i_notEmpty ||
 	    cache_bram2_serverAdapter_outData_enqw.whas) &&
 	   ((cache_working[71:68] == 4'd0)
-	    ? ((! cache_stb.notEmpty) || cache_stb.i_notEmpty) &&
-	      ((cache_stb.notEmpty &&
-		(cache_stb.first[67:36] == cache_working[67:36]))
-	       ? cache_stb.i_notEmpty && cache_hitQ.i_notFull
-	       : ((! ((cache_bram1_serverAdapter_outData_ff.i_notEmpty
-		       ? cache_bram1_serverAdapter_outData_ff.first[18:0]
-		       : (cache_bram1_serverAdapter_outData_enqw.whas
-			  ? cache_bram1_serverAdapter_outData_enqw.wget[18:0]
-			  : (_ :: Bit 19))) ==
-		      cache_working[97:79])) ||
-		  ((cache_bram1_serverAdapter_outData_ff.i_notEmpty
-		    ? cache_bram1_serverAdapter_outData_ff.first[20:19]
+	    ? (! ((cache_bram1_serverAdapter_outData_ff.i_notEmpty
+		   ? cache_bram1_serverAdapter_outData_ff.first[18:0]
+		   : (cache_bram1_serverAdapter_outData_enqw.whas
+		      ? cache_bram1_serverAdapter_outData_enqw.wget[18:0]
+		      : (_ :: Bit 19))) ==
+		  cache_working[97:79])) ||
+	      ((cache_bram1_serverAdapter_outData_ff.i_notEmpty
+		? cache_bram1_serverAdapter_outData_ff.first[20:19]
+		: (cache_bram1_serverAdapter_outData_enqw.whas
+		   ? cache_bram1_serverAdapter_outData_enqw.wget[20:19]
+		   : (_ :: Bit 2))) ==
+	       2'd0) ||
+	      cache_hitQ.i_notFull
+	    : ((! (cache_working[67:49] ==
+		   (cache_bram1_serverAdapter_outData_ff.i_notEmpty
+		    ? cache_bram1_serverAdapter_outData_ff.first[18:0]
 		    : (cache_bram1_serverAdapter_outData_enqw.whas
-		       ? cache_bram1_serverAdapter_outData_enqw.wget[20:19]
-		       : (_ :: Bit 2))) ==
-		   2'd0) ||
-		  cache_hitQ.i_notFull))
-	    : ((cache_working[71:68] == 4'b1111)
-	       ? cache_stb.i_notFull
-	       : ((! (cache_working[67:49] ==
-		      (cache_bram1_serverAdapter_outData_ff.i_notEmpty
-		       ? cache_bram1_serverAdapter_outData_ff.first[18:0]
-		       : (cache_bram1_serverAdapter_outData_enqw.whas
-			  ? cache_bram1_serverAdapter_outData_enqw.wget[18:0]
-			  : (_ :: Bit 19))))) ||
-		  ((cache_bram2_serverAdapter_cnt .< 3'd3) &&
-		   (cache_bram1_serverAdapter_cnt .< 3'd3))))) &&
+		       ? cache_bram1_serverAdapter_outData_enqw.wget[18:0]
+		       : (_ :: Bit 19))))) ||
+	       ((cache_bram1_serverAdapter_outData_ff.i_notEmpty
+		 ? cache_bram1_serverAdapter_outData_ff.first[20:19]
+		 : (cache_bram1_serverAdapter_outData_enqw.whas
+		    ? cache_bram1_serverAdapter_outData_enqw.wget[20:19]
+		    : (_ :: Bit 2))) ==
+		2'd0) ||
+	       ((cache_bram2_serverAdapter_cnt .< 3'd3) &&
+		(cache_bram1_serverAdapter_cnt .< 3'd3)))) &&
 	   cache_working_v && (cache_mshr == 2'd0) && cache_lockL1
 Blocking rules: (none)
  
@@ -435,7 +431,7 @@ Predicate: cache2_stb.i_notEmpty &&
 	   ((! (cache2_stb.first[537:520] == cache2_working_line[529:512])) ||
 	    (cache2_bram_serverAdapter_cnt .< 3'd3)) &&
 	   (cache2_mshr == 2'd0) && (! cache2_lockL1)
-Blocking rules: connectCacheL1L2
+Blocking rules: (none)
  
 Rule: cache2_startMiss
 Predicate: ((! (cache2_working_line[531:530] == 2'd2)) ||
@@ -461,25 +457,13 @@ Predicate: (cache2_bram_serverAdapter_cnt .< 3'd3) &&
 	   (cache2_mshr == 2'd3) && cache2_working[538]
 Blocking rules: (none)
  
-Rule: connectCacheL1L2
-Predicate: (! cache2_working_v) && (cache2_mshr == 2'd0) &&
-	   (cache2_bram_serverAdapter_cnt .< 3'd3) && cache_memReqQ.i_notEmpty
-Blocking rules: (none)
- 
-Rule: connectL2L1Cache
-Predicate: cache2_hitQ.notEmpty &&
-	   cache2_hitQ.i_notEmpty && cache_memRespQ.i_notFull
-Blocking rules: (none)
- 
 Rule: connectCacheDram
-Predicate: cache2_memReqQ.notEmpty &&
-	   cache2_memReqQ.i_notEmpty &&
+Predicate: cache_memReqQ.i_notEmpty &&
 	   (mainMem_bram_serverAdapter_cnt .< 3'd3)
 Blocking rules: (none)
  
 Rule: connectDramCache
-Predicate: (! cache2_start_fill) &&
-	   mainMem_dl_d_19_rv.port0__read[512] && cache2_memRespQ.i_notFull
+Predicate: mainMem_dl_d_19_rv.port0__read[512] && cache_memRespQ.i_notFull
 Blocking rules: (none)
  
 Rule: start
@@ -509,9 +493,7 @@ Rule: deadlockerC
 Predicate: True
 Blocking rules: (none)
  
-Logical execution order: connectCacheL1L2,
-			 connectCacheDram,
-			 connectDramCache,
+Logical execution order: connectCacheDram,
 			 resps,
 			 deadlockerC,
 			 randomMem_every,
@@ -539,6 +521,12 @@ Logical execution order: connectCacheL1L2,
 			 mainMem_bram_serverAdapter_overRun,
 			 mainMem_bram_serverAdapter_moveToOutFIFO,
 			 mainMem_bram_serverAdapter_s1__dreg_update,
+			 cache_mvStbToL1,
+			 cache_startMiss,
+			 cache_sendFillReq,
+			 cache_waitFillResp_Ld,
+			 cache_waitFillResp_St,
+			 connectDramCache,
 			 mainMem_dl_try_move,
 			 mainMem_dl_try_move_1,
 			 mainMem_dl_try_move_2,
@@ -562,13 +550,6 @@ Logical execution order: connectCacheL1L2,
 			 mainMem_bram_serverAdapter_outData_enqueue,
 			 mainMem_bram_serverAdapter_outData_dequeue,
 			 mainMem_bram_serverAdapter_cnt_finalAdd,
-			 cache_count,
-			 cache_mvStbToL1,
-			 cache_startMiss,
-			 cache_sendFillReq,
-			 cache_waitFillResp_Ld,
-			 cache_waitFillResp_St,
-			 connectL2L1Cache,
 			 cache_bram1_serverAdapter_overRun,
 			 cache_bram1_serverAdapter_moveToOutFIFO,
 			 cache_bram2_serverAdapter_overRun,

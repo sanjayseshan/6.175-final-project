@@ -46,6 +46,7 @@ endinterface
 module mkCache(Cache);
   BRAM_Configure cfg = defaultValue;
   BRAM1Port#(IndexAddr, CacheReq512Line) bram <- mkBRAM1Server(cfg);
+  cfg.loadFormat = tagged Binary "zero512.vmh";
 
 
   Reg#(CacheReq512) working <- mkReg(unpack(0));

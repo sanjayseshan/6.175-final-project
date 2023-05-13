@@ -20,34 +20,34 @@ module mkBeveren_nested(Empty);
     Reg#(Bit#(32)) counterOut <- mkReg(0); 
     Reg#(Bool) doinit <- mkReg(True);
 
-    rule connectCacheL1L2;
-        let lineReq <- cache.getToMem();
-        cache2.putFromProc(lineReq);
-    endrule
-    rule connectL2L1Cache;
-        let resp <- cache2.getToProc();
-        cache.putFromMem(resp);
-    endrule
-
-    rule connectCacheDram;
-        let lineReq <- cache2.getToMem();
-        mainMem.put(lineReq);
-    endrule
-
-    rule connectDramCache;
-        let resp <- mainMem.get;
-        cache2.putFromMem(resp);
-    endrule
-
-    
-    // rule connectCacheDram;
+    // rule connectCacheL1L2;
     //     let lineReq <- cache.getToMem();
-    //     mainMem.put(lineReq);
+    //     cache2.putFromProc(lineReq);
     // endrule
-    // rule connectDramCache;
-    //     let resp <- mainMem.get;
+    // rule connectL2L1Cache;
+    //     let resp <- cache2.getToProc();
     //     cache.putFromMem(resp);
     // endrule
+
+    // rule connectCacheDram;
+    //     let lineReq <- cache2.getToMem();
+    //     mainMem.put(lineReq);
+    // endrule
+
+    // rule connectDramCache;
+    //     let resp <- mainMem.get;
+    //     cache2.putFromMem(resp);
+    // endrule
+
+    
+    rule connectCacheDram;
+        let lineReq <- cache.getToMem();
+        mainMem.put(lineReq);
+    endrule
+    rule connectDramCache;
+        let resp <- mainMem.get;
+        cache.putFromMem(resp);
+    endrule
 
 
     rule start (doinit);
@@ -59,7 +59,7 @@ module mkBeveren_nested(Empty);
        let newrand <- randomMem.next;
        deadlockChecker <= 0;
        CacheReq newreq = newrand;
-       newreq.addr = {0,newreq.addr[5:2],2'b0};
+       newreq.addr = {0,newreq.addr[13:2],2'b0};
        if ( newreq.word_byte == 0) counterIn <= counterIn + 1;
        mainRef.put(newreq);
        cache.putFromProc(newreq, 0);

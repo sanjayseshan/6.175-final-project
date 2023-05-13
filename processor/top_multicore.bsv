@@ -12,8 +12,8 @@ module mktop_multicore(Empty);
     // cfg.loadFormat = tagged Hex "mem.vmh";
     // BRAM2PortBE#(Bit#(30), Word, 4) bram <- mkBRAM2ServerBE(cfg);
 
-    CacheInterface cache1 <- mkCacheInterface();
-    CacheInterface cache2 <- mkCacheInterface();
+    CacheInterface cache1 <- mkCacheInterface(0);
+    CacheInterface cache2 <- mkCacheInterface(1);
     ParentProtocolProcessor ppp <- mkParentProtocolProcessor(cache1, cache2);
 
     RVIfc rv_core1 <- mkpipelined(0,0);
@@ -76,7 +76,7 @@ module mktop_multicore(Empty);
         let x <- cache1.getRespData();
 
         let req = dreq1;
-        if (debug) $display("Get IResp1 ", fshow(req), fshow(x));
+        if (debug) $display("Get DResp1 ", fshow(req), fshow(x));
         req.data = x;
             rv_core1.getDResp(req);
     endrule
@@ -124,7 +124,7 @@ module mktop_multicore(Empty);
 
     rule requestI2;
         let req <- rv_core2.getIReq;
-        if (debug) $display("Get IReq", fshow(req));
+        if (debug) $display("Get IReq2 ", fshow(req));
         ireq2 <= req;
 
         cache2.sendReqInstr(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data});
@@ -140,7 +140,7 @@ module mktop_multicore(Empty);
         let x <- cache2.getRespInstr();
         // let x <- bram.portB.response.get();
         let req = ireq2;
-        if (debug) $display("Get IResp ", fshow(req), fshow(x));
+        if (debug) $display("Get IResp2 ", fshow(req), fshow(x));
         req.data = x;
         rv_core2.getIResp(req);
     endrule
@@ -148,7 +148,7 @@ module mktop_multicore(Empty);
     rule requestD2;
         let req <- rv_core2.getDReq;
         dreq2 <= req;
-        if (debug) $display("Get DReq", fshow(req));
+        if (debug) $display("Get DReq2 ", fshow(req));
         // $display("DATA ",fshow(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data}));
         cache2.sendReqData(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data});
 
@@ -164,14 +164,14 @@ module mktop_multicore(Empty);
         let x <- cache2.getRespData();
 
         let req = dreq2;
-        if (debug) $display("Get IResp ", fshow(req), fshow(x));
+        if (debug) $display("Get DResp2 ", fshow(req), fshow(x));
         req.data = x;
             rv_core2.getDResp(req);
     endrule
   
     rule requestMMIO2;
         let req <- rv_core2.getMMIOReq;
-        if (debug) $display("Get MMIOReq", fshow(req));
+        if (debug) $display("Get MMIOReq2 ", fshow(req));
         if (req.byte_en == 'hf) begin
             if (req.addr == 'hf000_fff4) begin
                 // Write integer to STDERR
@@ -203,7 +203,7 @@ module mktop_multicore(Empty);
     rule responseMMIO2;
         let req = mmioreq2.first();
         mmioreq2.deq();
-        if (debug) $display("Put MMIOResp", fshow(req));
+        if (debug) $display("Put MMIOResp2 ", fshow(req));
         rv_core2.getMMIOResp(req);
     endrule
 

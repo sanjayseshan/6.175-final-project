@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.ms": "BluespecSystemVerilog",
+        "*.scm": "lisp",
+        "cstdio": "c"
+    }
+}

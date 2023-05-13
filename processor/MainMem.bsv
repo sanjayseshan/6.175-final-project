@@ -27,9 +27,11 @@ module mkMainMemFast(MainMemFast);
     rule deq;
         let r <- bram.portA.response.get();
         dl.put(r);
+        // $display("REF RESP", fshow(r));
     endrule    
 
     method Action put(CacheReq req);
+        // $display("REF REQ", fshow(req));
         bram.portA.request.put(BRAMRequestBE{
                     writeen: req.word_byte,
                     responseOnWrite: False,
@@ -56,7 +58,7 @@ module mkMainMem(MainMem);
     rule deq;
         let r <- bram.portA.response.get();
         dl.put(r);
-        //$display("GOT FROM MM TO DL1 ",fshow(r));
+        // $display("GOT FROM MM TO DL1 ",fshow(r));
     endrule    
 
     // rule deq2;
@@ -71,7 +73,7 @@ module mkMainMem(MainMem);
                     responseOnWrite: False,
                     address: req.addr,
                     datain: req.data});
-        //$display("SENT TO MM1 WITH ",fshow(req));
+        // $display("SENT TO MM1 WITH ",fshow(req));
     endmethod
 
     method ActionValue#(MainMemResp) get();
