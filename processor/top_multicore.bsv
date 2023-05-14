@@ -36,7 +36,7 @@ module mktop_multicore(Empty);
 
     rule requestI1;
         let req <- rv_core1.getIReq;
-        if (debug) $display("Get IReq1", fshow(req));
+        // if (debug) $display("Get IReq1", fshow(req));
         ireq1 <= req;
 
         cache1.sendReqInstr(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data});
@@ -52,7 +52,7 @@ module mktop_multicore(Empty);
         let x <- cache1.getRespInstr();
         // let x <- bram.portB.response.get();
         let req = ireq1;
-        if (debug) $display("Get IResp1 ", fshow(req), fshow(x));
+        // if (debug) $display("Get IResp1 ", fshow(req), fshow(x));
         req.data = x;
         rv_core1.getIResp(req);
     endrule
@@ -124,7 +124,7 @@ module mktop_multicore(Empty);
 
     rule requestI2;
         let req <- rv_core2.getIReq;
-        if (debug) $display("Get IReq2 ", fshow(req));
+        // if (debug) $display("Get IReq2 ", fshow(req));
         ireq2 <= req;
 
         cache2.sendReqInstr(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data});
@@ -140,7 +140,7 @@ module mktop_multicore(Empty);
         let x <- cache2.getRespInstr();
         // let x <- bram.portB.response.get();
         let req = ireq2;
-        if (debug) $display("Get IResp2 ", fshow(req), fshow(x));
+        // if (debug) $display("Get IResp2 ", fshow(req), fshow(x));
         req.data = x;
         rv_core2.getIResp(req);
     endrule

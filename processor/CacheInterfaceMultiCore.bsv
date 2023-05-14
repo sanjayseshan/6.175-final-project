@@ -54,7 +54,7 @@ module mkParentProtocolProcessor#(CacheInterface core1, CacheInterface core2)(Pa
         let req <- core1.sendReq();
         cacheL2.putFromProc(req);
         if (req.write == 0) order_req.enq(0);
-        ////$display("REQ1 ",fshow(req));
+        // $display("L2REQ1 ",fshow(req));
     endrule
 
     rule processUpgrade2;
@@ -67,13 +67,14 @@ module mkParentProtocolProcessor#(CacheInterface core1, CacheInterface core2)(Pa
     rule processReq2;
         let req <- core2.sendReq();
         cacheL2.putFromProc(req);
+        // $display("L2REQ2 ",fshow(req));
         if (req.write == 0) order_req.enq(1);
     endrule
 
     // (order_req.notEmpty())
     rule processReqRes;
         let resp <- cacheL2.getToProc();
-        ////$display("GOT RESP ",fshow(resp));
+        // $display("L2 GOT RESP ",fshow(resp));
         if (order_req.first == 0) core1.connectL2L1Cache(resp);
         else core2.connectL2L1Cache(resp);
         order_req.deq();
@@ -193,7 +194,7 @@ module mkCacheInterface#(Bit#(1) id)(CacheInterface);
 
     method Action downgrade(CacheReq req);
         ////$display("DOWNGRADE ",fshow(req));
-        //$display(id,"DOWNGRADING DATA ",fshow(req));
+        // $display(id,"DOWNGRADING DATA ",fshow(req));
 
         cacheD.putFromProc(req, 1);
     endmethod

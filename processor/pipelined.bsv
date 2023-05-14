@@ -137,7 +137,7 @@ module mkpipelined#(Bit#(32) start_pc, Bit#(1) coreId)(RVIfc);
 
 	FIFO#(KonataId) retired <- mkFIFO;
 	FIFO#(KonataId) squashed <- mkFIFO;
-    Bool debug = True;
+    Bool debug = False;
 
     Reg#(Bit#(1)) epoch <- mkReg(0);
 

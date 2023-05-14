@@ -48,3 +48,6 @@ echo "Testing multicore32"
 ./testMC.sh multicore32
 timeout 160 ./top_multicore
 
+echo "Testing matmulmulti32"
+./testMC.sh matmulmulti32
+timeout 160 ./top_multicore

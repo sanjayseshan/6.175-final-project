@@ -112,7 +112,9 @@ Predicate: cache1_cacheD_bram1_serverAdapter_outData_beforeDeq.read &&
 		    : (_ :: Bit 2))) ==
 		2'd0) ||
 	       ((cache1_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
-		(cache1_cacheD_bram1_serverAdapter_cnt .< 3'd3)))) &&
+		(cache1_cacheD_bram1_serverAdapter_cnt .< 3'd3) &&
+		(cache1_cacheD_is_downgrade ||
+		 cache1_cacheD_memReqQ.i_notFull)))) &&
 	   cache1_cacheD_working_v && (cache1_cacheD_mshr == 2'd0) &&
 	   cache1_cacheD_lockL1
 Blocking rules: (none)
@@ -148,7 +150,8 @@ Blocking rules: (none)
  
 Rule: cache1_cacheD_waitFillResp_St
 Predicate: ((! cache1_cacheD_memRespQ.notEmpty) ||
-	    ((cache1_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
+	    (cache1_cacheD_memReqQ.i_notFull &&
+	     (cache1_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
 	     (cache1_cacheD_bram1_serverAdapter_cnt .< 3'd3) &&
 	     cache1_cacheD_memRespQ.i_notEmpty)) &&
 	   (cache1_cacheD_mshr == 2'd3) &&
@@ -265,7 +268,9 @@ Predicate: cache1_cacheI_bram1_serverAdapter_outData_beforeDeq.read &&
 		    : (_ :: Bit 2))) ==
 		2'd0) ||
 	       ((cache1_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
-		(cache1_cacheI_bram1_serverAdapter_cnt .< 3'd3)))) &&
+		(cache1_cacheI_bram1_serverAdapter_cnt .< 3'd3) &&
+		(cache1_cacheI_is_downgrade ||
+		 cache1_cacheI_memReqQ.i_notFull)))) &&
 	   cache1_cacheI_working_v && (cache1_cacheI_mshr == 2'd0) &&
 	   cache1_cacheI_lockL1
 Blocking rules: (none)
@@ -301,7 +306,8 @@ Blocking rules: (none)
  
 Rule: cache1_cacheI_waitFillResp_St
 Predicate: ((! cache1_cacheI_memRespQ.notEmpty) ||
-	    ((cache1_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
+	    (cache1_cacheI_memReqQ.i_notFull &&
+	     (cache1_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
 	     (cache1_cacheI_bram1_serverAdapter_cnt .< 3'd3) &&
 	     cache1_cacheI_memRespQ.i_notEmpty)) &&
 	   (cache1_cacheI_mshr == 2'd3) &&
@@ -439,7 +445,9 @@ Predicate: cache2_cacheD_bram1_serverAdapter_outData_beforeDeq.read &&
 		    : (_ :: Bit 2))) ==
 		2'd0) ||
 	       ((cache2_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
-		(cache2_cacheD_bram1_serverAdapter_cnt .< 3'd3)))) &&
+		(cache2_cacheD_bram1_serverAdapter_cnt .< 3'd3) &&
+		(cache2_cacheD_is_downgrade ||
+		 cache2_cacheD_memReqQ.i_notFull)))) &&
 	   cache2_cacheD_working_v && (cache2_cacheD_mshr == 2'd0) &&
 	   cache2_cacheD_lockL1
 Blocking rules: (none)
@@ -475,7 +483,8 @@ Blocking rules: (none)
  
 Rule: cache2_cacheD_waitFillResp_St
 Predicate: ((! cache2_cacheD_memRespQ.notEmpty) ||
-	    ((cache2_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
+	    (cache2_cacheD_memReqQ.i_notFull &&
+	     (cache2_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
 	     (cache2_cacheD_bram1_serverAdapter_cnt .< 3'd3) &&
 	     cache2_cacheD_memRespQ.i_notEmpty)) &&
 	   (cache2_cacheD_mshr == 2'd3) &&
@@ -592,7 +601,9 @@ Predicate: cache2_cacheI_bram1_serverAdapter_outData_beforeDeq.read &&
 		    : (_ :: Bit 2))) ==
 		2'd0) ||
 	       ((cache2_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
-		(cache2_cacheI_bram1_serverAdapter_cnt .< 3'd3)))) &&
+		(cache2_cacheI_bram1_serverAdapter_cnt .< 3'd3) &&
+		(cache2_cacheI_is_downgrade ||
+		 cache2_cacheI_memReqQ.i_notFull)))) &&
 	   cache2_cacheI_working_v && (cache2_cacheI_mshr == 2'd0) &&
 	   cache2_cacheI_lockL1
 Blocking rules: (none)
@@ -628,7 +639,8 @@ Blocking rules: (none)
  
 Rule: cache2_cacheI_waitFillResp_St
 Predicate: ((! cache2_cacheI_memRespQ.notEmpty) ||
-	    ((cache2_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
+	    (cache2_cacheI_memReqQ.i_notFull &&
+	     (cache2_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
 	     (cache2_cacheI_bram1_serverAdapter_cnt .< 3'd3) &&
 	     cache2_cacheI_memRespQ.i_notEmpty)) &&
 	   (cache2_cacheI_mshr == 2'd3) &&

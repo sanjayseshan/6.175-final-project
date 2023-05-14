@@ -113,11 +113,11 @@ module mkCache32MC(Cache32MC);
   // Reg#(Bit#(32)) cycle <- mkReg(0);
   // rule count;
   //   cycle <= cycle+1;
-  //   //$display("CYCLE ",cycle, " " , fshow(working_v), " ", mshr, fshow(lockL1), fshow(is_downgrade));
+  //   ////$display("CYCLE ",cycle, " " , fshow(working_v), " ", mshr, fshow(lockL1), fshow(is_downgrade));
   // endrule
 
   rule req_process (working_v && mshr == 0 && lockL1);
-    // //////$display("req_process");
+    // ////////$display("req_process");
 
 
     let out <- bram1.portA.response.get();
@@ -125,7 +125,7 @@ module mkCache32MC(Cache32MC);
     let data <- bram2.portA.response.get();
     working_data <= data;
 
-    // //$display(fshow(data));
+    // ////$display(fshow(data));
 
 
     if (working.memReq.word_byte == 0) begin
@@ -133,15 +133,15 @@ module mkCache32MC(Cache32MC);
       // // let x = stb.search_res(working.memReq.addr);
       // if (stb.notEmpty() && x.addr == working.memReq.addr) begin
       //   hitQ.enq(x.data); // CHANGED FROM x.data
-      //   //////$display("READ HIT Q %x", x.data);
+      //   ////////$display("READ HIT Q %x", x.data);
       //   working_v <= False;
       // end 
       // else 
-      //$display(fshow(working.tag),fshow(out.tag), fshow(out.valid), fshow(is_downgrade), fshow(working.offset));
+      ////$display(fshow(working.tag),fshow(out.tag), fshow(out.valid), fshow(is_downgrade), fshow(working.offset));
 
       if (out.tag==working.tag && out.valid != 0) begin
         hitQ.enq(data[working.offset]); // CHANGED FROM out.data
-        //$display("READ HIT %x", data[working.offset]);
+        ////$display("READ HIT %x", data[working.offset]);
         working_v <= False;
       end else begin
         // missReq <= working.memReq;
@@ -153,14 +153,27 @@ module mkCache32MC(Cache32MC);
     //   lockL1 <= False;
     // end 
     else begin
+
     // let data = out.data;
-      // //////$display("WORD BYTE NOT 0 OR 1111");
+      // ////////$display("WORD BYTE NOT 0 OR 1111");
       let bits = extract_bits(working.memReq.addr, ?);
       let e = working.memReq;
       //$display(fshow(bits.tag),fshow(out.tag), fshow(out.valid), fshow(is_downgrade), fshow(bits.offset));
 
+
       if (bits.tag == out.tag && out.valid != 0) begin
-        // //$display("WRITE HIT");
+        if (!is_downgrade) begin
+          let data_upgrade = data;
+          if(working.memReq.word_byte[0]==1) data_upgrade[working.offset][7:0] = e.data[7:0];
+          if(working.memReq.word_byte[1]==1) data_upgrade[working.offset][15:8] = e.data[15:8];
+          if(working.memReq.word_byte[2]==1) data_upgrade[working.offset][23:16] = e.data[23:16];
+          if(working.memReq.word_byte[3]==1) data_upgrade[working.offset][31:24] = e.data[31:24];
+          memReqQ.enq(MainMemReq{write:1, addr:{bits.tag,bits.idx},data:vecToLine(data_upgrade)}); // original line
+          //$display("UPGRADE TO ",fshow({working_line.tag,working.idx}), fshow(e));
+        end
+        // else //$display("PROCESSED DOWNGRADE", fshow(e));
+
+      // ////$display("WRITE HIT");
         // if (working.memReq.write == 8) data[bits.offset][31:24] = e.data[31:24];
         // if (working.memReq.write == 4) data[bits.offset][23:16] = e.data[23:16];
         // if (working.memReq.write == 2) data[bits.offset][15:8] = e.data[15:8];
@@ -176,8 +189,8 @@ module mkCache32MC(Cache32MC);
         port_w[working.offset] = working.memReq.word_byte;
         // zeroExtend(working.memReq.word_byte) << ((15-working.offset)*4);
 
-        // //$display(fshow(port_w));
-        // //$display(fshow(d_vec));
+        // ////$display(fshow(port_w));
+        // ////$display(fshow(d_vec));
 
         bram2.portA.request.put(BRAMRequestBE{writeen: pack(port_w), // False for read
                         responseOnWrite: False,
@@ -189,7 +202,10 @@ module mkCache32MC(Cache32MC);
                         address: working.idx,
                         datain: CacheReqLine{valid:2,tag:bits.tag}}); // CHANGED DATA
 
-        // mshr <= 1;
+
+        
+        
+                        // mshr <= 1;
         working_v <= False;
         is_downgrade <= False;
       end else  begin
@@ -204,7 +220,7 @@ module mkCache32MC(Cache32MC);
   endrule
 
   rule mvStbToL1 (mshr == 0 && !lockL1);
-    // //////$display("mvStbToL1");
+    // ////////$display("mvStbToL1");
     let e = stb.first;
     let bits = extract_bits(e.addr, ?);
     stb.deq();
@@ -259,18 +275,18 @@ module mkCache32MC(Cache32MC);
   // endrule
 
   rule startMiss(mshr==1);
-    ////////$display("startMiss",mshr,fshow(working.memReq));
+    //////////$display("startMiss",mshr,fshow(working.memReq));
     if (working_line.valid == 2) begin
-      //////$display("MISS DIRTY");
+      ////////$display("MISS DIRTY");
       memReqQ.enq(MainMemReq{write:1, addr:{working_line.tag,working.idx},data:vecToLine(working_data)}); // original line
     end
     mshr <= 2;
   endrule
 
   rule sendFillReq(mshr == 2);
-    ////////$display("sendFillReq");
+    //////////$display("sendFillReq");
 
-      //////$display("MISS GET FROM MEM", fshow(working.memReq), fshow({working.tag,working.idx}));
+      ////////$display("MISS GET FROM MEM", fshow(working.memReq), fshow({working.tag,working.idx}));
       memReqQ.enq(MainMemReq{write:0, addr:{working.tag,working.idx}, data: unpack(0)});
       mshr <= 3;
   endrule
@@ -279,13 +295,13 @@ module mkCache32MC(Cache32MC);
   // Reg#(Bit#(512)) fill_data <- mkReg(0);
 
   rule waitFillResp_Ld(mshr==3 && start_fill && working.memReq.word_byte == 0);
-    // //////$display("waitFillResp_ld");
+    // ////////$display("waitFillResp_ld");
 
     // let data = fill_data;
     let m_working_req = working.memReq;
     if (memRespQ.notEmpty()) begin
       let data = memRespQ.first;
-      //////$display("LOAD MISS", fshow(working.memReq.data), fshow(lineToWordVec(data))); 
+      ////////$display("LOAD MISS", fshow(working.memReq.data), fshow(lineToWordVec(data))); 
       bram1.portA.request.put(BRAMRequest{write: True, // False for read
                 responseOnWrite: False,
                 address: working.idx,
@@ -295,7 +311,7 @@ module mkCache32MC(Cache32MC);
                 responseOnWrite: False,
                 address: working.idx,
                 datain: lineToWordVec(data)});
-      //$display("OFFSET ",fshow(working.offset),fshow(lineToWordVec(data)));
+      ////$display("OFFSET ",fshow(working.offset),fshow(lineToWordVec(data)));
 
       hitQ.enq(lineToWordVec(data)[working.offset]); // CHANGED FROM data
       working_v <= False;
@@ -309,7 +325,7 @@ module mkCache32MC(Cache32MC);
 
 
   rule waitFillResp_St(mshr==3 && working.memReq.word_byte != 0);
-    // //////$display("waitFillResp_st");
+    // ////////$display("waitFillResp_st");
 
     // let data = fill_data;
     let m_working_req = working.memReq;
@@ -336,9 +352,9 @@ module mkCache32MC(Cache32MC);
       if(working.memReq.word_byte[1]==1) data[working.offset][15:8] = working.memReq.data[15:8];
       if(working.memReq.word_byte[2]==1) data[working.offset][23:16] = working.memReq.data[23:16];
       if(working.memReq.word_byte[3]==1) data[working.offset][31:24] = working.memReq.data[31:24];
-      // //////$display("DATA", fshow(data));
+      // ////////$display("DATA", fshow(data));
       
-      //////$display("WRITE MISS", fshow(working.memReq.data), fshow(data)); 
+      ////////$display("WRITE MISS", fshow(working.memReq.data), fshow(data)); 
       bram1.portA.request.put(BRAMRequest{write: True, // False for read
                 responseOnWrite: False,
                 address: working.idx,
@@ -348,6 +364,11 @@ module mkCache32MC(Cache32MC);
                 responseOnWrite: False,
                 address: working.idx,
                 datain: data}); // CHANGED FROM working.memReq.data
+
+      memReqQ.enq(MainMemReq{write:1, addr:{working.tag,working.idx},data:vecToLine(data)}); // original line
+      //$display("UPGRADE TO ",fshow({working_line.tag,working.idx}), fshow(working.memReq));
+
+                
       working_v <= False;
       mshr <= 0;
       start_fill <= False;
@@ -384,14 +405,14 @@ module mkCache32MC(Cache32MC);
   // TODO Write a Cache
   method Action putFromProc(CacheReq e, Bit#(1) skip_upgrade) if (!working_v && mshr == 0);
 
-    // ////$display("WORD_BYTE ",e.word_byte, e.word_byte==0);
+    // //////$display("WORD_BYTE ",e.word_byte, e.word_byte==0);
     if (e.word_byte != 0 && skip_upgrade==0) begin
       upgrades.enq(e);
     end else if (skip_upgrade==1) begin
       is_downgrade <= True;
     end
   
-    //$display("PFPL1 ",fshow(e), fshow(mshr), fshow(skip_upgrade));
+    ////$display("PFPL1 ",fshow(e), fshow(mshr), fshow(skip_upgrade));
     let req = extract_bits(e.addr, e);
     bram1.portA.request.put(BRAMRequest{write: False, // False for read
                         responseOnWrite: False,
@@ -410,7 +431,7 @@ module mkCache32MC(Cache32MC);
   method ActionValue#(Word) getToProc() if (hitQ.notEmpty());
     hitQ.deq();
     let r = hitQ.first;
-    //$display("GTPL1 ", fshow(r), fshow(is_downgrade), fshow(working.memReq));
+    ////$display("GTPL1 ", fshow(r), fshow(is_downgrade), fshow(working.memReq));
     return r;
   endmethod
 
@@ -418,14 +439,14 @@ module mkCache32MC(Cache32MC);
     memReqQ.deq();
     let r = memReqQ.first;
     // r = MainMemReq { write: 'h0, addr: 'h0000008, data: ? };
-    // //$display("GTML1 ",fshow(r));
+    // ////$display("GTML1 ",fshow(r));
     return r;
   endmethod
 
   method Action putFromMem(MainMemResp e) ;
     // if(!start_fill)
     start_fill <= True;
-    // //$display("PFML1 ",fshow(e));
+    // ////$display("PFML1 ",fshow(e));
     memRespQ.enq(e);
     // fill_data <= e;
   endmethod
@@ -436,7 +457,7 @@ module mkCache32MC(Cache32MC);
   endmethod
 
   // method Action procDowngrade(CacheReq e) if (!downgrade_en && mshr == 0);
-  //   ////$display("REQUESTED DOWNGRADE");
+  //   //////$display("REQUESTED DOWNGRADE");
   //   let req = extract_bits(e.addr, e);
   //   bram1.portA.request.put(BRAMRequest{write: False, // False for read
   //                       responseOnWrite: False,
