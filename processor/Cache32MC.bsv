@@ -151,6 +151,18 @@ module mkCache32MC(Cache32MC);
     // else if (working.memReq.word_byte == 4'b1111) begin
     //   stb.enq(StbReq{addr:working.memReq.addr,data:working.memReq.data, byte_en: working.memReq.word_byte});
     //   lockL1 <= False;
+    //   if (!is_downgrade) begin
+    //     let data_upgrade = data;
+    //     let e = working.memReq;
+    //     let bits = extract_bits(working.memReq.addr, ?);
+
+    //     if(working.memReq.word_byte[0]==1) data_upgrade[working.offset][7:0] = e.data[7:0];
+    //     if(working.memReq.word_byte[1]==1) data_upgrade[working.offset][15:8] = e.data[15:8];
+    //     if(working.memReq.word_byte[2]==1) data_upgrade[working.offset][23:16] = e.data[23:16];
+    //     if(working.memReq.word_byte[3]==1) data_upgrade[working.offset][31:24] = e.data[31:24];
+    //     memReqQ.enq(MainMemReq{write:1, addr:{bits.tag,bits.idx},data:vecToLine(data_upgrade)}); // original line
+    //   //$display("UPGRADE TO ",fshow({working_line.tag,working.idx}), fshow(e));
+    //   end
     // end 
     else begin
 
@@ -200,7 +212,7 @@ module mkCache32MC(Cache32MC);
         bram1.portA.request.put(BRAMRequest{write: True, // False for read
                         responseOnWrite: False,
                         address: working.idx,
-                        datain: CacheReqLine{valid:2,tag:bits.tag}}); // CHANGED DATA
+                        datain: CacheReqLine{valid:1,tag:bits.tag}}); // CHANGED DATA
 
 
         
@@ -358,7 +370,7 @@ module mkCache32MC(Cache32MC);
       bram1.portA.request.put(BRAMRequest{write: True, // False for read
                 responseOnWrite: False,
                 address: working.idx,
-                datain: CacheReqLine{valid:2,tag:working.tag}}); // CHANGED FROM working.memReq.data
+                datain: CacheReqLine{valid:1,tag:working.tag}}); // CHANGED FROM working.memReq.data
 
       bram2.portA.request.put(BRAMRequestBE{writeen: en_bytes, // False for read
                 responseOnWrite: False,
