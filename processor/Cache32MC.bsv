@@ -231,56 +231,56 @@ module mkCache32MC(Cache32MC);
     end
   endrule
 
-  rule mvStbToL1 (mshr == 0 && !lockL1);
-    // ////////$display("mvStbToL1");
-    let e = stb.first;
-    let bits = extract_bits(e.addr, ?);
-    stb.deq();
+  // rule mvStbToL1 (mshr == 0 && !lockL1);
+  //   // ////////$display("mvStbToL1");
+  //   let e = stb.first;
+  //   let bits = extract_bits(e.addr, ?);
+  //   stb.deq();
 
-    // ADDED
-    // let data = working_line.data;
+  //   // ADDED
+  //   // let data = working_line.data;
 
-    // if (bits.offset==15) begin
-    //   data = {e.data, data[479:0]};
-    // end 
-    // else if (bits.offset==0) begin
-    //   data = {data[511:32], e.data};
-    // end 
-    // else begin
-    //   data = {data[511:32*(bits.offset+1)], e.data, data[32*bits.offset-1:0]};
-    // end
-    // END OF ADDED SECTION
+  //   // if (bits.offset==15) begin
+  //   //   data = {e.data, data[479:0]};
+  //   // end 
+  //   // else if (bits.offset==0) begin
+  //   //   data = {data[511:32], e.data};
+  //   // end 
+  //   // else begin
+  //   //   data = {data[511:32*(bits.offset+1)], e.data, data[32*bits.offset-1:0]};
+  //   // end
+  //   // END OF ADDED SECTION
 
-    if (bits.tag == working_line.tag) begin
-      // data[bits.offset] = e.data;
-      Vector#(16, Word) d_vec = unpack(0);
-      d_vec[working.offset] = e.data;
+  //   if (bits.tag == working_line.tag) begin
+  //     // data[bits.offset] = e.data;
+  //     Vector#(16, Word) d_vec = unpack(0);
+  //     d_vec[working.offset] = e.data;
 
-      // Bit#(64) stb_en_byte = 0;
-      // stb_en_byte[(zeroExtend(working.offset)+1)*4-1:zeroExtend(working.offset)*4] = zeroExtend(working.memReq.word_byte);
+  //     // Bit#(64) stb_en_byte = 0;
+  //     // stb_en_byte[(zeroExtend(working.offset)+1)*4-1:zeroExtend(working.offset)*4] = zeroExtend(working.memReq.word_byte);
 
-      Bit#(6) offset = {0, working.offset};
-      bram2.portA.request.put(BRAMRequestBE{writeen: zeroExtend(working.memReq.word_byte) << 4*offset, // False for read // (zeroExtend(working.memReq.word_byte) << working.offset)
-                      responseOnWrite: False,
-                      address: working.idx,
-                      datain: d_vec}); // CHANGED DATA
+  //     Bit#(6) offset = {0, working.offset};
+  //     bram2.portA.request.put(BRAMRequestBE{writeen: zeroExtend(working.memReq.word_byte) << 4*offset, // False for read // (zeroExtend(working.memReq.word_byte) << working.offset)
+  //                     responseOnWrite: False,
+  //                     address: working.idx,
+  //                     datain: d_vec}); // CHANGED DATA
 
-      bram1.portA.request.put(BRAMRequest{write: True, // False for read
-                        responseOnWrite: False,
-                        address: working.idx,
-                        datain: CacheReqLine{valid:2,tag:bits.tag}}); // CHANGED DATA
-      working_v <= False;
-      is_downgrade <= False;
-      // mshr <= 1;
+  //     bram1.portA.request.put(BRAMRequest{write: True, // False for read
+  //                       responseOnWrite: False,
+  //                       address: working.idx,
+  //                       datain: CacheReqLine{valid:2,tag:bits.tag}}); // CHANGED DATA
+  //     working_v <= False;
+  //     is_downgrade <= False;
+  //     // mshr <= 1;
 
-    end else  begin
-      // missReq <= MainMemReq{write:1,addr:{e.tag,e.idx},data:data}; // CHANGED DATA
-      if (!is_downgrade) mshr <= 1;
-      else working_v <= False;
+  //   end else  begin
+  //     // missReq <= MainMemReq{write:1,addr:{e.tag,e.idx},data:data}; // CHANGED DATA
+  //     if (!is_downgrade) mshr <= 1;
+  //     else working_v <= False;
 
-    end
-    lockL1 <= True;
-  endrule
+  //   end
+  //   lockL1 <= True;
+  // endrule
 
   // rule clearL1Lock;
   //   lockL1[1] <= False;

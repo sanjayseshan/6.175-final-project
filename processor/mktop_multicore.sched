@@ -119,15 +119,6 @@ Predicate: cache1_cacheD_bram1_serverAdapter_outData_beforeDeq.read &&
 	   cache1_cacheD_lockL1
 Blocking rules: (none)
  
-Rule: cache1_cacheD_mvStbToL1
-Predicate: cache1_cacheD_stb.i_notEmpty &&
-	   ((! (cache1_cacheD_stb.first[67:49] ==
-		cache1_cacheD_working_line[18:0])) ||
-	    ((cache1_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
-	     (cache1_cacheD_bram1_serverAdapter_cnt .< 3'd3))) &&
-	   (cache1_cacheD_mshr == 2'd0) && (! cache1_cacheD_lockL1)
-Blocking rules: requestD1
- 
 Rule: cache1_cacheD_startMiss
 Predicate: ((! (cache1_cacheD_working_line[20:19] == 2'd2)) ||
 	    cache1_cacheD_memReqQ.i_notFull) &&
@@ -274,15 +265,6 @@ Predicate: cache1_cacheI_bram1_serverAdapter_outData_beforeDeq.read &&
 	   cache1_cacheI_working_v && (cache1_cacheI_mshr == 2'd0) &&
 	   cache1_cacheI_lockL1
 Blocking rules: (none)
- 
-Rule: cache1_cacheI_mvStbToL1
-Predicate: cache1_cacheI_stb.i_notEmpty &&
-	   ((! (cache1_cacheI_stb.first[67:49] ==
-		cache1_cacheI_working_line[18:0])) ||
-	    ((cache1_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
-	     (cache1_cacheI_bram1_serverAdapter_cnt .< 3'd3))) &&
-	   (cache1_cacheI_mshr == 2'd0) && (! cache1_cacheI_lockL1)
-Blocking rules: requestI1
  
 Rule: cache1_cacheI_startMiss
 Predicate: ((! (cache1_cacheI_working_line[20:19] == 2'd2)) ||
@@ -452,15 +434,6 @@ Predicate: cache2_cacheD_bram1_serverAdapter_outData_beforeDeq.read &&
 	   cache2_cacheD_lockL1
 Blocking rules: (none)
  
-Rule: cache2_cacheD_mvStbToL1
-Predicate: cache2_cacheD_stb.i_notEmpty &&
-	   ((! (cache2_cacheD_stb.first[67:49] ==
-		cache2_cacheD_working_line[18:0])) ||
-	    ((cache2_cacheD_bram2_serverAdapter_cnt .< 3'd3) &&
-	     (cache2_cacheD_bram1_serverAdapter_cnt .< 3'd3))) &&
-	   (cache2_cacheD_mshr == 2'd0) && (! cache2_cacheD_lockL1)
-Blocking rules: requestD2
- 
 Rule: cache2_cacheD_startMiss
 Predicate: ((! (cache2_cacheD_working_line[20:19] == 2'd2)) ||
 	    cache2_cacheD_memReqQ.i_notFull) &&
@@ -607,15 +580,6 @@ Predicate: cache2_cacheI_bram1_serverAdapter_outData_beforeDeq.read &&
 	   cache2_cacheI_working_v && (cache2_cacheI_mshr == 2'd0) &&
 	   cache2_cacheI_lockL1
 Blocking rules: (none)
- 
-Rule: cache2_cacheI_mvStbToL1
-Predicate: cache2_cacheI_stb.i_notEmpty &&
-	   ((! (cache2_cacheI_stb.first[67:49] ==
-		cache2_cacheI_working_line[18:0])) ||
-	    ((cache2_cacheI_bram2_serverAdapter_cnt .< 3'd3) &&
-	     (cache2_cacheI_bram1_serverAdapter_cnt .< 3'd3))) &&
-	   (cache2_cacheI_mshr == 2'd0) && (! cache2_cacheI_lockL1)
-Blocking rules: requestI2
  
 Rule: cache2_cacheI_startMiss
 Predicate: ((! (cache2_cacheI_working_line[20:19] == 2'd2)) ||
@@ -905,7 +869,7 @@ Predicate: (! cache2_cacheD_working_v) && (cache2_cacheD_mshr == 2'd0) &&
 	   (cache2_cacheD_bram1_serverAdapter_cnt .< 3'd3) &&
 	   cache1_cacheD_upgrades.notEmpty &&
 	   cache1_cacheD_upgrades.i_notEmpty
-Blocking rules: cache2_cacheD_mvStbToL1, requestD2
+Blocking rules: requestD2
  
 Rule: ppp_processReq1
 Predicate: (! ppp_cacheL2_working_v) && (ppp_cacheL2_mshr == 2'd0) &&
@@ -921,7 +885,7 @@ Predicate: (! cache1_cacheD_working_v) && (cache1_cacheD_mshr == 2'd0) &&
 	   (cache1_cacheD_bram1_serverAdapter_cnt .< 3'd3) &&
 	   cache2_cacheD_upgrades.notEmpty &&
 	   cache2_cacheD_upgrades.i_notEmpty
-Blocking rules: cache1_cacheD_mvStbToL1, requestD1
+Blocking rules: requestD1
  
 Rule: ppp_processReq2
 Predicate: (! ppp_cacheL2_working_v) && (ppp_cacheL2_mshr == 2'd0) &&
@@ -1028,7 +992,6 @@ Logical execution order: tic,
 			 requestMMIO2,
 			 cache1_respsI,
 			 cache1_respsD,
-			 cache1_cacheD_mvStbToL1,
 			 cache1_cacheD_startMiss,
 			 cache1_cacheD_sendFillReq,
 			 cache1_cacheD_waitFillResp_Ld,
@@ -1042,7 +1005,6 @@ Logical execution order: tic,
 			 cache1_cacheD_bram1_serverAdapter_outData_dequeue,
 			 cache1_cacheD_bram2_serverAdapter_outData_enqueue,
 			 cache1_cacheD_bram2_serverAdapter_outData_dequeue,
-			 cache1_cacheI_mvStbToL1,
 			 cache1_cacheI_startMiss,
 			 cache1_cacheI_sendFillReq,
 			 cache1_cacheI_waitFillResp_Ld,
@@ -1064,7 +1026,6 @@ Logical execution order: tic,
 			 cache1_cacheI_bram2_serverAdapter_s1__dreg_update,
 			 cache2_respsI,
 			 cache2_respsD,
-			 cache2_cacheD_mvStbToL1,
 			 cache2_cacheD_startMiss,
 			 cache2_cacheD_sendFillReq,
 			 cache2_cacheD_waitFillResp_Ld,
@@ -1078,7 +1039,6 @@ Logical execution order: tic,
 			 cache2_cacheD_bram1_serverAdapter_outData_dequeue,
 			 cache2_cacheD_bram2_serverAdapter_outData_enqueue,
 			 cache2_cacheD_bram2_serverAdapter_outData_dequeue,
-			 cache2_cacheI_mvStbToL1,
 			 cache2_cacheI_startMiss,
 			 cache2_cacheI_sendFillReq,
 			 cache2_cacheI_waitFillResp_Ld,
