@@ -102,8 +102,10 @@ module mkDdrAws#(DdrInput inIfc)(DdrAws);
 	   inIfc.ind.error(zeroExtend(error),zeroExtend(id));
 	end
 	flying <= False;
-	//ind.readDone(id,resp);
-        //inIfc.ind.logMemResp(inIfc.getTick(), zeroExtend(id), resp[31:0]);
+	// ind.readDone(id,resp);
+    // inIfc.ind.logMemResp(inIfc.getTick(), zeroExtend(id), resp[31:0]);
+    inIfc.ind.printInt(inIfc.getTick(), zeroExtend(id));
+
     return ReadResp{id: id, data: resp};
    endmethod
 
@@ -116,8 +118,8 @@ module mkDdrAws#(DdrInput inIfc)(DdrAws);
 	if (error != 0) begin
 	   inIfc.ind.error(zeroExtend(error), zeroExtend(id));
 	end
-	//ind.writeDone(zeroExtend(id));
-    //inIfc.ind.printInt(inIfc.getTick(), zeroExtend(id));
+	// ind.writeDone(zeroExtend(id));
+    inIfc.ind.printInt(inIfc.getTick(), zeroExtend(id));
    endmethod
 
 // len = nb pack512 -1

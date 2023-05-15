@@ -250,12 +250,13 @@ module mkProcTop#(TopIndication ind)(ProcTop);
     let mmioHandler <- mkMMIOHandler(mmioIfc);
 
     Cache cacheL2 <- mkDCache;
+    Cache cacheL2dummy <- mkDCache;
 
     let memInput = (interface MemInput;
              interface ind = ind;
              method getTick = tick._read;
              interface dCache = cacheL2;
-             interface iCache = ?;
+             interface iCache = cacheL2dummy;
              endinterface);
     let memController <- mkMemController(memInput);
 
