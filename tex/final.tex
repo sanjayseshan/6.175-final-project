@@ -321,7 +321,9 @@ RVIfc rv_core1 <- mkpipelined(0,0);
 RVIfc rv_core2 <- mkpipelined(4096,1);
 \end{lstlisting}
 
-This initialization allows us to run our code in the AWS system. We successfully compiled our code on the server. However, we were not able to get it fully running in time, due to some memory addressing issues. We are in the process of debugging this with Miguel at the time of writing. 
+This initialization allows us to run our code in the AWS system. We successfully compiled our code on the server. We were able to run many of the single core tests (including add32, sub32, or32, and a few more) successfully. The tests requiring MMIO results and higher memory addresses had some failures.
+% However, we were not able to get it fully running in time, due to some memory addressing issues.
+ We are in the process of debugging this with Miguel at the time of writing. 
 % Furthermore we plan to run this system on an FPGA unit. This unit will be cloud based and provided by the 6.175 instructors. Since the multi-core processor will likely only run on the server-based unit rather than the small FPGA, we will use the server-based one. We expect that this will involve some work with Verilog and learning to program the controllers. The Bluespec compiler will generate the Verilog code, from which we will use the associated synthesizing tools to push to the FPGA. 
 
 % \section{Other}
