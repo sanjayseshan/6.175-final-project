@@ -1,0 +1,20 @@
+[15:20:16][seshan@seshan-laptop:~/Documents/6.175-final-project/processor]$ time ./top_multicore 2> out2
+Warning: file 'memlines.vmh' for memory 'ppp_mainMem_bram_memory' has a gap at addresses 151 to 191.
+Warning: file 'memlines.vmh' for memory 'ppp_mainMem_bram_memory' has a gap at addresses 257 to 67108863.
+RAN CYCLES   2673485
+
+real    2m22.760s
+user    1m9.528s
+sys     1m13.161s
+
+
+[15:10:21][seshan@seshan-laptop:~/Documents/6.175-final-project/processor]$ time ./top_pipelined 2> out2
+Warning: file 'mem.vmh' for memory 'bram_memory' has a gap at addresses 3411 to 4095.
+Warning: file 'mem.vmh' for memory 'bram_memory' has a gap at addresses 5123 to 1073741823.
+Warning: file 'memlines.vmh' for memory 'cache_mainMem_bram_memory' has a gap at addresses 214 to 255.
+Warning: file 'memlines.vmh' for memory 'cache_mainMem_bram_memory' has a gap at addresses 321 to 67108863.
+RAN CYCLES   5466137
+
+real    2m43.243s
+user    1m16.504s
+sys     1m26.659s

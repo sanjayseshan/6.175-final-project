@@ -89,6 +89,8 @@ module mktop_pipelined(Empty);
                 $fflush(stderr);
         end else
             if (req.addr == 'hf000_fff8) begin
+                $display("RAN CYCLES", cycle_count);
+
             // Exiting Simulation
                 if (req.data == 0) begin
                         $fdisplay(stderr, "  [0;32mPASS[0m");

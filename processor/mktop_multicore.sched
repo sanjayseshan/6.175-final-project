@@ -979,12 +979,12 @@ Rule: responseMMIO2
 Predicate: rv_core2.RDY_getMMIOResp && mmioreq2.i_notEmpty
 Blocking rules: (none)
  
-Logical execution order: tic,
-			 responseI1,
+Logical execution order: responseI1,
 			 requestI1,
 			 responseD1,
 			 responseMMIO1,
 			 requestMMIO1,
+			 tic,
 			 responseI2,
 			 requestI2,
 			 responseD2,

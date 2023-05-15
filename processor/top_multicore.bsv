@@ -98,6 +98,7 @@ module mktop_multicore(Empty);
         end else
             if (req.addr == 'hf000_fff8) begin
             // Exiting Simulation
+                $display("RAN CYCLES", cycle_count);
                 if (req.data == 0) begin
                         $fdisplay(stderr, "  [0;32mPASS[0m");
                 end

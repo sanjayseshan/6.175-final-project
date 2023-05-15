@@ -17,6 +17,8 @@ int arrEquals(int a[16][16], int b[16][16])
     {
         for (int j = 0; j < 16; j++)
         {
+            putchar(a[i][j]);
+            putchar(b[i][j]);
             if (a[i][j] != b[i][j])
             {
                 return 0;
@@ -327,6 +329,7 @@ int main()
             {
                 sum += multiply(a[i][k], b[k][j]);
             }
+            putchar(sum);
             c[i][j] = sum;
         }
     }
