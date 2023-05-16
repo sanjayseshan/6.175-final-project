@@ -8,11 +8,6 @@ import CacheInterfaceMultiCore::*;
 // typedef Bit#(32) Word;
 
 module mktop_multicore(Empty);
-    // Instantiate the dual ported memory
-    // BRAM_Configure cfg = defaultValue();
-    // cfg.loadFormat = tagged Hex "mem.vmh";
-    // BRAM2PortBE#(Bit#(30), Word, 4) bram <- mkBRAM2ServerBE(cfg);
-
     CacheInterface cache1 <- mkCacheInterface(0);
     CacheInterface cache2 <- mkCacheInterface(1);
     ParentProtocolProcessor ppp <- mkParentProtocolProcessor(cache1, cache2);
@@ -42,11 +37,6 @@ module mktop_multicore(Empty);
 
         cache1.sendReqInstr(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data});
 
-            // bram.portB.request.put(BRAMRequestBE{
-            //         writeen: req.byte_en,
-            //         responseOnWrite: True,
-            //         address: truncate(req.addr >> 2),
-            //         datain: req.data});
     endrule
 
     rule responseI1;
@@ -65,11 +55,6 @@ module mktop_multicore(Empty);
         // $display("DATA ",fshow(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data}));
         cache1.sendReqData(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data});
 
-        // bram.portA.request.put(BRAMRequestBE{
-        //   writeen: req.byte_en,
-        //   responseOnWrite: True,
-        //   address: truncate(req.addr >> 2),
-        //   datain: req.data});
     endrule
 
     rule responseD1;
@@ -131,16 +116,11 @@ module mktop_multicore(Empty);
 
         cache2.sendReqInstr(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data});
 
-            // bram.portB.request.put(BRAMRequestBE{
-            //         writeen: req.byte_en,
-            //         responseOnWrite: True,
-            //         address: truncate(req.addr >> 2),
-            //         datain: req.data});
+
     endrule
 
     rule responseI2;
         let x <- cache2.getRespInstr();
-        // let x <- bram.portB.response.get();
         let req = ireq2;
         // if (debug) $display("Get IResp2 ", fshow(req), fshow(x));
         req.data = x;
@@ -153,12 +133,6 @@ module mktop_multicore(Empty);
         if (debug) $display("Get DReq2 ", fshow(req));
         // $display("DATA ",fshow(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data}));
         cache2.sendReqData(CacheReq{word_byte: req.byte_en, addr: req.addr, data: req.data});
-
-        // bram.portA.request.put(BRAMRequestBE{
-        //   writeen: req.byte_en,
-        //   responseOnWrite: True,
-        //   address: truncate(req.addr >> 2),
-        //   datain: req.data});
     endrule
 
     rule responseD2;
