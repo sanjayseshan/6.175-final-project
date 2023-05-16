@@ -155,7 +155,7 @@ In labs 4 and 5 we implemented a single core 32-bit RISC-V processor and a singl
     \item The processor expects half words and byte storing
 \end{enumerate}
 
-To start our conversion to words, we made the system handle four offset bits, rather than returning or writing a whole line. Requests to and fro main memory remain lines.
+To start our conversion to words, we made the system handle four offset bits, rather than returning or writing a whole line. Requests to and from main memory remain lines.
 
 We used the following definition of an address to index into the cache. 
 \begin{lstlisting}
@@ -325,31 +325,6 @@ This initialization allows us to run our code in the AWS system. We successfully
 % However, we were not able to get it fully running in time, due to some memory addressing issues.
  We are in the process of debugging this with Miguel at the time of writing. 
 
- Below are the timings from our FPGA compilation:
- \begin{lstlisting}[language=Python]
-  -------------------------------------------------------------
-  | Clock Summary
-  | -------------
-  -------------------------------------------------------------
-  
-  Clock                 Waveform(ns)           Period(ns)      Frequency(MHz)
-  -----                 ------------           ----------      --------------
-  CLK_300M_DIMM0_DP     {0.000 1.666}          3.332           300.120         
-    mmcm_clkout0        {0.000 1.874}          3.749           266.773         
-      pll_clk[0]        {0.000 0.234}          0.469           2134.187        
-        pll_clk[0]_DIV  {0.000 1.874}          3.749           266.773         
-      pll_clk[1]        {0.000 0.234}          0.469           2134.187        
-        pll_clk[1]_DIV  {0.000 1.874}          3.749           266.773         
-      pll_clk[2]        {0.000 0.234}          0.469           2134.187        
-        pll_clk[2]_DIV  {0.000 1.874}          3.749           266.773         
-    mmcm_clkout6        {0.000 3.749}          7.497           133.387         
-  refclk_100            {0.000 5.000}          10.000          100.000         
-    qpll1outclk_out[3]  {0.000 0.100}          0.200           5000.001        
-      txoutclk_out[15]  {0.000 1.000}          2.000           500.000         
-        clk_core        {0.000 2.000}          4.000           250.000         
-          clk_main_a0   {0.000 4.000}          8.000           125.000         
-          tck           {0.000 16.000}         32.000          31.250          
-\end{lstlisting}
 %  \includegraphics[width=10cm]{clk_fpga.png}
 %  Out max delay path is 2.317ns, which means it runs at roughly 430MHz. 
 % Furthermore we plan to run this system on an FPGA unit. This unit will be cloud based and provided by the 6.175 instructors. Since the multi-core processor will likely only run on the server-based unit rather than the small FPGA, we will use the server-based one. We expect that this will involve some work with Verilog and learning to program the controllers. The Bluespec compiler will generate the Verilog code, from which we will use the associated synthesizing tools to push to the FPGA. 
@@ -557,7 +532,7 @@ This code has thread0 compute the first 8 then wait for thread1 to finish the la
 We compare the cycles it takes to run this program on the multicore processor to running to the original on the single core + cache processor.
 
 
-On the multicore processor, it ran in 2min 22s with 2673485 cycles. The single core did the same calculations in 2min 43s with 5466137 cycles. Note that the time difference is not that different due to the simulator running everything sequentially in effect. However, the number of cycles is roughly half, as expected.
+On the multicore processor, it ran in 2min 22s with 2673485 cycles. The single core did the same calculations in 2min 43s with 5466137 cycles. Note that the time difference is not that different due to the simulator running everything sequentially in effect. However, the number of cycles is roughly half, as expected. Therefore, it will run twice as fast in reality. There is likely a bit more overhead from the added PPP, but it will not slow it down much, and we have significant gains.
 
 This would hold for any distributed program. Furthermore, running multiple, non-conflicting programs, can be done at the same time, which could only be done sequentially before.
 
@@ -571,6 +546,38 @@ This evaluation of our system proves the effectiveness of a multicore processor.
 % \end{itemize}
 
 % We will use the timing results on this and a standard single core processor to evaluate the improvement in performance. 
+
+
+\subsection{FPGA}
+
+We provide the analysis from the compilation of the FPGA. We were able to run several tests that passed on the AWS server. 
+Below are the timings from our FPGA compilation:
+\begin{lstlisting}[language=Python]
+ -------------------------------------------------------------
+ | Clock Summary
+ | -------------
+ -------------------------------------------------------------
+ 
+ Clock                 Waveform(ns)           Period(ns)      Frequency(MHz)
+ -----                 ------------           ----------      --------------
+ CLK_300M_DIMM0_DP     {0.000 1.666}          3.332           300.120         
+   mmcm_clkout0        {0.000 1.874}          3.749           266.773         
+     pll_clk[0]        {0.000 0.234}          0.469           2134.187        
+       pll_clk[0]_DIV  {0.000 1.874}          3.749           266.773         
+     pll_clk[1]        {0.000 0.234}          0.469           2134.187        
+       pll_clk[1]_DIV  {0.000 1.874}          3.749           266.773         
+     pll_clk[2]        {0.000 0.234}          0.469           2134.187        
+       pll_clk[2]_DIV  {0.000 1.874}          3.749           266.773         
+   mmcm_clkout6        {0.000 3.749}          7.497           133.387         
+ refclk_100            {0.000 5.000}          10.000          100.000         
+   qpll1outclk_out[3]  {0.000 0.100}          0.200           5000.001        
+     txoutclk_out[15]  {0.000 1.000}          2.000           500.000         
+       clk_core        {0.000 2.000}          4.000           250.000         
+         clk_main_a0   {0.000 4.000}          8.000           125.000         
+         tck           {0.000 16.000}         32.000          31.250          
+\end{lstlisting}
+
+
 \section{Difficulties}
  
 While creating our multicore processor and using FPGAs, we encountered many problems. 
@@ -579,7 +586,7 @@ The first major problem we had was in connecting our cache to our processor. Swi
 
 The next problem we had was creating the parent protocol processor while maintaining cache coherency. We had to figure out how to make the logic work to make sure the latest data was accessible after all writes. We had a problem where dirty lines were not fetched when the other core read the same line for the first time. It took us many times to find this error.
 
-We also had a few errors when converting the words to lines in the memory \lstinline{mem.vmh}. It turns out that Bluespec does not inherently pad single zeroes to the whole line. Partially filled lines also did not finish with the default memory value, 0xA. 
+We also had a few errors when converting the words to lines in the memory \lstinline{mem.vmh}. It turns out that Bluespec does not inherently pad single zeroes to the whole line. Partially filled lines also did not finish with the default memory value, 0xA. The cache tags and valid/dirty bits also had to be zeroed out since we were having some issues with them being mislabelled as valid without data. 
 
 Most of these errors were solved by tracing logs from the cache and processor. Another trick we found to debug once the MMIO was working was to use \lstinline[language=C]|putchar(int c)| to display C variables. This allowed us to read any integer up to 256 using \lstinline|hexdump| on the output. 
 
@@ -608,17 +615,16 @@ In the end, we were able to create a fully working multicore RISC-V processor th
 % We finished the multicore processor and PPP. We converted the code to work on the FPGA. However, the FPGA memory reads failed, and we are in the process of debugging it with Miguel. We created a distributed matrix multiply to evaluate our system. 
 
 
+\section{Code}
+
+Our code is included in two folders: processor and fpga. Note that the processor code contains many tests and variations of the processor (i.e. single core, unpipelined, without cache, and multicore). 
+
+Our multicore code is in top\_multicore.bsv and pipelined.bsv. Our updated cache is in CacheInterfaceMultiCore.bsv, Cache32MC.bsv, Cache.bsv, and MainMem.bsv. All other files are maintained for relative benchmarks.
 
 \section{Sources}
 
 http://csg.csail.mit.edu/6.175/labs/project-part2.html
 \\
 Course material from Canvas
-
-\section{Code}
-
-Our code is included in two folders: processor and fpga. Note that the processor code contains many tests and variations of the processor (i.e. single core, unpipelined, without cache, and multicore). 
-
-Our multicore code is in top\_multicore.bsv and pipelined.bsv. Our updated cache is in CacheInterfaceMultiCore.bsv, Cache32MC.bsv, Cache.bsv, and MainMem.bsv. All other files are maintained for relative benchmarks.
 
 \end{document}
