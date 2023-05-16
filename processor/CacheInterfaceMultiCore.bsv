@@ -1,3 +1,4 @@
+// MULTI CORE ENABLED CACHE INTERFACE INCLUDING THE PARENT PROTOCOL PROCESSOR
 import ClientServer::*;
 import GetPut::*;
 import Randomizable::*;
@@ -7,7 +8,6 @@ import Cache32MC::*;
 // import Cache32::*;
 import Cache::*;
 import FIFOF::*;
-// import PP::*;
 
 
 interface CacheInterface;
@@ -45,9 +45,6 @@ module mkParentProtocolProcessor#(CacheInterface core1, CacheInterface core2)(Pa
     rule processUpgrade1;
         let upgrade <- core1.upgrade();
         core2.downgrade(upgrade);
-        ////$display("UPGRADE1 ",fshow(upgrade));
-        // cacheL2.putFromProc(upgrade);
-        // if (upgrade.write == 0) order_req.enq(0);
     endrule
 
     rule processReq1;
@@ -89,31 +86,6 @@ module mkCacheInterface#(Bit#(1) id)(CacheInterface);
     Cache32MC cacheI <- mkCache32MC;
 
     FIFOF#(Bit#(1)) order_req <- mkFIFOF;
-    // Cache cache4 <- mkCache;
-    
-    // rule connectCacheL1L2Data;
-    //     let lineReq <- cache.getToMem();
-    //     cache2.putFromProc(lineReq);
-    // endrule
-    // rule connectL2L1CacheData;
-    //     let resp <- cache2.getToProc();
-    //     cache.putFromMem(resp);
-    // endrule
-
-
-    // rule connectCacheDramInstr;
-    //     let lineReq <- cache4.getToMem();
-    //     mainMem.put2(lineReq);
-    // endrule
-
-
-    
-    // Reg#(Bit#(32)) cycle <- mkReg(0);
-
-    // rule cycle_disp;
-    //     cycle <= cycle +1;
-    //     ////$display("CYCLE %d\n",cycle,fshow(order_req.notEmpty));
-    // endrule
 
 
     FIFOF#(MainMemReq) upreqs <- mkFIFOF;
@@ -132,10 +104,6 @@ module mkCacheInterface#(Bit#(1) id)(CacheInterface);
         ////$display("DATA UPREQ ",fshow(lineReq));
     endrule
 
-    // rule connectDramCacheInstr;
-    //     let resp <- mainMem.get2;
-    //     cache4.putFromMem(resp);
-    // endrule
 
     FIFOF#(Word) respI <- mkFIFOF();
     FIFOF#(Word) respD <- mkFIFOF();
@@ -194,8 +162,6 @@ module mkCacheInterface#(Bit#(1) id)(CacheInterface);
 
     method Action downgrade(CacheReq req);
         ////$display("DOWNGRADE ",fshow(req));
-        // $display(id,"DOWNGRADING DATA ",fshow(req));
-
         cacheD.putFromProc(req, 1);
     endmethod
 

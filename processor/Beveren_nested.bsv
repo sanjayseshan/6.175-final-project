@@ -1,3 +1,4 @@
+// TESTS FOR NEW CACHE (CACHE32MC) AND 2 LEVEL CACHE
 import ClientServer::*;
 import GetPut::*;
 import Randomizable::*;

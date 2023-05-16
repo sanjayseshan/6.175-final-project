@@ -1,3 +1,4 @@
+// SINGLE CORE CACHE INTERFACE WITH NO PPP
 import ClientServer::*;
 import GetPut::*;
 import Randomizable::*;

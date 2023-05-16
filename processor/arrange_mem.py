@@ -1,7 +1,7 @@
 """
 martinch@mit.edu for 6.1920 Spring 2023 final project
 
-Updated by seshan@mit.edu and lasyab@mit.edus
+Updated by seshan@mit.edu and lasyab@mit.edu to fix some bugs
 
 Converts mem.vmh with Word (32 bits) on each line to a memlines.vmh with a Line (512 bits) on each line.
 

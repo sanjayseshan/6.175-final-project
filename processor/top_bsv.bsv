@@ -1,3 +1,4 @@
+// NON PIPELINED CODE
 import RVUtil::*;
 import BRAM::*;
 import multicycle::*;

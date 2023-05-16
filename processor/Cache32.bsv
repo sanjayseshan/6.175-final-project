@@ -1,3 +1,5 @@
+// SINGLE CORE ASSOIATED CACHE -- stores words
+
 import BRAM::*;
 import FIFO::*;
 import FIFOF::*;
@@ -40,19 +42,6 @@ function CacheReqWorking extract_bits(CacheLineAddr addr, CacheReq e);
 endfunction
 
 function Vector#(16, Word) lineToWordVec(MainMemResp line);
-    // ADDED SECTION
-    // added if statement
-    // if (memRespQ.notEmpty()) begin
-    //   let data = memRespQ.first;
-
-    //   if (bits.offset==15) begin
-    //     data = {working.memReq.data, data[479:0]};
-    //   end else if (bits.offset==0) begin
-    //     data = {data[511:32], working.memReq.data};
-    //   end else begin
-    //     data = {data[511:32*(bits.offset+1)], working.memReq.data, data[32*bits.offset-1:0]};
-    //   end
-      // END OF ADDED SECTION
 
     Vector#(16, Word) ret;
     for (Integer i=0; i < 16; i = i + 1) begin
@@ -85,7 +74,6 @@ module mkCache32(Cache32);
   Reg#(Bool) working_v <- mkReg(False);
 
   FIFOF#(Word) hitQ <- mkFIFOF();
-  // Reg#(CacheReq) missReq <- mkReg(unpack(0));
   Reg#(Bit#(2)) mshr <- mkReg(0);
 
   FIFO#(MainMemReq) memReqQ <- mkFIFO();
@@ -144,12 +132,7 @@ module mkCache32(Cache32);
       let e = working.memReq;
 
       if (bits.tag == out.tag) begin
-        // if (working.memReq.write == 8) data[bits.offset][31:24] = e.data[31:24];
-        // if (working.memReq.write == 4) data[bits.offset][23:16] = e.data[23:16];
-        // if (working.memReq.write == 2) data[bits.offset][15:8] = e.data[15:8];
-        // if (working.memReq.write == 1) data[bits.offset][7:0] = e.data[7:0];
-        // if (working.memReq.write == 3) data[bits.offset][15:0] = e.data[15:0];
-        // if (working.memReq.write == 12) data[bits.offset][31:16] = e.data[31:16];
+
         Vector#(16, Word) d_vec=unpack(0);
         d_vec[working.offset] = working.memReq.data; 
 
@@ -179,19 +162,6 @@ module mkCache32(Cache32);
     let bits = extract_bits(e.addr, ?);
     stb.deq();
 
-    // ADDED
-    // let data = working_line.data;
-
-    // if (bits.offset==15) begin
-    //   data = {e.data, data[479:0]};
-    // end 
-    // else if (bits.offset==0) begin
-    //   data = {data[511:32], e.data};
-    // end 
-    // else begin
-    //   data = {data[511:32*(bits.offset+1)], e.data, data[32*bits.offset-1:0]};
-    // end
-    // END OF ADDED SECTION
 
     if (bits.tag == working_line.tag) begin
       // data[bits.offset] = e.data;
@@ -220,10 +190,6 @@ module mkCache32(Cache32);
     lockL1 <= True;
   endrule
 
-  // rule clearL1Lock;
-  //   lockL1[1] <= False;
-  // endrule
-
   rule startMiss(mshr==1);
     ////$display("startMiss",mshr,fshow(working.memReq));
     if (working_line.valid == 2) begin
@@ -247,7 +213,6 @@ module mkCache32(Cache32);
   rule waitFillResp_Ld(mshr==3 && start_fill && working.memReq.word_byte == 0);
     // //$display("waitFillResp_ld");
 
-    // let data = fill_data;
     let m_working_req = working.memReq;
     if (memRespQ.notEmpty()) begin
       let data = memRespQ.first;
@@ -284,15 +249,6 @@ module mkCache32(Cache32);
     // added if statement
     if (memRespQ.notEmpty()) begin
       let data = lineToWordVec(memRespQ.first);
-
-      // if (bits.offset==15) begin
-      //   data = {working.memReq.data, data[479:0]};
-      // end else if (bits.offset==0) begin
-      //   data = {data[511:32], working.memReq.data};
-      // end else begin
-      //   data = {data[511:32*(bits.offset+1)], working.memReq.data, data[32*bits.offset-1:0]};
-      // end
-      // END OF ADDED SECTION
 
       // data[working.offset] = working.memReq.data;
       Bit#(64) en_bytes = 64'hffffffffffffffff;
@@ -358,7 +314,6 @@ module mkCache32(Cache32);
     start_fill <= True;
     ////$display("PFM ",fshow(e));
     memRespQ.enq(e);
-    // fill_data <= e;
   endmethod
 
 
