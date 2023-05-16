@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1684192766 "/home/seshan/Documents/6.175-final-project/tex/final.tex" "final.pdf" "final" 1684192767
+["pdflatex"] 1684204460 "/home/seshan/Documents/6.175-final-project/tex/final.tex" "final.pdf" "final" 1684204461
   "/etc/texmf/web2c/texmf.cnf" 1667065086 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/seshan/Documents/6.175-final-project/tex/final.tex" 1684192766 25478 bc9d4413925696f29fcc992d6a895a70 ""
+  "/home/seshan/Documents/6.175-final-project/tex/final.tex" 1684204458 29511 21817be1b13e9597e198e7327f6c2a67 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -205,8 +205,8 @@
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1668702326 1405659 66d4ee6a9fc4d38c351eb64b93c8c161 ""
   "bluespec.sty" 1684178497 3407 20b6b06be78bfe19f787cf591af73d05 ""
   "cacheproc.png" 1684179448 59409 302b0715317e5d18da92e1631810d860 ""
-  "final.aux" 1684192767 1736 f8fbb44b9bed8f307d013f249f4b325c "pdflatex"
-  "final.tex" 1684192766 25478 bc9d4413925696f29fcc992d6a895a70 ""
+  "final.aux" 1684204461 1923 7cfaf6432a98e83ad393f1d86d43c396 "pdflatex"
+  "final.tex" 1684204458 29511 21817be1b13e9597e198e7327f6c2a67 ""
   "fpga.png" 1684182516 123325 cd47e50bfc0e022f2a7c47510b0d267b ""
   "multicore.png" 1684181705 111404 f9805576573d75294bb7dff7ce4cf981 ""
   (generated)

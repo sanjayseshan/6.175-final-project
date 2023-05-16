@@ -324,6 +324,34 @@ RVIfc rv_core2 <- mkpipelined(4096,1);
 This initialization allows us to run our code in the AWS system. We successfully compiled our code on the server. We were able to run many of the single core tests (including add32, sub32, or32, and a few more) successfully. The tests requiring MMIO results and higher memory addresses had some failures.
 % However, we were not able to get it fully running in time, due to some memory addressing issues.
  We are in the process of debugging this with Miguel at the time of writing. 
+
+ Below are the timings from our FPGA compilation:
+ \begin{lstlisting}[language=Python]
+  -------------------------------------------------------------
+  | Clock Summary
+  | -------------
+  -------------------------------------------------------------
+  
+  Clock                 Waveform(ns)           Period(ns)      Frequency(MHz)
+  -----                 ------------           ----------      --------------
+  CLK_300M_DIMM0_DP     {0.000 1.666}          3.332           300.120         
+    mmcm_clkout0        {0.000 1.874}          3.749           266.773         
+      pll_clk[0]        {0.000 0.234}          0.469           2134.187        
+        pll_clk[0]_DIV  {0.000 1.874}          3.749           266.773         
+      pll_clk[1]        {0.000 0.234}          0.469           2134.187        
+        pll_clk[1]_DIV  {0.000 1.874}          3.749           266.773         
+      pll_clk[2]        {0.000 0.234}          0.469           2134.187        
+        pll_clk[2]_DIV  {0.000 1.874}          3.749           266.773         
+    mmcm_clkout6        {0.000 3.749}          7.497           133.387         
+  refclk_100            {0.000 5.000}          10.000          100.000         
+    qpll1outclk_out[3]  {0.000 0.100}          0.200           5000.001        
+      txoutclk_out[15]  {0.000 1.000}          2.000           500.000         
+        clk_core        {0.000 2.000}          4.000           250.000         
+          clk_main_a0   {0.000 4.000}          8.000           125.000         
+          tck           {0.000 16.000}         32.000          31.250          
+\end{lstlisting}
+%  \includegraphics[width=10cm]{clk_fpga.png}
+%  Out max delay path is 2.317ns, which means it runs at roughly 430MHz. 
 % Furthermore we plan to run this system on an FPGA unit. This unit will be cloud based and provided by the 6.175 instructors. Since the multi-core processor will likely only run on the server-based unit rather than the small FPGA, we will use the server-based one. We expect that this will involve some work with Verilog and learning to program the controllers. The Bluespec compiler will generate the Verilog code, from which we will use the associated synthesizing tools to push to the FPGA. 
 
 % \section{Other}
@@ -334,7 +362,7 @@ This initialization allows us to run our code in the AWS system. We successfully
 
 The testing of our code is broken up into modules, basic tests, and then our exhaustive evaluation.
 
-\subsection{Cache Evaluation}
+\subsection{Cache Tests}
 To test the cache, we modified Beveren to handle words and to run on two levels of caches. We made a nested cache as follows:
 \begin{lstlisting}
 rule connectCacheL1L2;
@@ -533,6 +561,8 @@ On the multicore processor, it ran in 2min 22s with 2673485 cycles. The single c
 
 This would hold for any distributed program. Furthermore, running multiple, non-conflicting programs, can be done at the same time, which could only be done sequentially before.
 
+This evaluation of our system proves the effectiveness of a multicore processor.
+
 % We propose a series of tests to evaluate our system.
 % \begin{itemize}
 %     \item Run two different programs, such as two different sorts, on each core
@@ -542,7 +572,20 @@ This would hold for any distributed program. Furthermore, running multiple, non-
 
 % We will use the timing results on this and a standard single core processor to evaluate the improvement in performance. 
 \section{Difficulties}
- TO DO
+ 
+While creating our multicore processor and using FPGAs, we encountered many problems. 
+
+The first major problem we had was in connecting our cache to our processor. Switching to use words, and specifically half words and bytes, proved to be more complicated than expected. We had to switch to use vectors and a byte enabled cache to enable the special byte write commands in RISC-V.
+
+The next problem we had was creating the parent protocol processor while maintaining cache coherency. We had to figure out how to make the logic work to make sure the latest data was accessible after all writes. We had a problem where dirty lines were not fetched when the other core read the same line for the first time. It took us many times to find this error.
+
+We also had a few errors when converting the words to lines in the memory \lstinline{mem.vmh}. It turns out that Bluespec does not inherently pad single zeroes to the whole line. Partially filled lines also did not finish with the default memory value, 0xA. 
+
+Most of these errors were solved by tracing logs from the cache and processor. Another trick we found to debug once the MMIO was working was to use \lstinline[language=C]|putchar(int c)| to display C variables. This allowed us to read any integer up to 256 using \lstinline|hexdump| on the output. 
+
+\section{Conclusion}
+
+In the end, we were able to create a fully working multicore RISC-V processor that runs two threads with proper data sharing. We found that when properly parallelized, we get $2\times$ speed up on programs. We also were able to run a few tests on the FPGA, while albeit needing more work. Our system was built with modularity in mind and therefore is generally scalable to have more cache levels and more cores, allowing for future improvements.
 
 % \section{Weekly Updates \& Difficulties}
 % \subsection{Week 0}
@@ -571,5 +614,11 @@ This would hold for any distributed program. Furthermore, running multiple, non-
 http://csg.csail.mit.edu/6.175/labs/project-part2.html
 \\
 Course material from Canvas
+
+\section{Code}
+
+Our code is included in two folders: processor and fpga. Note that the processor code contains many tests and variations of the processor (i.e. single core, unpipelined, without cache, and multicore). 
+
+Our multicore code is in top\_multicore.bsv and pipelined.bsv. Our updated cache is in CacheInterfaceMultiCore.bsv, Cache32MC.bsv, Cache.bsv, and MainMem.bsv. All other files are maintained for relative benchmarks.
 
 \end{document}
